@@ -16,7 +16,7 @@ Read [WORKFLOW.md](WORKFLOW.md) first. It is the map: the four lanes, the sizing
 Look before you ask. Don't report what you find unless it changes the route.
 
 - `docs/agents/issue-tracker.md` missing → the repo isn't set up. If `docs/agents/feedback-loops.md` and `CONTEXT.md` are also missing, this is a **first run**: don't stop, hand back the first-run card (below) instead of a lane. If only the tracker is missing, tell the user to run `/setup-matt-pocock-skills` (recommend **local markdown** for a solo repo, **GitHub** if the project already lives there and they want issues and PRs) and stop.
-- `git status`: mid-merge or mid-rebase with conflicts → that is the whole route. Call the Skill tool with "resolving-merge-conflicts".
+- `git status`: mid-merge or mid-rebase with conflicts → that is the whole route. Invoke the "resolving-merge-conflicts" skill.
 - `CONTEXT.md` present or not. Absent is fine (the first `/grill-with-docs` creates it); just don't promise vocabulary that isn't there.
 - `docs/agents/feedback-loops.md` missing → the loops the lanes depend on aren't wired. Don't stop, but the route card's **Then** line starts with `/setup-feedback-loops` before any Build or Fix step.
 - `.scratch/*/issues/` or open tracker issues labelled `ready-for-agent` → there may be an in-flight L build. If the user's ask matches it, the route is "next ticket on the frontier", not a fresh grill.
@@ -78,7 +78,7 @@ Then: <the two or three steps after it, one line each>
 Context: <stay | /clear between tickets | /handoff because … | /takeover <record> first>
 ```
 
-Then stop, with one exception. Where the route's **first step is model-invoked**, offer to begin: "Say go and I'll start." On go, call the Skill tool with that skill, passing along everything the user has told you. The model-invoked first steps are: `tdd` (S build, quick Fix), `diagnosing-bugs` (hard Fix), `code-review` (Review), `verify` ("does it actually work"), `test-audit` ("are these tests real"), `security-review` ("I want to deploy"), `research` (a library or API question), `prototype` (a question that needs running code), `domain-modeling` (a fuzzy term), `resolving-merge-conflicts` (a conflict in progress). User-invoked steps (`setup-feedback-loops`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`, `wait-what`, `wayfinder`) you cannot fire; the card names them and the user types them.
+Then stop, with one exception. Where the route's **first step is model-invoked**, offer to begin: "Say go and I'll start." On go, invoke that skill, passing along everything the user has told you. The model-invoked first steps are: `tdd` (S build, quick Fix), `diagnosing-bugs` (hard Fix), `code-review` (Review), `verify` ("does it actually work"), `test-audit` ("are these tests real"), `security-review` ("I want to deploy"), `research` (a library or API question), `prototype` (a question that needs running code), `domain-modeling` (a fuzzy term), `resolving-merge-conflicts` (a conflict in progress). User-invoked steps (`setup-feedback-loops`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`, `wait-what`, `wayfinder`) you cannot fire; the card names them and the user types them.
 
 ## Rules
 

@@ -12,9 +12,9 @@ Use /tdd where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end. If `docs/agents/feedback-loops.md` exists, it names the commands and how long each takes; use those.
 
-Once the suite is green, call the Skill tool with "verify" to run the built thing against the ticket's acceptance criteria. Each FAIL it reports goes back into the /tdd loop as a new red test. Do not proceed with a FAIL open; UNVERIFIABLE rows go to the user.
+Once the suite is green, invoke the "verify" skill to run the built thing against the ticket's acceptance criteria. Each FAIL it reports goes back into the /tdd loop as a new red test. Do not proceed with a FAIL open; UNVERIFIABLE rows go to the user.
 
-Then call the Skill tool with "test-audit". Its **Next red tests** (mutation survivors, uncovered criteria, tests that claim nothing) go back into the /tdd loop before review. Leave its **Claims** list in the transcript untouched: the user reads it as business rules, and a wrong claim there is the finding that matters most.
+Then invoke the "test-audit" skill. Its **Next red tests** (mutation survivors, uncovered criteria, tests that claim nothing) go back into the /tdd loop before review. Leave its **Claims** list in the transcript untouched: the user reads it as business rules, and a wrong claim there is the finding that matters most.
 
 Then use /code-review to review the work.
 

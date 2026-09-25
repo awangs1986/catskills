@@ -54,6 +54,8 @@ npx skills@latest add mattpocock/skills
 
 Pick the skills you want, and which coding agents to install them on. **The installer lets you choose which skills to take, so make sure `setup-matt-pocock-skills` is one of them.**
 
+**Pi** (and any other agent that reads `SKILL.md` folders): point the installer at it if it is offered, or clone this repo and run `scripts/link-skills.sh`, which symlinks every promoted skill into `~/.claude/skills`, `~/.agents/skills` and `~/.pi/agent/skills` so a `git pull` keeps them current. Every skill here is written to be host-neutral: no Claude-only tool names, and each one carries the Claude Code frontmatter and the Codex `agents/openai.yaml` side by side. `/clear` and `/compact` in the text mean whatever your agent calls starting a fresh window and compressing the current one.
+
 A native Codex plugin is on the roadmap (see [`.agents/adr/0002-ship-as-a-claude-code-plugin.md`](./.agents/adr/0002-ship-as-a-claude-code-plugin.md)).
 
 </details>

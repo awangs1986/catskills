@@ -272,7 +272,7 @@ The example is the whole trick. It is the smallest possible feedback loop, and `
 
 ## Context rules
 
-Eight rules cover nearly every session. The full decision tree is in `ask-matt`'s `PHASE-BOUNDARIES.md`; these are the cases a solo developer actually hits.
+Eight rules cover nearly every session. The full decision tree is in `ask-matt`'s `PHASE-BOUNDARIES.md`; these are the cases a solo developer actually hits. `/clear` and `/compact` are written the Claude Code way; read them as whatever your agent calls starting a fresh window and compressing the current one (Codex: `/new` and `/compact`).
 
 | Situation | Do |
 | --- | --- |
