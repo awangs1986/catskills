@@ -10,6 +10,8 @@ You don't remember every skill, so ask.
 
 A **flow** is a path through the skills. Most paths run along one **main flow**, and two **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
 
+**Working alone?** **`/vibe`** is a pre-decided subset of this map for one developer with no team process: four lanes (build, fix, review, tidy), a sizing question, and a route card naming the next command. It covers the main flow, the bug on-ramp, and codebase health, and deliberately leaves out `wayfinder`, `triage`, `to-questionnaire`, `research` and `wizard`. Send solo users there first; send them back here the moment other people enter the picture.
+
 ## The main flow: idea → ship
 
 The route most work travels. You have an idea and want it built.
@@ -23,7 +25,7 @@ The route most work travels. You have an idea and want it built.
    - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed: kick off **`/implement`** per ticket, **`/clear`ing context between each one**. Each ticket is self-contained, so the last one's context is disposable.
    - **No** → **`/implement`** right here, in the same context window.
 
-   Either way, **`/implement`** builds each issue by driving **`/tdd`** internally (one red-green slice at a time), then closes out by running **`/code-review`**, a two-axis review (Standards + Spec) of the diff, before committing. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point.
+   Either way, **`/implement`** builds each issue by driving **`/tdd`** internally (one red-green slice at a time), runs **`/verify`** once the suite is green (boots the thing and walks the acceptance criteria as a user would, with evidence per row; a FAIL goes back into `/tdd`), then **`/test-audit`** (renders every test as a plain-language claim for you to judge, maps claims to criteria, and probes with a dozen mutants to see which rules no test protects; survivors go back into `/tdd`), then closes out by running **`/code-review`**, a review of the diff along Standards and Spec, plus **`/security-review`** as a third sub-agent whenever the diff touches a route, auth, a query, env, or a dependency, before committing. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, **`/verify`** on its own when you want to see something work rather than be told it does, **`/test-audit`** on its own when a green suite is hiding logic errors and you want to know what the tests actually claim, **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point, and **`/security-review`** on its own before anything first faces the internet.
 
 ### Context hygiene
 
@@ -68,7 +70,7 @@ A **phase** is a chunk of work inside a session: the grilling, the implementatio
 - **Subagent**: send a tightly-scoped task to its own window and get a report back.
 - **`/compact`** compresses this context and seeds a fresh session with it. The **default**, at the bottom of the tree rather than the first reach.
 
-Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree: the five questions, the reasoning behind each branch, and why the primary-source cost makes **Continue** the one to rule out first. Make the decision **at** a boundary; mid-phase, continue or split the rest into subagents.
+Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree: the five questions, the reasoning behind each branch, and why the primary-source cost makes **Continue** the one to rule out first. Make the decision **at** a boundary; mid-phase, continue or split the rest into subagents. The one mid-phase move that isn't a context switch is **`/refocus`**: when a long session has lost the thread, it re-reads the spec, ticket and every conversation decision from their primary sources, checks the diff against them, and reports the drift in a one-screen brief. Run it before you `/compact`, and seed the compact with its brief.
 
 ## Standalone
 
@@ -81,6 +83,7 @@ Off the main flow entirely.
 - **`/research`**: delegate reading legwork to a **background agent**: it investigates a question against **primary sources**, then leaves a cited Markdown file in the repo. Keep working while it reads. The file it produces is something to take *into* the main flow at `/grill-with-docs`, since research feeds the thinking rather than replacing it.
 - **`/to-questionnaire`** comes in when the thing blocking you isn't in your head or the codebase but in **someone else's**, and it writes them a questionnaire to fill in. It's the inverse of `/grill-me`: instead of interviewing you about the subject, it interviews you about the **send** (who it's going to, what you need back) and aims the questions at the gap. What comes back is material for `/grill-with-docs` or `/to-spec`.
 - **`/wizard`** is for the steps only a **human** can take: provisioning infrastructure, setting up credentials or CI secrets, clicking through an unfamiliar third-party dashboard, running a one-off migration or cutover. It generates an interactive bash script that opens each URL, captures each value, and writes it into `.env` and GitHub secrets, so the procedure stops being something you re-explain to an agent every time. Model-invoked, so the agent reaches for it the moment it hits a wall only you can pass. If the agent could just do it itself, it should; this is for where a human is genuinely in the loop.
+- **`/refocus`** is the corrective for a *session* that has drifted: the agent forgot a decision, widened the scope, or is working the wrong criterion. It re-reads the requirements from disk rather than from memory, diffs them against what was built, and reports **dropped**, **drifted** and **contradicted** items, then waits for you to confirm. Same window, no context switch; it is the thing to run *before* reaching for `/compact`.
 - **`/wait-what`** is the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in plain English, using the `CONTEXT.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
 - **`/teach`**: learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
@@ -88,3 +91,5 @@ Off the main flow entirely.
 ## Precondition
 
 **`/setup-matt-pocock-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+
+**`/setup-feedback-loops`**: run right after it, once per repo and again when the stack changes. It wires the typecheck, lint, test runner, formatter, smoke test, dev logs, browser and pre-commit guardrail that `/tdd`, `/implement`, `/verify` and `/diagnosing-bugs` all spend, proves each one goes red, and records the commands in `docs/agents/feedback-loops.md`. Without it every one of those skills is guessing at how to check its own work.

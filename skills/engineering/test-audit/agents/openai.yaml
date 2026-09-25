@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Audit"
+  short_description: "Do the tests protect the business logic? Claims, coverage, mutation probe"

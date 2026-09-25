@@ -1,0 +1,3 @@
+interface:
+  display_name: "Verify"
+  short_description: "Run the built thing and walk its acceptance criteria with evidence"

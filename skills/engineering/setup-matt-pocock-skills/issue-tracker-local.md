@@ -18,6 +18,16 @@ Create a new file under `.scratch/<feature-slug>/` (creating the directory if ne
 
 Read the file at the referenced path. The user will normally pass the path or the issue number directly.
 
+## Implementation ticket lifecycle
+
+Tickets written by `to-tickets` carry a `Status:` line that moves through three values:
+
+- `ready-for-agent`: written, blockers may or may not be done. Check the `Blocked by` line.
+- `in-progress`: `implement` sets this when it starts, so a later session can see what was in flight.
+- `done`: `implement` sets this after committing, and appends the commit sha and its Checks run block under `## Comments`.
+
+The **frontier** is every ticket that is `ready-for-agent` and whose `Blocked by` tickets are all `done`. `/vibe` reads these lines to say where you were.
+
 ## Wayfinding operations
 
 Used by `/wayfinder`. The **map** is a file with one **child** file per ticket.
