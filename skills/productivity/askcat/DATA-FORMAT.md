@@ -88,7 +88,7 @@ The template draws the cat itself; a mood only changes its accessories and expre
 | `guard` | helmet, shield | review, security |
 | `sweeper` | headscarf, broom | tidy, architecture |
 | `dizzy` | swirl eyes, stars | sessions going wrong: refocus, handoff, takeover |
-| `reader` | clipboard, tick | test-audit, verify, anything that produces a list to read |
+| `reader` | clipboard, tick | test-audit, verify, cattytest, anything that produces a list to read |
 
 ## Constraints the template relies on
 
