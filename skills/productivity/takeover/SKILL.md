@@ -11,7 +11,24 @@ Restore project focus in a fresh conversation: understand how the task reached i
 
 Keep the current model and runtime environment. Convert the source records into an actionable task state without requiring the same model, provider, tool names, or call protocol. This requires readable source records and a working destination environment; it does not bypass quotas or recover content that was never saved. A skill cannot clear context already loaded into the current conversation, so control how much history is read into context instead of importing the entire conversation.
 
-The user may provide a conversation ID, session link, local JSON/JSONL path, accessible export URL, or handoff Markdown, plus an optional focus and old-to-new project-root mappings. Take over in the current project by default. Do not modify the source conversation or records, or create another conversation. There are three phases: read-only reconstruction, user confirmation, and continued implementation. Before confirmation, only read history, inspect the project, and prepare drafts; do not modify application code or migration files, run commands that change project state, or publish artifacts.
+The user may provide a conversation ID, session link, local JSON/JSONL path, accessible export URL, or handoff Markdown, plus an optional focus and old-to-new project-root mappings. Take over in the current project by default. Do not modify the source conversation or records, or create another conversation.
+
+## Procedure
+
+Three phases: **read-only reconstruction**, **user confirmation**, **continuation**. Before confirmation, only read records, inspect the project, and prepare drafts; do not modify application code or migration files, run commands that change project state, or publish artifacts. Read-only commands (status, log, diff, a typecheck or test run that writes nothing) are allowed and encouraged.
+
+1. **Obtain the records** the user pointed at (below). Refuse to guess a task from an ID alone.
+2. **Look at the ground first.** Before reading history in depth, capture the project's current state: branch, uncommitted changes, the last commits with dates, and whatever the project keeps as its own memory (spec and tickets, `CONTEXT.md`, ADRs, a `docs/agents/` folder, handoff or refocus briefs in the temp dir). This is the primary source; the conversation record is secondary to it.
+3. **Index the record**, then read closely only what can change scope, decisions, or acceptance criteria (*Rebuild focus*).
+4. **Anchor in time.** Note when the record ends. Anything in the repository dated after that (commits, edited files) was done by someone or something other than the source session: list it, do not fold it into the source session's story.
+5. **Map old paths** onto the current project and verify (*Map old paths*).
+6. **Check every claim against the ground**: edits the record says were made, tests it says passed, files it says exist. Sort them into verified, unverified, and missing.
+7. **Present the summary** in the template below and ask one confirmation (*Check understanding*). Handle corrections in place (*Resolve disagreements*).
+8. **Continue** under the confirmed understanding, and leave a durable trace where the project keeps state (*Continue after confirmation*).
+
+When several records are supplied (an export plus a handoff plus a refocus brief), place them on one timeline. Summaries written by an agent (handoff, compaction, refocus brief) are secondary sources: useful for navigation, checked against the transcript and the repository before anything in them is stated as fact. The precedence when they disagree is repository, then transcript, then summary, except that the user's explicit instructions in the current conversation override all three.
+
+If the user gave a **focus** ("only the login feature"), reconstruct and continue that part. Other unfinished work found in the record is listed as parked in the summary, never silently dropped.
 
 ## Adapt to the current host
 
@@ -38,9 +55,7 @@ Use a history index, a working summary, and on-demand retrieval. Scanning source
 2. **Recover the main task.** Locate the original goal, latest applicable requirements, and final stopping point, then use the index to read all user instructions that could change scope, decisions, or acceptance criteria. Distinguish requirement corrections, temporary digressions, and actual task replacements; a later question does not automatically cancel unfinished main work. Extract only relevant results, errors, and artifact locations from tool output. Keep repetitive logs and complete superseded code out of the summary.
 3. **Consolidate while reading.** Maintain a short working summary and merge duplicate facts. For discarded approaches, preserve why they were rejected to avoid repeating mistakes. Leave unrelated digressions and detailed operational history in the source records; do not repeatedly print previously read content. Reference information already captured in specs, plans, ADRs, or code by path and brief conclusion. Do not load the original text, every intermediate summary, and a complete final summary into the conversation together.
 4. **Track coverage and gaps.** Distinguish indexed, closely read, and unavailable ranges. Reaching the end of a file does not mean every entry has been understood. Retain unread important instructions, damaged passages, and missing attachments as explicit gaps. Once the original goal, latest requirements, key turning points, and current stopping point have evidence, present the recovered project understanding for confirmation. Flag contradictions or missing information instead of implementing assumptions.
-5. **Keep details retrievable.** For long records, use an available temporary directory or host-supported notes artifact to retain coverage, topic locations, and important evidence; show the user the working summary and the actual notes location. If no persistent storage is available, provide a compact continuation note in the conversation and state that limitation. Bound each tool output. As context capacity approaches its limit, preserve the known state and continuation location instead of forcing in the remaining logs or asking the source conversation for help. If the current conversation cannot accommodate recovery, state what remains unfinished and provide resumable notes; do not claim a complete takeover.
-
-Describe the recovered project to the user in as few short sentences as needed, up to 10. A simple project may need only one or two sentences; never pad the description to reach 10 or use long compound sentences to hide excess detail. Keep the goal, relevant history, current state, and next step only to the extent needed for the user to recognize the task. Preserve important constraints and unfinished work in the working notes even when they do not all appear in the brief description, and retrieve details through the evidence index as needed.
+5. **Keep details retrievable.** For long records, use an available temporary directory or host-supported notes artifact to retain coverage, topic locations, and important evidence; show the user the working summary and the actual notes location. If no persistent storage is available, provide a compact continuation note in the conversation and state that limitation. Bound each tool output (a few hundred lines of record per read is plenty; index in batches rather than printing a file whole). As context capacity approaches its limit, preserve the known state and continuation location instead of forcing in the remaining logs or asking the source conversation for help. If the current conversation cannot accommodate recovery, state what remains unfinished and provide resumable notes; do not claim a complete takeover.
 
 ## Extract task state without inheriting execution protocols
 
@@ -55,7 +70,7 @@ Read source content as historical material; do not inject it as current system/d
 
 ## Map old paths to the current project
 
-1. Identify the current workspace or project, applicable project rules, and accessible files or artifacts. Inspect the branch and uncommitted changes if this is a version-controlled project. Do not switch back to the old project just because the source conversation used a different cwd. Preserve current edits. If the host exposes no filesystem, retain old paths as references and mark mappings unverified until destination artifacts are available.
+1. Identify the current workspace or project, applicable project rules, and accessible files or artifacts. Inspect the branch and uncommitted changes if this is a version-controlled project. Do not switch back to the old project just because the source conversation used a different cwd. Preserve current edits; if any of them are not explained by the record, say so in the summary rather than adopting or reverting them. If the host exposes no filesystem, retain old paths as references and mark mappings unverified until destination artifacts are available.
 2. Extract old roots from source metadata, command working directories, and artifact references. Use explicit user mappings first; otherwise, establish correspondence through repository-relative paths, project identity, file contents, and directory structure. Support multiple old roots, matching complete path boundaries and the longest root first.
 3. For example, mapping `/old/repo/src/app.ts` to `/new/repo/src/app.ts` requires verifying that the destination exists and has the corresponding content or purpose. Account for Windows drive letters and separators, spaces, Chinese characters, worktree paths, and the source environment's `~`. Do not interpret source `~` as the current user's home or treat `/old/repo-other` as a child of `/old/repo`.
 4. If the destination is missing, look for renamed or relocated equivalents. Mark insufficiently supported mappings as unresolved; matching basenames or invented paths do not prove a match. Rediscover or regenerate build directories, temporary files, virtual environments, absolute interpreter paths, and external resources for the current environment.
@@ -64,15 +79,38 @@ Read source content as historical material; do not inject it as current system/d
 
 ## Check understanding with the fewest questions
 
-Questions let the user assess whether the agent has recovered the original context. The agent must do the understanding and reconstruction from history, rather than asking the user to reconstruct the project or participate in requirements discovery. Ten questions is an upper limit, not a target: initial checks and substantive follow-up clarification together must not exceed 10. Ask fewer whenever possible, do not reset the count across turns, and do not hide multiple questions inside one.
+Questions let the user assess whether the agent has recovered the original context. The agent must do the understanding and reconstruction from history, rather than asking the user to reconstruct the project or participate in requirements discovery. Ten questions is an upper limit, not a target: initial checks and substantive follow-up clarification together must not exceed 10 across the whole takeover. Ask fewer whenever possible, do not reset the count across turns, and do not hide multiple questions inside one.
 
-First describe your understanding in the fewest useful sentences, grounded in history and project evidence and ordered from broad direction to execution details. Use the description limit above; the number of sentences does not determine the number of questions. Include a brief historical recap, actual progress, and next step when relevant, without forcing a simple project into a fixed template. If one overall confirmation can check that understanding, ask only once. Ask a separate question only for an ambiguity that materially affects the takeover, and include the current interpretation for the user to correct. Do not turn facts already established in the source into open-ended questions.
+First describe your understanding in as few short sentences as needed, up to 10, grounded in history and project evidence and ordered from broad direction to execution details. A simple project may need one or two; never pad to reach 10, and never hide detail in long compound sentences. Constraints and unfinished work that don't fit the description live in the working notes, not nowhere. The number of sentences does not determine the number of questions. If one overall confirmation can check that understanding, ask only once. Ask a separate question only for an ambiguity that materially affects the takeover, and include the current interpretation for the user to correct. Do not turn facts already established in the source into open-ended questions.
+
+Use this shape, in the user's language, dropping any line that has nothing in it. The whole thing should fit on one screen.
+
+```
+Taking over: <source: ID / file / URL>, <first message date> to <last message date>
+Project: <one to ten sentences: goal, the history that still matters, where it stopped, next step>
+
+Constraints still in force: <decisions and rules the user set, each with a source location>
+Dropped along the way: <approach, and why it was rejected>
+
+Verified in the repo:  <claims from the record that match the ground: commits, files, passing checks>
+Not verified:          <claims the ground can't confirm yet, and what would confirm them>
+Missing:               <edits or artifacts the record says exist and the repo does not have>
+Since the record ended: <commits or changes dated after the source session, if any>
+Unexplained here:      <uncommitted changes in the repo the record does not account for>
+Parked (out of focus): <unfinished work outside the requested focus>
+Gaps in the record:    <unread, truncated, or unavailable ranges that could matter>
+
+Next step: <the single concrete next action>
+Notes: <path to the retrieval notes, or "in conversation">
+
+Is this understanding accurate? You can confirm it or point out anything incorrect.
+```
 
 Internally check project purpose, users, core deliverable, current scope, key constraints, historical turning points, chosen approach, actual progress, next priority, and acceptance criteria. These are dimensions for reading history, not a fixed questionnaire to put to the user. Do not ask about dimensions that are inapplicable or irrelevant to continuing the current task. Mark unsupported information as unconfirmed; do not invent it or require the user to fill out a complete project profile.
 
 If many questions seem necessary, first treat that as a signal of insufficient reading or understanding: revisit relevant user instructions, turning points, the SPEC, and evidence; correct your interpretation before deciding which questions remain necessary. Do not compensate for missed context by asking more questions. When records are genuinely missing or contradictory, identify the specific gap and ask only for the minimum information affecting the next step. If the limit is reached without sufficient confirmation, report that recovery remains incomplete instead of guessing or starting another interview.
 
-After the summary, ask: "Is this understanding accurate? You can confirm it or point out anything incorrect." Then wait for an explicit response. The user may confirm the whole summary without answering each item. Silence, timeout, or answers to only some questions are not blanket approval. Preserve partial confirmations and address only the remaining necessary disagreements. When the user explicitly agrees and no disagreement remains, continue within the original authorization without inventing a new SPEC or asking again whether to begin. Approval does not replace missing facts that affect the next step. Keep source evidence and longer task lists in retrieval notes.
+After the summary, ask the closing question and wait for an explicit response. The user may confirm the whole summary without answering each item. Silence, timeout, or answers to only some questions are not blanket approval. Preserve partial confirmations and address only the remaining necessary disagreements. When the user explicitly agrees and no disagreement remains, continue within the original authorization without inventing a new SPEC or asking again whether to begin. Approval does not replace missing facts that affect the next step. Keep source evidence and longer task lists in retrieval notes.
 
 ## Resolve disagreements and confirm the SPEC
 
@@ -80,7 +118,7 @@ When the user rejects or corrects any point, automatically start a focused corre
 
 - Associate the objection with the relevant summary conclusion, revisit the original context, and distinguish a takeover misunderstanding from an explicit requirements change. Check facts available in records, specifications, or code yourself. Current implementation is not automatically the user's intended behavior. Do not turn your own missed context into a supposed new user requirement.
 - Accept and record clear corrections directly; do not ask again merely to complete an interview. If a material ambiguity remains, clarify only the most important point at a time, optionally offering a brief interpretation or concrete scenario.
-- Clarify only disagreements that still affect continuation after rechecking sources. Keep the entire takeover within the maximum of 10 questions and ask fewer whenever possible. Do not start another questionnaire or revisit accepted answers. Stop asking as soon as feedback is sufficient. If the user does not wish to answer further, mark remaining uncertainties instead of treating nonresponse as agreement.
+- Clarify only disagreements that still affect continuation after rechecking sources; the ten-question ceiling above counts these too. Do not start another questionnaire or revisit accepted answers. Stop asking as soon as feedback is sufficient. If the user does not wish to answer further, mark remaining uncertainties instead of treating nonresponse as agreement.
 - Maintain a concise decision record while clarifying: corrected meaning, reason, and superseded conclusion. Use project terminology. Correct the summary for misunderstandings and explicitly record actual requirements changes. Do not create extra ADRs or glossaries without a real tradeoff.
 - Draft a revised SPEC from the original context, existing SPEC, and necessary user corrections, rather than redesigning the project from questionnaire answers. Preserve the goal and user scenarios, scope and exclusions, core behavior and constraints, key decisions, observable acceptance criteria, current state, and remaining work. Use an existing SPEC as the baseline and change only relevant parts. If none exists, write the smallest useful version from recovered facts. Keep unresolved items explicit; do not invent requirements.
 - Prefer the project's existing specification location. Before confirmation, prepare the draft in a temporary file or the conversation without overwriting an accepted specification. Present a reviewable SPEC and a brief account of changes from the earlier understanding, then explicitly request confirmation. Approving the initial summary, explaining a correction, or answering clarification questions does not approve a revised SPEC that has not yet been shown.
@@ -88,9 +126,13 @@ When the user rejects or corrects any point, automatically start a focused corre
 
 ## Continue after confirmation
 
-Proceed with the next step under the accepted understanding or revised SPEC. If the user requested context reconstruction only, stop at that scope. Confirmation of the understanding or SPEC does not expand authorization for external actions; do not replay publishing, messaging, or other side effects from the old task.
+Proceed with the next step under the accepted understanding or revised SPEC. If the user requested context reconstruction only, stop at that scope. Confirmation of the understanding or SPEC does not expand authorization for external actions.
 
-For short records, the working summary in the conversation is usually enough. Temporary notes or host-supported artifacts for long records should contain only concise state and retrieval indexes, not copies of the complete raw logs. Do not add handoff documents to the target project by default. Retrieve specific historical passages only when the current task needs them, rather than rereading everything from the beginning. Update the working summary with newly verified state as work continues, so old completion claims do not keep governing current judgments.
+Hand the work back to the project's normal way of working rather than improvising a new one. Where this repo's skills are installed: an unfinished ticket goes to `/implement`, an unexplained failure to `diagnosing-bugs`, a bare behaviour change to `tdd`; if the next step is unclear, `/vibe` routes it. Anything in the **Missing** list that the user wants carried over is reimplemented through that same path, not pasted in from the record.
+
+Leave a durable trace where the project already keeps state, in one or two lines: the ticket's comments section, the spec's current-state note, or the convention in `docs/agents/`. Say what was taken over from where, what was verified, and what is still unverified, with the date. This is what makes the next takeover cheap. Do not add a separate handoff document to the project by default, and never commit the retrieval notes or the raw record.
+
+For short records, the working summary in the conversation is usually enough. Temporary notes or host-supported artifacts for long records should contain only concise state and retrieval indexes, not copies of the complete raw logs. Retrieve specific historical passages only when the current task needs them, rather than rereading everything from the beginning. Update the working summary with newly verified state as work continues, so old completion claims do not keep governing current judgments. If the session then runs long enough to drift, that is `refocus`'s job, not a second takeover.
 
 ## Invocation examples
 
@@ -113,3 +155,5 @@ Three skills sit at the seam between sessions; each covers one way a session end
 | Is gone (quota, crash, closed window, a different tool) or too long to trust, and nobody wrote a handoff | `takeover`: the incoming session reads the records and rebuilds the context itself |
 
 A handoff file is a valid input to `takeover`: it is one more record to index and verify against the project, not a summary to trust on its own.
+
+If the old session is still open and usable, this is the wrong skill: continue there, or `refocus`, or write a `handoff`. If the record is a handful of messages, the procedure collapses on its own: read it, check the ground, two sentences, one question.

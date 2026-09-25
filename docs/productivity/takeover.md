@@ -2,6 +2,8 @@
 
 `takeover` resumes work in a **fresh** [session](https://www.aihero.dev/ai-coding-dictionary/session) when the old one can't, or shouldn't, continue: it ran out of quota, it crashed, the window got too long to trust, or it lived in a different tool altogether. You point the new session at whatever record exists (a conversation ID, a local JSON/JSONL export, a URL, or a [handoff](https://aihero.dev/skills-handoff) file), and the agent rebuilds a short working [context](https://www.aihero.dev/ai-coding-dictionary/context) from it: the goal, the constraints that still apply, the turning points (what was tried and why it was dropped), where the work actually stopped, and the next step.
 
+It looks at the repository before it reads the transcript: branch, uncommitted changes, recent commits, the spec and tickets if there are any. The record is then checked against that ground, and the summary says plainly which of the old session's claims are verified, which aren't yet, and which edits it says it made that the repo doesn't have. Anything dated after the record ended is listed separately, because someone else did it.
+
 It does this **without importing the old conversation**. It indexes the record first (who said what, where in the file), reads closely only the passages that could change scope or acceptance criteria, keeps repetitive logs and superseded code out of the summary, and tracks what it has read against what it hasn't. Old project paths are mapped onto the current checkout and verified file by file rather than assumed. Then it describes the project back to you in as few sentences as it needs (ten at most), asks whether the understanding is right, and waits. Everything before that answer is read-only: no code edits, no state-changing commands, no publishing.
 
 The distinction it draws with `handoff` is who does the work. A handoff is *prepared by the outgoing* session; a takeover is *reconstructed by the incoming* one. A handoff file, when it exists, is one more record for `takeover` to index and check against the project, not a summary to take on trust.
@@ -43,6 +45,8 @@ For a short record, the working summary in the conversation is enough. For a lon
 ## It's working if
 
 - The first thing you see is a short description of the project you recognise, followed by one question, not a questionnaire.
+- The summary separates what it verified in the repo from what the old session merely claimed, and the two lists are not the same length.
+- After you confirm, the ticket or spec carries a one-line note saying the work was taken over, from where, and what was verified.
 - Dropped approaches appear with the reason they were dropped, so the new session doesn't try them again.
 - Old paths in the summary point at files that actually exist in the current checkout, and anything it couldn't map is listed as unresolved rather than guessed.
 - Nothing in the repository changed before you confirmed.
