@@ -10,6 +10,10 @@
 </p>
 
 <p align="center">
+  <strong>English</strong> | <a href="./README.zh-CN.md">简体中文</a>
+</p>
+
+<p align="center">
   <a href="#quick-start">Quick start</a> ·
   <a href="#the-workflow-at-a-glance">The workflow</a> ·
   <a href="#what-cat-skills-does">What it does</a> ·
@@ -19,7 +23,9 @@
 
 ---
 
-Cat Skills is a fork of [Matt Pocock's skills](https://github.com/mattpocock/skills), curated and extended for **solo vibe coding**: you describe what you want, the agent builds it, and the workflow makes sure the agent built the right thing and the codebase is still worth having afterwards.
+> **This is a fork of [mattpocock/skills](https://github.com/mattpocock/skills).** The engineering discipline in this repo, and most of the skills in it, are [Matt Pocock's](https://www.aihero.dev) work: the grilling interview, the spec and ticket flow, `tdd`, `code-review`, domain modelling, the deep-module architecture survey, and the conventions that keep a skill small enough to trust. Cat Skills would not exist without them. Thank you, Matt. If you want the original set, his reasoning behind each skill, and updates as he ships them, go to [mattpocock/skills](https://github.com/mattpocock/skills) and [his newsletter](https://www.aihero.dev/s/skills-newsletter).
+
+Cat Skills takes that set and curates and extends it for **solo vibe coding**: you describe what you want, the agent builds it, and the workflow makes sure the agent built the right thing and the codebase is still worth having afterwards.
 
 Vibe coding has two failure modes. The agent builds the wrong thing because it never understood you, and the codebase turns to mud before you notice. Matt's skills fix both, but there are twenty-five of them and you have to know which one to type. Cat Skills adds the missing pieces for one person working alone:
 
@@ -188,9 +194,11 @@ Also changed across the whole repo:
 - **Skills are written in English; the agent answers in your language.** No skill hard-codes an output language. `setup-matt-pocock-skills` writes a Language rule into your `CLAUDE.md` / `AGENTS.md`: reply in the language the user writes in, keep names, commands and paths unchanged.
 - **The handbook and the poster.** [`WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md) is the long form: the kit, the four lanes, the context rules, git in this workflow, what to do when the project gets big, and two sessions walked end to end. The poster above is the same thing on one page.
 
-## Credits
+## Credits and license
 
-The engineering fundamentals here are [Matt Pocock's](https://www.aihero.dev), and most of the skills are his, used with gratitude. If you want the upstream set and his newsletter on how he uses them, start at [mattpocock/skills](https://github.com/mattpocock/skills). The cats, the `/vibe` workflow, and the skills listed under *What this fork adds* were made for this repo. MIT licensed, like upstream.
+Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), forked at v1.2.3. Twenty-five of the thirty-three skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the eight skills listed under *What this fork adds* were made for this repo.
+
+MIT licensed, same as upstream. The original copyright notice is kept in [`LICENSE`](./LICENSE).
 
 ## Reference
 
