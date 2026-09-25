@@ -1,0 +1,5 @@
+interface:
+  display_name: "Refocus"
+  short_description: "Re-anchor a long session on its requirements and report drift"
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Cattytest"
+  short_description: "Design the test cases that prove it does what you wanted, not just that the gates are green"
+policy:
+  allow_implicit_invocation: false

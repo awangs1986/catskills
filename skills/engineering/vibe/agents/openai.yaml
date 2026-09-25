@@ -1,0 +1,5 @@
+interface:
+  display_name: "Vibe"
+  short_description: "Solo workflow dispatcher: pick a lane, size it, next command"
+policy:
+  allow_implicit_invocation: false

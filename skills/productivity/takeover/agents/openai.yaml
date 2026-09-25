@@ -1,0 +1,5 @@
+interface:
+  display_name: "Takeover"
+  short_description: "Recover stalled conversations and rebuild focused context"
+policy:
+  allow_implicit_invocation: false

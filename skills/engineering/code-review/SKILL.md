@@ -71,9 +71,11 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
+**Security sub-agent**, conditional. Spawn it alongside the other two when the diff touches any of: a route, server action, RPC or webhook handler; authentication or session code; a database query, migration, schema, or backend-as-a-service rule; anything under an `env` or config path; or a dependency manifest or lockfile. Invoke the "security-review" skill, passing the diff command, the commit list, and the fixed point. When none of the triggers is present, skip it and say so in one line.
+
 ### 5. Aggregate
 
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the two axes are deliberately separate (see _Why two axes_).
+Present the reports under `## Standards` and `## Spec` headings, and `## Security` when that sub-agent ran, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the axes are deliberately separate (see _Why two axes_). A `block` under Security is the one exception to "no winner across axes": it is stated first, on its own line, because nothing ships past it.
 
 End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
 

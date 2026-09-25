@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Feedback Loops"
+  short_description: "Wire typecheck, lint, tests, smoke, logs, and a guardrail; prove each goes red"
+policy:
+  allow_implicit_invocation: false

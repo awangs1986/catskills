@@ -2,7 +2,9 @@
 
 A **phase** is a chunk of work inside a session: the grilling, the implementation, the QA. The definition is fuzzy on purpose: a phase ends when you think *"ok, we're done with that"*.
 
-The **phase boundary** is the gap between two phases, and it is the only place this decision belongs. Mid-phase there is no decision to make: continue, or split the work that's left into subagents. Compacting mid-phase makes the agent lose the thread.
+The **phase boundary** is the gap between two phases, and it is the only place this decision belongs. Mid-phase there is no decision to make: continue, or split the work that's left into subagents. Compacting mid-phase makes the agent lose the thread. If it has lost the thread already, `/refocus` re-anchors it on the requirements without leaving the session, and produces the brief a later `/compact` should be seeded with.
+
+All five options below assume you are still *in* the session. If the session is already gone (quota, crash, a window you closed, a conversation in another tool) and no handoff was written, the move is `/takeover` in the new session: it reads the record that exists and rebuilds the context itself, then confirms with you before continuing.
 
 ## The five options
 

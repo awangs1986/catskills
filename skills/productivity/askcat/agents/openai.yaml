@@ -1,0 +1,5 @@
+interface:
+  display_name: "Askcat"
+  short_description: "A cat explains every installed skill on one HTML page"
+policy:
+  allow_implicit_invocation: false
