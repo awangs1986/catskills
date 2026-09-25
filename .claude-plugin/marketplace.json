@@ -1,15 +1,15 @@
 {
-  "name": "mattpocock",
+  "name": "awangs1986",
   "owner": {
-    "name": "Matt Pocock",
-    "url": "https://www.aihero.dev"
+    "name": "awangs1986",
+    "url": "https://github.com/awangs1986/popcodeskills"
   },
-  "description": "Matt Pocock's skills for real engineering, as an installable Claude Code plugin.",
+  "description": "Cat Skills, a fork of Matt Pocock's skills curated for solo vibe coding, as an installable Claude Code plugin.",
   "plugins": [
     {
-      "name": "mattpocock-skills",
+      "name": "cat-skills",
       "source": "./",
-      "description": "Matt Pocock's agent skills for real engineering (grilling, spec/ticket flows, TDD, code review, domain modelling and more).",
+      "description": "Cat Skills: the /vibe workflow plus Matt Pocock's engineering skills (grilling, spec/ticket flows, TDD, verify, test audit, code review, domain modelling and more).",
       "category": "engineering",
       "keywords": [
         "engineering",

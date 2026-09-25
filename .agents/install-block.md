@@ -2,7 +2,7 @@
 
 One install story, one wording. `README.md` (and its translation `README.zh-CN.md`), `.changeset/*`, and every page under `docs/` must say **this** and nothing else. Change it here first, then propagate.
 
-This repo is a fork of `mattpocock/skills`. It is **not** listed in Claude Code's official marketplace (that listing is Matt's upstream plugin, without this fork's additions), so every route below points at this repository directly. The plugin name and marketplace name (`mattpocock-skills`, `mattpocock`) are still the upstream ones until the manifests are renamed; the blocks below say whatever the manifests say, and change with them.
+This repo is a fork of `mattpocock/skills`. It is **not** listed in Claude Code's official marketplace (that listing is Matt's upstream plugin, without this fork's additions), so every route below points at this repository directly. The plugin is `cat-skills` and the marketplace is `awangs1986` (from `.claude-plugin/plugin.json` and `marketplace.json`); the blocks below say whatever the manifests say, and change with them.
 
 ## Any agent: clone and link
 
@@ -58,12 +58,12 @@ npx skills@latest update <name>
 
 ```
 /plugin marketplace add awangs1986/popcodeskills
-/plugin install mattpocock-skills@mattpocock
+/plugin install cat-skills@awangs1986
 ```
 
 </canonical-block>
 
-Mention, in one sentence, that `claude plugins install mattpocock-skills` (the official listing) installs Matt's upstream set without this fork's additions, and that the two plugins share a name, so a user should have one or the other.
+Mention, in one sentence, that `claude plugins install mattpocock-skills` (the official listing) is Matt's upstream set without this fork's additions, and that installing both gives every upstream skill twice.
 
 ## The routes are exclusive
 

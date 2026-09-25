@@ -1,4 +1,6 @@
-# mattpocock-skills
+# cat-skills
+
+Versions up to 1.2.3 are the upstream history of [mattpocock/skills](https://github.com/mattpocock/skills), from which this repo was forked; entries below that line were written by and for that repo.
 
 ## 1.2.3
 

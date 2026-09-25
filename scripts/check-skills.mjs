@@ -68,8 +68,11 @@ for (const bucket of PROMOTED) {
         if (!doc.includes(h)) problem(`${docPath}: missing section "${h}"`);
       }
       if (/^# /m.test(doc)) problem(`${docPath}: has an H1 (the published page takes its title from the slug)`);
-      const relLinks = doc.match(/\]\((?!https?:\/\/|#)[^)]+\)/g);
-      if (relLinks) problem(`${docPath}: relative link(s) ${relLinks.slice(0, 2).join(" ")} (docs links must be absolute)`);
+      for (const m of doc.matchAll(/\]\(((?!https?:\/\/|#|mailto:)[^)#]+)(#[^)]*)?\)/g)) {
+        const target = join(repo, `docs/${bucket}`, m[1]);
+        if (!existsSync(target)) problem(`${docPath}: link ${m[1]} does not resolve`);
+      }
+      if (/aihero\.dev\/skills-/.test(doc)) problem(`${docPath}: links to aihero.dev/skills-<name>; docs links are repo-relative`);
       if (/^(npx skills@|\/plugin install|claude plugins install)/m.test(doc)) problem(`${docPath}: carries install commands (the site renders them)`);
     }
 

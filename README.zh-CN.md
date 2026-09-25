@@ -125,10 +125,10 @@ npx skills@latest add awangs1986/popcodeskills
 
 ```
 /plugin marketplace add awangs1986/popcodeskills
-/plugin install mattpocock-skills@mattpocock
+/plugin install cat-skills@awangs1986
 ```
 
-`claude plugins install mattpocock-skills`（官方列表）装的是 Matt 的上游原版，不含猫咪 Skills 的新增内容。两个插件同名，二选一，不要同时装。
+`claude plugins install mattpocock-skills`（官方列表）装的是 Matt 的上游原版，不含猫咪 Skills 的新增内容；两个都装会让每个上游 skill 出现两次，选一个就好。
 
 </details>
 

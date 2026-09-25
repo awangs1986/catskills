@@ -44,4 +44,4 @@ That is the audit working. The recommendation is still on, fixed in one commit b
 
 ## Where it fits
 
-A **run-once setup**, second in the sequence after [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) and before any Build or Fix work, re-run when the stack changes. [tdd](https://aihero.dev/skills-tdd), [implement](https://aihero.dev/skills-implement), [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) and [verify](https://aihero.dev/skills-verify) all read the file it writes. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+A **run-once setup**, second in the sequence after [setup-matt-pocock-skills](setup-matt-pocock-skills.md) and before any Build or Fix work, re-run when the stack changes. [tdd](tdd.md), [implement](implement.md), [diagnosing-bugs](diagnosing-bugs.md) and [verify](verify.md) all read the file it writes. [ask-matt](ask-matt.md) is the router over the whole set.

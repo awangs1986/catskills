@@ -11,14 +11,14 @@ You invoke this by typing `/refocus`; the agent won't reach for it on its own.
 | Your situation | Reach for |
 | --- | --- |
 | Long session, the agent seems to have lost the thread, and you want to stay in this window | **`/refocus`** |
-| One message didn't land and you want it re-explained | [wait-what](https://aihero.dev/skills-wait-what) |
-| The work is moving to another directory, harness, or person | [handoff](https://aihero.dev/skills-handoff) |
+| One message didn't land and you want it re-explained | [wait-what](../productivity/wait-what.md) |
+| The work is moving to another directory, harness, or person | [handoff](../productivity/handoff.md) |
 | The window is nearly full and you need to compress | `/compact`, seeded with the brief `refocus` just wrote |
-| You want the diff judged against standards and spec | [code-review](https://aihero.dev/skills-code-review). `refocus` checks *alignment mid-build*; `code-review` checks *quality at the end* |
+| You want the diff judged against standards and spec | [code-review](code-review.md). `refocus` checks *alignment mid-build*; `code-review` checks *quality at the end* |
 
 ## Prerequisites
 
-Nothing to install. It is sharpest when there is a spec or ticket on disk to anchor on ([to-spec](https://aihero.dev/skills-to-spec), [to-tickets](https://aihero.dev/skills-to-tickets)) and a `CONTEXT.md` to speak in; without them the conversation is the only primary source, and the brief says so.
+Nothing to install. It is sharpest when there is a spec or ticket on disk to anchor on ([to-spec](to-spec.md), [to-tickets](to-tickets.md)) and a `CONTEXT.md` to speak in; without them the conversation is the only primary source, and the brief says so.
 
 ## Drift
 
@@ -41,7 +41,7 @@ The questions are bounded on purpose: at most five, one round, only what blocks 
 | An answer that clarifies a criterion | Appended to the spec or ticket (local `## Comments`, or a GitHub issue comment) |
 | An answer that sharpens a term | Written into `CONTEXT.md` |
 | A hard-to-reverse choice | Offered as an ADR |
-| A second round of questions, or a source that turns out to be wrong | Not handled here. The brief says the spec is under-specified and points you at [grill-with-docs](https://aihero.dev/skills-grill-with-docs) and [to-spec](https://aihero.dev/skills-to-spec) |
+| A second round of questions, or a source that turns out to be wrong | Not handled here. The brief says the spec is under-specified and points you at [grill-with-docs](grill-with-docs.md) and [to-spec](to-spec.md) |
 
 ## Common questions
 
@@ -72,4 +72,4 @@ It doesn't notice. Drift is invisible from inside; you see it, so you fire it. T
 
 ## Where it fits
 
-A **reach-for-it-anytime standalone** inside a build: the mid-phase corrective the [phase boundary](https://aihero.dev/skills-ask-matt) tree doesn't otherwise have. It sits beside [wait-what](https://aihero.dev/skills-wait-what) (that one re-pitches a single message; this one re-anchors the whole session) and ahead of [handoff](https://aihero.dev/skills-handoff) and `/compact` (both of which it can seed). [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+A **reach-for-it-anytime standalone** inside a build: the mid-phase corrective the [phase boundary](ask-matt.md) tree doesn't otherwise have. It sits beside [wait-what](../productivity/wait-what.md) (that one re-pitches a single message; this one re-anchors the whole session) and ahead of [handoff](../productivity/handoff.md) and `/compact` (both of which it can seed). [ask-matt](ask-matt.md) is the router over the whole set.

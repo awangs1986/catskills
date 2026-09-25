@@ -11,13 +11,13 @@ Type `/verify`, or the agent reaches for it automatically when a task fits. `imp
 | Your situation | Reach for |
 | --- | --- |
 | Work is claimed done and you want to see it work, not hear that it does | **`verify`** |
-| You want the logic at a seam proven | [tdd](https://aihero.dev/skills-tdd); `verify` goes through the interface, never the code |
-| You want the diff judged against standards and the spec | [code-review](https://aihero.dev/skills-code-review), which reads the diff and never boots the app |
-| It failed and you don't know why | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs), handed the repro `verify` just ran |
+| You want the logic at a seam proven | [tdd](tdd.md); `verify` goes through the interface, never the code |
+| You want the diff judged against standards and the spec | [code-review](code-review.md), which reads the diff and never boots the app |
+| It failed and you don't know why | [diagnosing-bugs](diagnosing-bugs.md), handed the repro `verify` just ran |
 
 ## Prerequisites
 
-It boots the app the way `docs/agents/feedback-loops.md` says, and drives a web UI with whatever browser that file names. Without the file it falls back to the package scripts and says so; [setup-feedback-loops](https://aihero.dev/skills-setup-feedback-loops) is what writes it. It needs the acceptance criteria to walk: the ticket or spec, in context or passed in.
+It boots the app the way `docs/agents/feedback-loops.md` says, and drives a web UI with whatever browser that file names. Without the file it falls back to the package scripts and says so; [setup-feedback-loops](setup-feedback-loops.md) is what writes it. It needs the acceptance criteria to walk: the ticket or spec, in context or passed in.
 
 ## Evidence
 
@@ -27,7 +27,7 @@ The skill's word is **evidence**, and it means a file: a screenshot per step, th
 
 **How is this different from the old `qa` skill?**
 
-`qa` turned the findings of a testing session into tickets and was absorbed into [triage](https://aihero.dev/skills-triage) and [to-tickets](https://aihero.dev/skills-to-tickets). `verify` is the testing session itself, scoped to one ticket's criteria, run by the agent, with evidence per row. Its FAILs go to `tdd` rather than to the tracker.
+`qa` turned the findings of a testing session into tickets and was absorbed into [triage](triage.md) and [to-tickets](to-tickets.md). `verify` is the testing session itself, scoped to one ticket's criteria, run by the agent, with evidence per row. Its FAILs go to `tdd` rather than to the tracker.
 
 **Doesn't this make every ticket slower?**
 
@@ -45,4 +45,4 @@ Usually one of two things. The app needs something the agent can't reach (a logi
 
 ## Where it fits
 
-A **chain step** inside [implement](https://aihero.dev/skills-implement) (`tdd` → `verify` → `code-review` → commit) that also works as a reach-for-it-anytime standalone. It is the bridge between the spec's user stories and the running application that [tdd](https://aihero.dev/skills-tdd) and [code-review](https://aihero.dev/skills-code-review) both stop short of. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+A **chain step** inside [implement](implement.md) (`tdd` → `verify` → `code-review` → commit) that also works as a reach-for-it-anytime standalone. It is the bridge between the spec's user stories and the running application that [tdd](tdd.md) and [code-review](code-review.md) both stop short of. [ask-matt](ask-matt.md) is the router over the whole set.

@@ -1,6 +1,6 @@
 ## What it does
 
-`takeover` resumes work in a **fresh** [session](https://www.aihero.dev/ai-coding-dictionary/session) when the old one can't, or shouldn't, continue: it ran out of quota, it crashed, the window got too long to trust, or it lived in a different tool altogether. You point the new session at whatever record exists (a conversation ID, a local JSON/JSONL export, a URL, or a [handoff](https://aihero.dev/skills-handoff) file), and the agent rebuilds a short working [context](https://www.aihero.dev/ai-coding-dictionary/context) from it: the goal, the constraints that still apply, the turning points (what was tried and why it was dropped), where the work actually stopped, and the next step.
+`takeover` resumes work in a **fresh** [session](https://www.aihero.dev/ai-coding-dictionary/session) when the old one can't, or shouldn't, continue: it ran out of quota, it crashed, the window got too long to trust, or it lived in a different tool altogether. You point the new session at whatever record exists (a conversation ID, a local JSON/JSONL export, a URL, or a [handoff](handoff.md) file), and the agent rebuilds a short working [context](https://www.aihero.dev/ai-coding-dictionary/context) from it: the goal, the constraints that still apply, the turning points (what was tried and why it was dropped), where the work actually stopped, and the next step.
 
 It looks at the repository before it reads the transcript: branch, uncommitted changes, recent commits, the spec and tickets if there are any. The record is then checked against that ground, and the summary says plainly which of the old session's claims are verified, which aren't yet, and which edits it says it made that the repo doesn't have. Anything dated after the record ended is listed separately, because someone else did it.
 
@@ -16,11 +16,11 @@ You invoke this by typing `/takeover` (or "use takeover with ...") in the new se
 | --- | --- |
 | The old session is gone (quota, crash, closed tab, another tool) and nobody wrote a handoff | **`/takeover`** with the export, ID, or URL |
 | A handoff file exists and you are opening the session that continues it | **`/takeover <path>`**. It reads the file, checks its claims against the repo, and confirms before starting; a handoff read cold becomes a false premise the moment one of its "X is done" lines is wrong |
-| The session is still open, has drifted, and you want to stay in it | [refocus](https://aihero.dev/skills-refocus) |
-| The session is still open and the work is about to move somewhere | [handoff](https://aihero.dev/skills-handoff), written by the session you are leaving |
-| One message didn't land | [wait-what](https://aihero.dev/skills-wait-what) |
+| The session is still open, has drifted, and you want to stay in it | [refocus](../engineering/refocus.md) |
+| The session is still open and the work is about to move somewhere | [handoff](handoff.md), written by the session you are leaving |
+| One message didn't land | [wait-what](wait-what.md) |
 
-Inside the [vibe](https://aihero.dev/skills-vibe) workflow these three are the whole story of session seams: `refocus` when you stay, `handoff` when you leave on purpose, `takeover` when you come back to something that ended without you.
+Inside the [vibe](../engineering/vibe.md) workflow these three are the whole story of session seams: `refocus` when you stay, `handoff` when you leave on purpose, `takeover` when you come back to something that ended without you.
 
 ## Common questions
 
@@ -55,4 +55,4 @@ For a short record, the working summary in the conversation is enough. For a lon
 
 ## Where it fits
 
-The incoming half of a session seam. [handoff](https://aihero.dev/skills-handoff) is the outgoing half: the session that is leaving writes a small portable file. `takeover` needs no such file; it rebuilds from whatever record survived (an export, an ID, a URL, or a handoff) and confirms before continuing. [refocus](https://aihero.dev/skills-refocus) is the same re-anchoring done inside a session that is still open. After confirmation it routes to [implement](https://aihero.dev/skills-implement), [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs), [tdd](https://aihero.dev/skills-tdd) or [vibe](https://aihero.dev/skills-vibe); [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+The incoming half of a session seam. [handoff](handoff.md) is the outgoing half: the session that is leaving writes a small portable file. `takeover` needs no such file; it rebuilds from whatever record survived (an export, an ID, a URL, or a handoff) and confirms before continuing. [refocus](../engineering/refocus.md) is the same re-anchoring done inside a session that is still open. After confirmation it routes to [implement](../engineering/implement.md), [diagnosing-bugs](../engineering/diagnosing-bugs.md), [tdd](../engineering/tdd.md) or [vibe](../engineering/vibe.md); [ask-matt](../engineering/ask-matt.md) is the router over the whole set.

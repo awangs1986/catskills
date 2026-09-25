@@ -14,9 +14,9 @@ Type `/cattytest`. It is user-invoked; the agent never starts a case-design inte
 | --- | --- |
 | Everything is green and it still doesn't do what you asked | **`/cattytest`**: the proxies round names how, and each way becomes a case |
 | A feature is half-built and you don't know how to check it works | **`/cattytest`**, then `verify` on the sheet |
-| You want the agent to build a behaviour test-first | [tdd](https://aihero.dev/skills-tdd); that's a gate, not a case |
-| You want to know whether the gates you have are real | [test-audit](https://aihero.dev/skills-test-audit); it judges gates, this skill designs outcomes |
-| You have cases and want them walked with evidence | [verify](https://aihero.dev/skills-verify); it runs what this skill writes |
+| You want the agent to build a behaviour test-first | [tdd](tdd.md); that's a gate, not a case |
+| You want to know whether the gates you have are real | [test-audit](test-audit.md); it judges gates, this skill designs outcomes |
+| You have cases and want them walked with evidence | [verify](verify.md); it runs what this skill writes |
 
 ## Prerequisites
 
@@ -59,4 +59,4 @@ And a line. The ranking round says which apples you'd hear about first; the budg
 
 ## Where it fits
 
-Upstream of [verify](https://aihero.dev/skills-verify), which walks the sheet's cases with evidence; each FAIL becomes a red test for [tdd](https://aihero.dev/skills-tdd), as it does today. Alongside, not inside, [tdd](https://aihero.dev/skills-tdd): gates are the agent's loop, cases are yours. Its counterpart on the gate side is [test-audit](https://aihero.dev/skills-test-audit). [vibe](https://aihero.dev/skills-vibe) routes "green but it doesn't do what I want" here; [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+Upstream of [verify](verify.md), which walks the sheet's cases with evidence; each FAIL becomes a red test for [tdd](tdd.md), as it does today. Alongside, not inside, [tdd](tdd.md): gates are the agent's loop, cases are yours. Its counterpart on the gate side is [test-audit](test-audit.md). [vibe](vibe.md) routes "green but it doesn't do what I want" here; [ask-matt](ask-matt.md) is the router over the whole set.

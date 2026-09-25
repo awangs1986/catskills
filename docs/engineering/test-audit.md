@@ -12,9 +12,9 @@ Type `/test-audit`, or the agent reaches for it automatically when a task fits. 
 | --- | --- |
 | You use `tdd` and don't know what the tests actually check | **`test-audit`**: read the claims |
 | Green suites keep hiding logic errors you find weeks later | **`test-audit`** on the feature before merge; the survivors and the wrong claims are where those errors live |
-| You want to write the tests | [tdd](https://aihero.dev/skills-tdd); this skill only judges the ones that exist |
-| You want the feature seen working end to end | [verify](https://aihero.dev/skills-verify); that one drives the app, this one interrogates the suite |
-| You want full mutation testing with a score | A tool (`stryker`, `mutmut`, `cargo-mutants`) via [setup-feedback-loops](https://aihero.dev/skills-setup-feedback-loops). This is a ten-to-fifteen-mutant probe aimed at business weight, not a run |
+| You want to write the tests | [tdd](tdd.md); this skill only judges the ones that exist |
+| You want the feature seen working end to end | [verify](verify.md); that one drives the app, this one interrogates the suite |
+| You want full mutation testing with a score | A tool (`stryker`, `mutmut`, `cargo-mutants`) via [setup-feedback-loops](setup-feedback-loops.md). This is a ten-to-fifteen-mutant probe aimed at business weight, not a run |
 
 ## Prerequisites
 
@@ -54,4 +54,4 @@ It shouldn't: the discipline is apply, run, revert, `git diff` clean, next mutan
 
 ## Where it fits
 
-A **chain step** inside [implement](https://aihero.dev/skills-implement) (`tdd` → `verify` → `test-audit` → `code-review` → commit), also run standalone across a whole feature before merge. It closes the loop `tdd` opens: [tdd](https://aihero.dev/skills-tdd) writes tests at agreed seams; this skill checks that what got written constrains the logic and says something the domain expert recognises. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+A **chain step** inside [implement](implement.md) (`tdd` → `verify` → `test-audit` → `code-review` → commit), also run standalone across a whole feature before merge. It closes the loop `tdd` opens: [tdd](tdd.md) writes tests at agreed seams; this skill checks that what got written constrains the logic and says something the domain expert recognises. [ask-matt](ask-matt.md) is the router over the whole set.

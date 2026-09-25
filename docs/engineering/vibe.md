@@ -4,7 +4,7 @@
 
 It routes and stops. It does not grill, write a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or start coding; where a lane's first step is a model-invoked skill (`tdd`, `diagnosing-bugs`, `code-review`) it offers to fire that one on a "go", and otherwise you type what the card names.
 
-It is a curated subset, not the full map. The kit is twenty-five skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](https://aihero.dev/skills-ask-matt).
+It is a curated subset, not the full map. The kit is twenty-five skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](ask-matt.md).
 
 ## When to reach for it
 
@@ -17,13 +17,13 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 | A branch you want checked | `/code-review main`, and what to do with each axis of findings |
 | The codebase feels harder to change than it should | `/improve-codebase-architecture`, and how the idea it produces goes back onto Build |
 | You've asked for the same change three times and it's still wrong | Not a fifth attempt. Discard, clear, write one input / expected / actual example; whether you can write it picks the lane |
-| The session drifted, is about to move, or died on you | One of the three seam moves: [refocus](https://aihero.dev/skills-refocus) to stay, [handoff](https://aihero.dev/skills-handoff) to leave on purpose, [takeover](https://aihero.dev/skills-takeover) in the new window when the old one is gone |
-| A grill question only running code can settle | The prototype detour: `/handoff` the question, [prototype](https://aihero.dev/skills-prototype) in a fresh session, the decision comes back to the grill |
-| A team, stakeholders, or a greenfield product too foggy for one head | Not this. It says so in a line and points at [ask-matt](https://aihero.dev/skills-ask-matt) |
+| The session drifted, is about to move, or died on you | One of the three seam moves: [refocus](refocus.md) to stay, [handoff](../productivity/handoff.md) to leave on purpose, [takeover](../productivity/takeover.md) in the new window when the old one is gone |
+| A grill question only running code can settle | The prototype detour: `/handoff` the question, [prototype](prototype.md) in a fresh session, the decision comes back to the grill |
+| A team, stakeholders, or a greenfield product too foggy for one head | Not this. It says so in a line and points at [ask-matt](ask-matt.md) |
 
 ## Prerequisites
 
-The repo must have been through [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills). The dispatcher checks for `docs/agents/issue-tracker.md` first and, if it is missing, that is the only thing the card says. Local markdown is the solo default; GitHub works the same way with issues in place of files.
+The repo must have been through [setup-matt-pocock-skills](setup-matt-pocock-skills.md). The dispatcher checks for `docs/agents/issue-tracker.md` first and, if it is missing, that is the only thing the card says. Local markdown is the solo default; GitHub works the same way with issues in place of files.
 
 ## Lanes and size
 
@@ -61,4 +61,4 @@ It only fires model-invoked skills, and only after you say go. Every user-invoke
 
 ## Where it fits
 
-A **run-first dispatcher**: the thing you type when you don't yet know which chain step you're at. It hands off to the main chain ([grill-with-docs](https://aihero.dev/skills-grill-with-docs) → [to-spec](https://aihero.dev/skills-to-spec) → [to-tickets](https://aihero.dev/skills-to-tickets) → [implement](https://aihero.dev/skills-implement) → [code-review](https://aihero.dev/skills-code-review)) at whichever step the size calls for, to [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) for a hard bug, and to [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) for upkeep. [ask-matt](https://aihero.dev/skills-ask-matt) remains the router over the whole set, because it covers the situations this one deliberately leaves out.
+A **run-first dispatcher**: the thing you type when you don't yet know which chain step you're at. It hands off to the main chain ([grill-with-docs](grill-with-docs.md) → [to-spec](to-spec.md) → [to-tickets](to-tickets.md) → [implement](implement.md) → [code-review](code-review.md)) at whichever step the size calls for, to [diagnosing-bugs](diagnosing-bugs.md) for a hard bug, and to [improve-codebase-architecture](improve-codebase-architecture.md) for upkeep. [ask-matt](ask-matt.md) remains the router over the whole set, because it covers the situations this one deliberately leaves out.

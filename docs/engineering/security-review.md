@@ -46,4 +46,4 @@ That is the trigger working. Pure UI or pure logic diffs don't reach a boundary 
 
 ## Where it fits
 
-A **sub-agent of [code-review](https://aihero.dev/skills-code-review)**, conditional on what the diff touches, that also runs standalone before a first public deploy. It sits beside [verify](https://aihero.dev/skills-verify) (that one checks the feature works; this one checks who else it works for) at the end of the [implement](https://aihero.dev/skills-implement) chain. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+A **sub-agent of [code-review](code-review.md)**, conditional on what the diff touches, that also runs standalone before a first public deploy. It sits beside [verify](verify.md) (that one checks the feature works; this one checks who else it works for) at the end of the [implement](implement.md) chain. [ask-matt](ask-matt.md) is the router over the whole set.

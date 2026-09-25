@@ -125,10 +125,10 @@ This fork is not in the official marketplace. Add it as a marketplace once, then
 
 ```
 /plugin marketplace add awangs1986/popcodeskills
-/plugin install mattpocock-skills@mattpocock
+/plugin install cat-skills@awangs1986
 ```
 
-`claude plugins install mattpocock-skills` (the official listing) installs Matt's upstream set without the Cat Skills additions. The two plugins share a name, so have one or the other, not both.
+`claude plugins install mattpocock-skills` (the official listing) is Matt's upstream set without the Cat Skills additions; installing both gives you every upstream skill twice, so pick one.
 
 </details>
 
