@@ -60,7 +60,7 @@ Some things the user says pick the route on their own, inside or across the four
 | "it keeps making the same mistake", "we fixed this last week too", "why didn't the review catch that" | `/retro` (in-progress bucket; say so if it isn't installed): the lesson becomes a check via `/setup-feedback-loops` or a standing rule | The loop that improves the loop |
 | "I'm trying this workflow out", "first time", "walk me through it" | The first-run card, and stay to check each step | First run |
 | "I don't follow what you just said" | `/wait-what`, mid-conversation, inside whatever skill is running | Context rules |
-| "I don't know how to test this", "where do I start with tests", "the tests I have are decoration", code with no tests halfway through | `/cattytest`: one scope question, then a grill that ends in a test plan of claims and the first red tests; `tdd` takes it from there. Build lane if the feature is in flight, Tidy-adjacent if it's the whole project | The kit |
+| "it's all green but it doesn't do what I asked", "how do I know it really works", "help me design test cases", "the tests only check what it thinks I meant" | `/cattytest`: one scope question, then a grill from the user's side of the screen that ends in a test-cases sheet; `verify` walks it. Not `tdd`: gates are the agent's, cases are the user's | Lane 1, Halfway in |
 | "explain all these skills to me", "what do I have installed", "which skill does what" | `/askcat`: one HTML page, a cat explains every card, in their language. Not a lane | The kit |
 
 ## 3. Size (Build lane only)

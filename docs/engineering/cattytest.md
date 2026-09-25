@@ -1,51 +1,62 @@
 ## What it does
 
-`cattytest` is the interview for the moment `tdd` assumes has already happened: someone can say which behaviours matter, at which seams they are observable, and what the right answer looks like. Half-built projects usually can't. The skill asks one scope question (this feature, or the whole project), reads the repo so it never asks what the code already answers, and then grills in rounds along nine branches: stakes, claims, seams, oracle and level, doubles, data, wrong paths, existing tests, budget. Every question carries a recommended answer drawn from the code, the ticket and `CONTEXT.md`; the user corrects sentences rather than enumerating their own codebase.
+`cattytest` designs the tests the agent cannot design for itself: the ones that check whether the software did what you *wanted*, not what it *understood*. The feature was "pick the apple off the tree"; the code is clean, the gates are green, the apple is still on the tree. Every gate the agent writes encodes its own understanding of the task, so when the understanding is the bug, every gate passes.
 
-It ends with a `test-plan.md` next to the spec: numbered **claims** written as business rules in the project's vocabulary, each with a confirmed seam, a level, an oracle and a decision about what is real and what is faked; a keep / rewrite / delete sort of the tests that already exist; and the first red tests in order, sized to be finished before the next merge. It plans and does not write tests. On go it drives `tdd` through the first red tests, one at a time.
+The skill is a grilling session from your side of the screen. One scope question (this feature, or the whole product), a silent read of the ticket, the entry points and the gates that already exist, then rounds along eight branches: the apple (what had to be true in the world afterwards), proxies (how every existing gate can be green while the apple is missing), the walk (what a person actually does, step by step), real data (which user, which record, which numbers), evidence (the artefact you would look at), the ways a real person breaks it, who runs each case, and the line before merge. It ends in a `test-cases.md`: numbered cases in your words, each with steps, data, the apple, the evidence, and whether `verify`, you, or an automated test runs it.
+
+It designs cases. It does not run them (`verify` does), does not write code, and does not touch `tdd`'s gates, which stay the agent's inner loop.
 
 ## When to reach for it
 
-Type `/cattytest`. It is user-invoked; the agent never starts a test-planning interview on its own.
+Type `/cattytest`. It is user-invoked; the agent never starts a case-design interview on its own.
 
 | Your situation | Reach for |
 | --- | --- |
-| Code exists, tests don't, and you don't know where to start | **`/cattytest`** |
-| Tests exist but you suspect they are decoration | **`/cattytest`**: the existing-tests round sorts them, and the claims round says what they should have said |
-| You know the seams and just want the behaviour built test-first | [tdd](https://aihero.dev/skills-tdd); this skill is for when you can't answer its seam question |
-| You want to know what the tests you already have actually protect | [test-audit](https://aihero.dev/skills-test-audit); that one reads tests back as claims, this one writes the claims first |
-| You want the feature seen working end to end | [verify](https://aihero.dev/skills-verify) |
-| No test command runs at all | [setup-feedback-loops](https://aihero.dev/skills-setup-feedback-loops) first; `cattytest` will tell you so and still write the plan |
+| Everything is green and it still doesn't do what you asked | **`/cattytest`**: the proxies round names how, and each way becomes a case |
+| A feature is half-built and you don't know how to check it works | **`/cattytest`**, then `verify` on the sheet |
+| You want the agent to build a behaviour test-first | [tdd](https://aihero.dev/skills-tdd); that's a gate, not a case |
+| You want to know whether the gates you have are real | [test-audit](https://aihero.dev/skills-test-audit); it judges gates, this skill designs outcomes |
+| You have cases and want them walked with evidence | [verify](https://aihero.dev/skills-verify); it runs what this skill writes |
 
 ## Prerequisites
 
-None hard. It reads `docs/agents/feedback-loops.md`, `docs/agents/issue-tracker.md` and `CONTEXT.md` when they exist and works without them, but a plan for a repo with no test command starts with "wire one".
+None hard. A ticket or spec gives it a first draft of the cases; `docs/agents/feedback-loops.md` tells it which cases `verify` can run and which only you can. Without either it still produces the sheet, with more in **Open**.
 
-## The plan is the same list twice
+## Gates and apples
 
-The claims in the plan are written to the same standard as `test-audit`'s claims: one sentence a domain expert would say, true of the product when the test is green, no variable names. That is deliberate. `cattytest` writes the list before the tests exist; `test-audit` reads it back after they do. A claim in the plan with no claim in the audit is a test that didn't get written; a claim in the audit with no line in the plan is a test nobody asked for. Both lists end with the same sentence to the user: *read these as business rules, is any of them wrong?*
+Two kinds of test, two loops, two owners:
+
+| | Gates | Cases |
+| --- | --- | --- |
+| Written by | The agent, in `tdd` | You, through `cattytest` |
+| Check | The code does what the agent understood | The software did what you wanted |
+| Pass looks like | Green | The apple in the basket: a file that opens, an email that arrived, a page that shows the right thing |
+| Fail is caught by | The suite | `verify`, or you, looking at the evidence |
+| Audited by | `test-audit` | Reading the sheet: "can all of these pass and I still don't have what I wanted?" |
+
+A case that turns out to be "this function returns X for Y" is a gate in disguise; the skill hands it to `tdd` and drops it from the sheet. A gate that is the only proof of an outcome goes in the sheet's *Gates that don't count as proof* section, with the apple it can't see.
 
 ## Common questions
 
-**Why not just `/grill-me` about testing?**
+**Why isn't this just better acceptance criteria?**
 
-You can, and it will ask reasonable questions. It won't read your existing tests first, propose seams from your entry points, know that a screenshot-shaped oracle is a `verify` step rather than a test, or refuse to let an expected value come from running the code. The question bank is the skill.
+It produces them, in executable form, and it usually finds that the ones on the ticket were proxies ("the endpoint returns the rows" instead of "the user sees their notes"). The difference is the interview: the proxies round puts the existing gates next to the outcomes and asks how they can all be green while the outcome is missing. That question is where the cases come from, and nobody asks it of themselves.
 
-**It flagged a claim as "rule unconfirmed" and moved on. Isn't that a gap?**
+**It marked half the cases "by hand". Isn't the point to automate?**
 
-It is, and it is a spec gap, not a test gap. The plan keeps it visible under **Open** with who can answer it. Writing a test for a rule nobody has confirmed produces a green test for a rule that may be wrong, which is the failure `test-audit` exists to catch later; better to name it now.
+No. The point is to know. `verify` runs what it can observe; anything a human has to judge (arrived in the real inbox, looks right, reads right) stays by hand, and stays on the sheet so it isn't forgotten. Automation is offered only for the two or three cases you'd run on every merge, and only after they've passed once.
 
-**Whole project scope gave me sixty claims.**
+**Whole product scope gave me sixty cases.**
 
-And a ranking. The stakes round decides which ten come first; the budget round decides how many before the next merge. Sixty claims is a true description of a project; the plan is the five you do this week.
+And a line. The ranking round says which apples you'd hear about first; the budget round draws the *before merge* line. Sixty is a description of the product; the ones above the line are this week.
 
 ## It's working if
 
-- The first round asks only one thing (scope), and the second round already contains seams and claims you didn't type.
-- You correct a sentence or two in the claims list, and at least one claim makes you realise you don't actually know the rule.
-- The first red test in the plan goes red within a few minutes of `tdd` starting on it.
-- `test-audit` on the finished work produces a claims list that matches the plan.
+- The proxies round names at least one way the current green build could still be wrong, and you recognise it.
+- At least one acceptance criterion on the ticket gets rewritten from code words into an outcome.
+- `verify` on the sheet fails at least once on a feature you thought was done.
+- You stop saying "the tests pass" and start saying "case 3 passed, here's the screenshot".
 
 ## Where it fits
 
-Upstream of [tdd](https://aihero.dev/skills-tdd) and [implement](https://aihero.dev/skills-implement): it produces the agreed seams and the ordered red tests those two consume. Downstream of [setup-feedback-loops](https://aihero.dev/skills-setup-feedback-loops), which makes the tests runnable. Its counterpart is [test-audit](https://aihero.dev/skills-test-audit), which reads the written tests back as the same list of claims. [vibe](https://aihero.dev/skills-vibe) routes "I don't know how to test this" here; [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+Upstream of [verify](https://aihero.dev/skills-verify), which walks the sheet's cases with evidence; each FAIL becomes a red test for [tdd](https://aihero.dev/skills-tdd), as it does today. Alongside, not inside, [tdd](https://aihero.dev/skills-tdd): gates are the agent's loop, cases are yours. Its counterpart on the gate side is [test-audit](https://aihero.dev/skills-test-audit). [vibe](https://aihero.dev/skills-vibe) routes "green but it doesn't do what I want" here; [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.

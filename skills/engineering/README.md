@@ -17,7 +17,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[to-spec](./to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker.
 - **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, whether as text in a local file or as native blocking links on a real tracker.
 - **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams, running `/verify` and `/test-audit` once green, and closing out with `/code-review` and a Checks run ledger before committing.
-- **[cattytest](./cattytest/SKILL.md)**: Grill me about how to test a half-built feature or project: which behaviours must never break, at which seams, judged by what, with which parts real and which faked. Ends with a test plan of numbered business-rule claims and the first red tests, in order, ready for `tdd`.
+- **[cattytest](./cattytest/SKILL.md)**: Design the test cases that prove the software did what you wanted, from your side of the screen: what a person does, with what data, and what must be true in the world afterwards. Not the agent's gates. Ends in a test-cases sheet `verify` walks and you can run by hand.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 
 ## Model-invoked

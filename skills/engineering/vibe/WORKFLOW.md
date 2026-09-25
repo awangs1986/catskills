@@ -108,7 +108,7 @@ Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (
 | `/grill-with-docs` | The interview. Sharpens the idea, writes `CONTEXT.md` and ADRs as you go |
 | `/to-spec` | Synthesises the conversation into a spec. No new questions |
 | `/to-tickets` | Cuts the spec into tracer-bullet tickets with blocking edges |
-| `/cattytest` | Code exists, tests don't, and you don't know where to start. One scope question, then a grill: what must never break, at which seam, judged by what, real or faked. Ends in a test plan of claims and the first red tests in order; `tdd` consumes it |
+| `/cattytest` | Everything is green and it still doesn't do what you asked. One scope question, then a grill from your side of the screen: what had to be true afterwards, how each gate can pass while that's missing, what a person does step by step, what evidence shows it. Ends in a test-cases sheet; `verify` walks it. Cases, not gates: `tdd` is untouched |
 | `/implement` | Builds one ticket or spec: `tdd` inside, `verify` and `test-audit` when green, `code-review` at the end, commits, ends with a Checks run ledger |
 | `/improve-codebase-architecture` | Surveys for shallow modules, HTML report, grills you through the one you pick |
 | `/refocus` | Long session, agent drifting: re-reads the spec and every decision from disk, checks the diff against them, reports drift, asks one round about anything ambiguous, writes the answers back to the spec |
@@ -187,9 +187,9 @@ Steps 1 to 3 happen in **one unbroken window**. Don't `/clear` or `/compact` unt
 4. **Per ticket**: `/clear`, then `/implement .scratch/<feature>/issues/NN-<slug>.md` (or the GitHub issue number). Work the frontier: any ticket whose blockers are done. Each run ends with its own `code-review` and commit. If a single ticket runs long enough that the agent starts forgetting the ticket's own criteria, `/refocus` before you do anything else.
 5. When the last ticket lands, **`test-audit`** across the whole feature (per-ticket audits can't see a user story that fell between two tickets), then **`/code-review main`** across the whole branch once, because per-ticket reviews can't see cross-ticket smells (Duplicated Code across slices is the usual one).
 
-### Halfway in, and no tests
+### Halfway in: green, and not what you wanted
 
-The build that started as vibe coding, before this workflow, and now has a working feature and no tests worth the name. Don't retrofit `tdd` blind, and don't ask the agent to "add tests": it will write green ones. **`/cattytest`** first. One scope question (this feature or the whole project), then a grill that reads your code and your existing tests before it asks anything, and ends in a `test-plan.md`: claims written as business rules, the seam each is observed at, what's real and what's faked, a keep / rewrite / delete sort of the tests you have, and the first five red tests in order. Say go and it drives `tdd` through the five. From there the feature is back on the M path: `test-audit` reads the tests as the same list of claims, `/code-review main` closes it.
+The feature was "pick the apple off the tree". The code is clean, the gates are green, and the apple is on the tree. It happens because every test the agent writes for itself checks what the agent *understood*; when the understanding is the bug, they all pass. Don't ask the agent to "add more tests": it will add more of the same kind. **`/cattytest`** instead. One scope question (this feature or the whole product), then a grill from your side of the screen: what had to be true in the world afterwards, how each existing gate can be green while that's missing, what a person does step by step, with which real data, and what artefact shows the apple in the basket. It ends in a `test-cases.md`: numbered cases in your words, each with a runner (`verify`, you by hand, or automated). Say go and **`verify`** walks the sheet against what's built; expect a FAIL, that's the apple. Each FAIL goes back into `tdd` as a red test, the way it always has, and from there the feature is back on the M path. The sheet stays with the ticket; `verify` at the end of every later `implement` walks it again.
 
 ### The prototype detour
 
@@ -397,7 +397,7 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | Fix a bug I understand | Say it (add "test first") |
 | Fix a bug I don't | `/diagnosing-bugs` |
 | See it actually work | `verify` (automatic at the end of `/implement`; say "verify it" any other time) |
-| Don't know how to test what I've built | `/cattytest`, then `tdd` through its first red tests |
+| It's green and still not what I wanted; design the tests that check *that* | `/cattytest`, then `verify` on the sheet |
 | Know what the tests actually check, and whether they can fail | `test-audit` (automatic in `/implement`; run it on the whole feature before merge) |
 | Check the branch | `/code-review main` |
 | Check before it goes public | `security-review` against `main` |

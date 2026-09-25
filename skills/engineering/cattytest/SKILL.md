@@ -1,113 +1,104 @@
 ---
 name: cattytest
-description: "Grill the user about how to test a half-built project or feature: which behaviours must never break, at which seams, judged by what, with which parts real and which faked. Produces a test plan of numbered business-rule claims and the first red tests, in order, ready for tdd. Use when the user says \"I don't know how to test this\", \"where do I even start with tests\", or has code with no tests worth the name."
+description: "Design the test cases that prove the software does what the user actually wanted, from the user's side of the screen: what they do, with what, and what must be true in the world afterwards. Not the agent's own gates. A grilling session that ends in a test-cases sheet verify can walk and the user can run by hand. Use when the user says \"the tests are green but it doesn't do what I want\", \"how do I know it really works\", \"help me design test cases\", or when a half-built feature has gates and no proof."
 disable-model-invocation: true
-argument-hint: "A feature, ticket, module, or nothing to be asked what to plan for"
+argument-hint: "A feature, ticket, or nothing to be asked what to design cases for"
 ---
 
 # Cattytest
 
-The user has code and no idea how to test it. Not "no tests": no *plan*. `tdd` knows what a good test is, but it assumes someone can already say which seams to test and what the rules are. This skill is the interview that produces that: a grilling session whose only output is a **test plan**, a numbered list of business-rule claims with a seam, a level and an oracle each, and the first red tests in order.
+The feature was "pick the apple off the tree". The code is clean, the typecheck passes, the unit tests are green, and the apple is still on the tree. This happens constantly, and no gate the agent writes for itself can catch it, because the gates check what the agent *understood*, and the misunderstanding is the bug.
 
-It is `grilling` pointed at one question: *what would have to be true for you to trust this code?* Invoke the "grilling" skill for the discipline (rounds, a frontier, a recommended answer on every question, facts are yours to find and decisions are theirs). This file is what to read first, what to ask, and what to write down.
+This skill designs the other kind of test: **test cases**, written from the user's side of the screen. Each one says what a person does, with what real data, and what has to be true in the world afterwards: the apple in the basket, not a `200`, not a log line, not a green test. `tdd` keeps its gates; that is the agent's inner loop and this skill doesn't touch it. This is the outer loop: the user's proof.
 
-You plan; you don't write tests here. Every line of the plan is a red test for `tdd`.
+It is `grilling` pointed at one question: *how would you know, without reading any code, that this did what you wanted?* Invoke the "grilling" skill for the discipline (rounds, a frontier, a recommended answer on every question, facts are yours to find and decisions are theirs). This file is what to read first, what to ask, and what to write down.
+
+You design cases; you don't run them here and you don't write code. `verify` runs the cases against the built thing; the user runs the ones only a human can judge.
 
 ## 0. Scope, one question
 
 Before anything else, one question, two options, wait:
 
-> **Q1 - Scope**: plan tests for (a) the current feature or ticket, or (b) the whole project?
-> ➡️ Recommend (a) if there is an in-flight ticket or a spec in `.scratch/` or the tracker; the plan attaches to it. Recommend (b) if there is no ticket, the user said "the project", or no test in the repo has ever gone red for a reason. (b) takes more rounds and ends with priorities, not just a list.
+> **Q1 - Scope**: design cases for (a) the current feature or ticket, or (b) the whole product as it stands?
+> ➡️ Recommend (a) when there is an in-flight ticket or spec; the cases attach to it and `verify` walks them at the end of `implement`. Recommend (b) when there is no ticket, the user said "the whole thing", or a green build has already shipped something that didn't work. (b) takes more rounds and ends with a ranked sheet, not a flat one.
 
-If the argument already names one (a ticket id, "the whole thing", a module), take it and say so instead of asking.
+If the argument already says (a ticket id, "everything", a feature name), take it and say so.
 
 ## 1. Read first, silently
 
-Facts are your job. Before the first real round, look, and only mention what changes a question:
+Facts are your job. Look before the first real round; mention only what changes a question:
 
-- `docs/agents/feedback-loops.md`: is there a test command, a single-file command, a duration? **None wired** doesn't stop the interview; it makes `/setup-feedback-loops` the first line of the plan and means no test can be run to confirm anything you find.
-- `docs/agents/issue-tracker.md` for where the plan will live, and the ticket or spec in scope: its acceptance criteria and user stories are candidate claims before the user says a word.
-- `CONTEXT.md`: claims are written in its words. Absent is fine; use the user's.
-- **The existing tests**, all of them in scope: how many, what they touch, which are the `test-audit` kinds (claims nothing, tautological, name and assertion disagree, mocks the thing under test). Don't run a mutation probe; a read is enough to sort them into keep / rewrite / delete candidates for the user to confirm.
-- **The code's boundaries**: entry points (routes, commands, UI actions, exported functions callers use), and every place it touches the outside world (database, network, filesystem, clock, randomness, environment, another process). These are the seams and the doubles questions; propose them, don't ask the user to enumerate their own code.
-- A `test-plan.md` already in scope: this is a revisit. Load it, and the rounds start from its **Open** section.
+- The **ticket or spec** in scope: its acceptance criteria and user stories are the first draft of the cases, and also the first place the apple goes missing (a criterion written as "the endpoint returns the rows" instead of "the user sees their notes").
+- `CONTEXT.md`: cases are written in its words. Absent is fine; use the user's.
+- `docs/agents/feedback-loops.md`: how the thing boots, whether a browser is wired, where logs land. This decides which cases `verify` can run and which only a human can.
+- **The gates that exist**: the test files, CI checks, lint and typecheck in scope. Don't judge their quality (`test-audit` does that); list *what each one would prove if green*, in one line each, so the user can see the gap between the gates and the apple.
+- **The entry points a user touches**: screens, commands, routes, jobs, and what each writes to the world (a row, a file, an email, a payment, a message to another system). The apples live at the end of those.
+- A `test-cases.md` already in scope: this is a revisit. Load it; rounds start from its **Open** section.
 
 ## 2. The interview
 
-Work the design tree in rounds, each question numbered with a recommended answer drawn from what you read. The branches, roughly in dependency order (a later branch waits on the earlier one's answers), with the question bank in [QUESTIONS.md](QUESTIONS.md):
+Rounds, each question numbered with a recommended answer drawn from what you read. The branches in dependency order, with the question bank in [QUESTIONS.md](QUESTIONS.md):
 
-1. **Stakes**: the behaviours whose breaking the user would hear about, the last bug that embarrassed them, what "done enough" means for this scope. This orders everything else.
-2. **Claims**: each behaviour as one sentence a domain expert would say, true of the product when the test is green. Draft them from the criteria and the code; the user corrects the sentence, not the code. A claim the user is unsure is *right* is flagged, not dropped: it's a spec question (`refocus` or the ticket's comments) and it stays in the plan marked **rule unconfirmed**.
-3. **Seams**: for each claim, the public boundary the behaviour crosses. Propose the seam from the entry points you found; the user picks or names a better one. `tdd`'s rule applies here in advance: no test is later written at a seam the user didn't confirm. If a claim has no seam (the behaviour is smeared across five files), say so; that's a Tidy finding, and the claim gets tested at the nearest seam that exists, or parked.
-4. **Oracle and level**: how anyone knows the answer is right (a known-good literal, a worked example from the spec, a screenshot a human judges, a second implementation), and therefore which level the test lives at. Recommend integration at the seam by default, unit only for pure logic with a worked example, end-to-end only for the two or three claims the user named under Stakes.
-5. **Doubles**: for each outside-world touch on the claim's path, real or faked, and if faked, how (`tdd`'s [mocking.md](../tdd/mocking.md) is the reference). Recommend real for anything cheap and deterministic, a fake at the boundary for network and time, never a mock of the thing under test.
-6. **Data**: what a realistic input is and where the expected values come from. An expected value the user can't source independently of the code is a tautology waiting to happen; ask again or mark the claim **oracle missing**.
-7. **Wrong paths**: for each claim, the empty case, the boundary, the second call, the record that belongs to someone else, the concurrent one. Ask which matter; recommend one wrong path per claim, more for the Stakes three.
-8. **Existing tests**: your keep / rewrite / delete sort, confirmed row by row. A deleted test is written down with why, so `code-review` doesn't ask.
-9. **Budget**: how many red tests before the next merge, and what is explicitly out. A plan the user can't finish is a plan they'll abandon; the first five have to be five.
+1. **The apple**: for the scope, what did the user want to be true in the world afterwards? Not the feature name; the outcome. "The customer gets the invoice email with the right total." "The file on disk opens in Excel with the accents intact." One sentence per outcome, observable without reading code. Draft them from the stories and the entry points; the user corrects the sentences.
+2. **Proxies**: put the existing gates next to the apples. "If every one of these is green, can the apple still be on the tree?" Almost always yes; name how (the mail is sent to the wrong address, the file is written with the wrong encoding, the total is right and the currency is wrong). Every way it can still fail is a case.
+3. **The walk**: for each apple, what exactly does a person do, from where they start, step by step. Real steps ("log in as the second user, open the March invoice, press export") not abstractions ("trigger the export flow").
+4. **Real data**: which account, which record, which numbers. "Some user" isn't a case; "the user with two workspaces and an unpaid invoice" is. Recommend from seeds, fixtures and the spec's examples; where none exist, the case says which data to create first.
+5. **Evidence**: the artefact that shows the apple is in the basket. A screenshot of the thing the user would look at, the file opened by the program the user would open it with, the row seen through the UI (not through a query), the email in the inbox. If the only evidence is "the test passed" or "the log says sent", the case has no apple yet: ask again.
+6. **The ways a real person breaks it**: per apple, in user terms: I did it twice. I came back tomorrow. I typed the amount with a comma. My connection dropped halfway. It's someone else's invoice. It's the last day of the month. Recommend the two or three that match the Stakes; the rest go in Out of scope by name.
+7. **Who runs it**: `verify` (the agent boots the thing and walks the case with evidence), the user by hand (anything a human has to judge: looks right, reads right, arrived in the real inbox), or an automated end-to-end test (only when the apple is machine-observable and the case will be run every merge). Recommend `verify` by default; by hand for the judgement calls; automation for the two or three cases the user would run every single time.
+8. **Order and budget**: which cases must pass before this merges, and which can wait. Rank by what the user would hear about first.
 
 Rules of the interview, beyond `grilling`'s:
 
-- **Never ask what the code answers.** Whether a function is pure, whether a route checks auth, whether tests exist: look. Ask about what the code can't tell you: what matters, what's right, what's out.
-- **Every claim in the user's language.** If a claim needs a variable name to make sense, rewrite it. Same test as `test-audit`, on purpose: the two lists are the same list at different times.
-- **Recommend, don't lecture.** One line of why per recommendation; the reasoning lives in `tdd` and this file, not the transcript.
-- **Whole-project scope ends with a ranking**, not a flat list: the Stakes answers order the claims, and the plan says which ten come first and which fifty can wait.
+- **Never accept a proxy as an apple.** Status codes, log lines, "the function returns", green gates: none of these is what the user wanted. Keep asking "and then what would you see?" until the answer is something a person can point at.
+- **Never ask what the code answers.** Which routes exist, what the tests check, how the app boots: look. Ask what the code can't say: what was wanted, what counts as done, what matters most.
+- **Cases in the user's language.** If a case needs a function name to make sense, rewrite it. The user is the one who will read it back and say "yes, that's what I meant".
+- **Don't design gates.** If a case turns out to be "this function returns X for input Y", it belongs to `tdd`; say so and drop it from the sheet. The sheet holds outcomes.
 
-## 3. Write the plan
+## 3. Write the sheet
 
-Where the tracker keeps specs: local markdown → `.scratch/<feature>/test-plan.md` (whole project: `.scratch/test-plan/test-plan.md`); a real tracker → the same file, plus an issue titled `Test plan: <scope>` whose body is the file, linked from the ticket in scope.
+Where the tracker keeps specs: local markdown → `.scratch/<feature>/test-cases.md` (whole product: `.scratch/test-cases/test-cases.md`); a real tracker → the same file, plus an issue titled `Test cases: <scope>` whose body is the file, linked from the ticket.
 
 ```
-# Test plan: <scope>
+# Test cases: <scope>
 
-Feedback loop: <the test command and single-file command from feedback-loops.md, or "none wired: run /setup-feedback-loops first">
-Stakes: <the two or three behaviours from round 1, one line each>
+Boot: <from feedback-loops.md, or "not wired: run /setup-feedback-loops before verify can walk these">
+Apples: <the outcomes from round 1, one line each, ranked>
 
-## Claims
-| # | Claim | Seam | Level | Oracle | Doubles | Now |
+## Cases
+| # | Case | You do | With | The apple | Evidence | Run by |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | A tag a note already has is not added twice | `addTag()` | unit | worked example in spec | none | missing |
-| 2 | Two users never see each other's notes | `GET /notes` | integration | fixture: two users, two notes | real db, fake clock | covered by notes.test.ts:40, weak: asserts count only |
-| 3 | ... | ... | ... | ... | ... | rule unconfirmed: see Open |
+| 1 | Export the March invoice | Log in as Ana, open March, press Export | Ana: two workspaces, one unpaid invoice | A PDF Ana can open, total 1 240,00 EUR, her company name on it | The PDF opened, screenshot of page 1 | verify |
+| 2 | Export twice in a row | Case 1, then Export again | same | One PDF, not two; the second is identical | Directory listing + diff | verify |
+| 3 | Invoice arrives by email | Case 1, then wait | Ana's real test inbox | The email in the inbox, PDF attached, subject has the month | Screenshot of the inbox | by hand |
+| 4 | Someone else's invoice | Log in as Ben, open Ana's March invoice by URL | Ben: no access to Ana's workspace | Ben sees "not found", nothing exported, nothing emailed | Screenshot + Ana's inbox unchanged | verify |
 
-## Wrong paths
-<claim # → the wrong paths that matter, one line each>
-
-## Existing tests
-Keep: <file:line, why>
-Rewrite: <file:line, what it should claim instead>
-Delete: <file:line, why>
-
-## First red tests, in order
-1. <claim #, seam, the one input and expected output>
-2. ...
-5. ...
+## Gates that don't count as proof
+<each existing gate in scope, one line: what it proves, and which apple it can't see>
 
 ## Out of scope
-<what was named and left out, with the sentence that put it out>
+<the wrong paths and apples named and left out, with the sentence that put them out>
 
 ## Open
-<claims marked rule unconfirmed or oracle missing, and who can answer>
+<outcomes the user couldn't pin down, spec questions surfaced by writing a case, data that has to exist before a case can run>
 ```
 
-Then hand it back in the transcript in one screen: the Stakes lines, the claim count, the first five, the Open list. End with: **"Read the claims as business rules. Is any of them wrong?"** and wait. That sentence is the reason the plan exists.
+Hand it back in one screen: the Apples lines, the case count, the ones marked *before merge*, the Open list. End with: **"Walk these in your head. Is there a way all of them pass and you still don't have what you wanted?"** and wait. If the answer is yes, that's the next case.
 
 ## 4. After confirmation
 
 Stop, and say what's next:
 
-- **There is a ticket**: append a one-line comment to it pointing at the plan; `/implement` picks the plan up as its agreed seams and drives `tdd` through the first red tests in order.
-- **No ticket, or the user says go**: invoke the "tdd" skill on the first red test, passing the claim, the seam, the oracle and the doubles decision verbatim; then the second; each one red before green. Stop after the five and hand back.
-- **No feedback loop was wired**: `/setup-feedback-loops` first; nothing in the plan can be confirmed until a test can go red.
-- **Any claim in Open**: that's a spec question before it's a test. Point to `refocus` if the answer should already be on disk, or to the ticket's comments if the user has to decide.
-
-When the tests exist, `test-audit` on the same scope reads them back as claims. Its list and this plan's list should match; a claim in the plan with no claim in the audit is a test that didn't get written, and a claim in the audit with no line in the plan is a test nobody asked for.
+- **Inside a feature**: append a one-line comment to the ticket pointing at the sheet. `verify` at the end of `implement` walks the sheet's `verify` cases in place of, or on top of, the bare criteria; each FAIL comes back as a red test for `tdd`, same as today.
+- **The user says go**: invoke the "verify" skill on the sheet now, against whatever is built. Expect failures; the point of the sheet is to find the apple still on the tree before the user does.
+- **By-hand cases**: list them with their evidence line so the user can run them in five minutes and paste the result under the case.
+- **Automated cases**: only the ones marked so, and only once the case has passed by hand or by `verify` at least once. Then they're a `tdd` job with the case as the spec; the case sheet stays the source, the test is its automation.
+- **Anything in Open**: a spec question first. `refocus` if the answer should be on disk, the ticket's comments if the user has to decide.
 
 ## Rules
 
-- **Plan, don't write.** A test written during the interview skipped the confirmation of its seam and its rule.
-- **Scope first.** One question, then read, then rounds. Never open with a wall of questions about a codebase you haven't looked at.
-- **Facts from the repo, decisions from the user.** Propose seams, levels and doubles from what you read; the user chooses.
-- **Unconfirmed rules stay visible.** A claim the user isn't sure of goes in the plan flagged, never silently dropped and never silently assumed true.
-- **The first five are five.** If the budget round says two, the section says two. The plan is sized to be finished.
+- **Apples, not proxies.** Every case ends in something a person can point at in the world. No case ends in a status code, a log line, or a passing test.
+- **Design, don't run, don't code.** Running is `verify`'s job; gates are `tdd`'s. A case that needs a function name is a gate in disguise; hand it over.
+- **Scope first, read second, ask third.** One question, then look, then rounds. Never open with a wall of questions about a product you haven't looked at.
+- **Facts from the repo, outcomes from the user.** Propose walks, data and evidence from what you read; the user says what they wanted.
+- **The sheet is finishable.** Ranked, with a *before merge* line drawn. Sixty cases is a description; the ones above the line are the plan.
