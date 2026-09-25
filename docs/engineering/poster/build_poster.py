@@ -175,64 +175,63 @@ cat_dizzy = load_cat((HERE / "cats" / "cat_dizzy.png"), 190)
 cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 170)
 
 # =================== HEADER ===================
-d.text((80, 60), "Vibe Coding 工作流", font=F(84), fill=INK)
-d.text((84, 170), "一个人 + 一个 Agent 的软件开发闭环 · 猫咪导师带你走一遍", font=F(34, False), fill=GRAY)
+d.text((80, 60), "The Vibe Coding Workflow", font=F(72), fill=INK)
+d.text((84, 160), "One developer + one agent, a closed loop  ·  with a cat guide", font=F(30, False), fill=GRAY)
 paste_cat(cat_teacher, 1640, 10)
-bubble(1080, 40, 1600, 210, "不知道从哪开始？在项目里敲 /vibe，我会把你放到正确的车道上，告诉你下一条命令是什么。", (1650, 150), size=27)
+bubble(1140, 40, 1600, 210, "Not sure where to start? Type /vibe in the project. I'll put you on the right lane and name the next command.", (1650, 150), size=27)
 
 # =================== SETUP BAND ===================
-panel(80, 300, 1920, 560, "setup", "第 0 步 · 地基", "每个仓库只做一次，之后所有 skill 都靠它们")
-node(430, 430, 560, 160, "setup", cmd="/setup-matt-pocock-skills", label="issue 存哪、术语表放哪", note="个人项目选 Local markdown")
+panel(80, 300, 1920, 560, "setup", "Step 0 · Foundations", "once per repo; every skill after this depends on them")
+node(430, 430, 560, 160, "setup", cmd="/setup-matt-pocock-skills", label="where issues live, where the glossary goes", note="solo project: pick Local markdown")
 arrow([(715, 430), (785, 430)])
-node(1105, 430, 620, 160, "setup", cmd="/setup-feedback-loops", label="typecheck · lint · test · smoke\n日志 · 浏览器 · 一键全跑", note="每个检查都要亲眼看它变红一次")
-text(1450, 350, "为什么先搭反馈回路？", F(28), fill=LANES["setup"]["dark"])
-text(1450, 392, "tdd 要跑测试、verify 要起应用、diagnosing-bugs 要读日志。没有回路，每个 skill 都在猜。", F(25, False), fill=GRAY, maxw=440, spacing=1.35)
+node(1105, 430, 620, 160, "setup", cmd="/setup-feedback-loops", label="typecheck · lint · test · smoke\nlogs · browser · one command for all", note="watch every check go red once")
+text(1450, 350, "Why feedback loops first?", F(28), fill=LANES["setup"]["dark"])
+text(1450, 392, "tdd runs tests, verify boots the app, diagnosing-bugs reads logs. Without loops, every skill is guessing.", F(25, False), fill=GRAY, maxw=440, spacing=1.35)
 
 # =================== BUILD LANE (left) ===================
 BX0, BY0, BX1, BY1 = 80, 630, 1240, 2010
-panel(BX0, BY0, BX1, BY1, "build", "① BUILD 车道 · 我有个想法", "90% 的时间你在这里")
+panel(BX0, BY0, BX1, BY1, "build", "① BUILD lane · I have an idea", "90% of your time is here")
 
-node(660, 700, 220, 70, "build", label="★ 想法", cmd=None)
+node(660, 700, 220, 70, "build", label="★ an idea", cmd=None)
 arrow([(660, 735), (660, 770)])
-diamond(660, 830, 300, 110, "build", "这件事多大？")
+diamond(660, 830, 300, 110, "build", "How big is it?")
 
 # three branches
 cols = {"S": 250, "M": 660, "L": 1070}
 arrow([(585, 830), (250, 830), (250, 905)])
-arrow([(735, 830), (1070, 830), (1070, 905)])
+arrow([(735, 830), (1050, 830), (1050, 905)])
 arrow([(660, 885), (660, 905)])
-edge_label(250, 930, "S · 一句话说得清，没疑问", LANES["build"]["dark"])
-edge_label(660, 930, "M · 一次坐下能做完，但有疑问", LANES["build"]["dark"])
-edge_label(1070, 930, "L · 要做好几个晚上", LANES["build"]["dark"])
+edge_label(250, 930, "S · one clear sentence", LANES["build"]["dark"])
+edge_label(660, 930, "M · one sitting, open questions", LANES["build"]["dark"])
+edge_label(1050, 930, "L · several evenings", LANES["build"]["dark"])
 
 # S column
-node(250, 1060, 330, 170, "build", label="直接说一句话", note="“给导出加 --json，\ntest first”\nagent 自己会用 tdd")
+node(250, 1060, 330, 170, "build", label="Just say it", note="\u201cadd --json to export,\ntest first\u201d\nthe agent uses tdd itself")
 arrow([(250, 1145), (250, 1440)])
 # M column
-node(660, 1050, 350, 150, "build", cmd="/grill-with-docs", note="一轮轮追问你，顺手写\nCONTEXT.md 和 ADR")
+node(660, 1050, 360, 150, "build", cmd="/grill-with-docs", note="asks in rounds; writes\nCONTEXT.md and ADRs")
 arrow([(660, 1125), (660, 1175)])
-node(660, 1240, 350, 130, "build", cmd="/implement", note="同一个窗口，\n中间不要 clear")
+node(660, 1240, 350, 130, "build", cmd="/implement", note="same window,\ndon't clear in between")
 arrow([(660, 1305), (660, 1440)])
 # L column
-node(1070, 1030, 350, 110, "build", cmd="/grill-with-docs", note="说不清的绕一圈 prototype")
-arrow([(1070, 1085), (1070, 1110)])
-node(1070, 1160, 350, 100, "build", cmd="/to-spec", note="不再提问，只综合成 spec")
-arrow([(1070, 1210), (1070, 1235)])
-node(1070, 1300, 350, 130, "build", cmd="/to-tickets", note="垂直切片 + 阻塞关系\n（前三步同一窗口）")
-arrow([(1070, 1365), (1070, 1385)])
-node(1070, 1425, 350, 80, "build", cmd="/clear → /implement", cmd_size=26, note="每张票一个新窗口")
-# one unbroken window marker for M and L grill→tickets
+node(1050, 1030, 360, 110, "build", cmd="/grill-with-docs", note="stuck? try a prototype")
+arrow([(1050, 1085), (1050, 1110)])
+node(1050, 1160, 360, 100, "build", cmd="/to-spec", note="synthesis, no questions")
+arrow([(1050, 1210), (1050, 1235)])
+node(1050, 1300, 360, 130, "build", cmd="/to-tickets", note="slices + blocking edges\n(steps 1 to 3: one window)")
+arrow([(1050, 1365), (1050, 1385)])
+node(1050, 1425, 360, 80, "build", cmd="/clear → /implement", cmd_size=26, note="a fresh window per ticket")
 
 # converge into implement internals box
-d.line([(1070, 1465), (1070, 1470)], fill=INK, width=6)
-d.line([(250, 1470), (1070, 1470)], fill=INK, width=6)
+d.line([(1050, 1465), (1050, 1470)], fill=INK, width=6)
+d.line([(250, 1470), (1050, 1470)], fill=INK, width=6)
 d.line([(250, 1440), (250, 1470)], fill=INK, width=6)
 arrow([(660, 1470), (660, 1500)])
 
 IX0, IY0, IX1, IY1 = 130, 1505, 1190, 1795
 rbox(IX0, IY0, IX1, IY1, (245, 249, 255), LANES["build"]["edge"], r=28, width=4)
-d.text((IX0 + 24, IY0 + 14), "/implement 里面发生了什么（自动，你只需要读结果）", font=F(30), fill=LANES["build"]["dark"])
-chain = [("tdd", "先红后绿\n一片一片做"), ("verify", "真的跑起来\n截图为证"), ("test-audit", "测试守不守逻辑？\n给你 Claims 清单"), ("code-review", "规范 + spec\n(+ security)"), ("commit", "结尾给你\nChecks run 台账")]
+d.text((IX0 + 24, IY0 + 14), "What happens inside /implement (automatic; you only read the results)", font=F(30), fill=LANES["build"]["dark"])
+chain = [("tdd", "red, then green\none slice at a time"), ("verify", "really runs it\nscreenshot as proof"), ("test-audit", "do tests guard logic?\nyou get a Claims list"), ("code-review", "standards + spec\n(+ security)"), ("commit", "ends with a\nChecks run ledger")]
 cx = IX0 + 130
 for i, (c, n) in enumerate(chain):
     node(cx, IY0 + 110, 190, 66, "build", cmd=c, cmd_size=28)
@@ -240,63 +239,63 @@ for i, (c, n) in enumerate(chain):
     if i < len(chain) - 1:
         arrow([(cx + 98, IY0 + 110), (cx + 122, IY0 + 110)], width=5, head=16)
     cx += 220
-text(IX0 + 24, IY0 + 236, "FAIL 和幸存的 mutant 都会退回 tdd 变成新的红测试；有 FAIL 不许进 review。", F(24, False), fill=GRAY)
+text(IX0 + 24, IY0 + 236, "Every FAIL and surviving mutant goes back to tdd as a new red test. No review while a FAIL is open.", F(24, False), fill=GRAY)
 
 # clipboard cat + bubble (bottom of build panel)
 paste_cat(cat_clip, 120, 1770)
-bubble(400, 1835, 1200, 1990, "读 test-audit 的 Claims 清单！每条是一句业务规则。测试和代码可能编码了同一个误解、一起全绿一起错，工具查不出来，你一眼能看出来。", (395, 1910), size=27)
+bubble(400, 1835, 1200, 1990, "Read test-audit's Claims list! Each line is one business rule. The test and the code can share the same misunderstanding and be green together; no tool catches that. You can, at a glance.", (395, 1910), size=26)
 
 # =================== RIGHT COLUMN ===================
 RX0, RX1 = 1300, 1920
 
 # FIX
-panel(RX0, 630, RX1, 1110, "fix", "② FIX 车道 · 坏了")
-diamond(1610, 720, 280, 100, "fix", "知道原因吗？")
+panel(RX0, 630, RX1, 1110, "fix", "② FIX lane · it broke")
+diamond(1610, 720, 280, 100, "fix", "Know the cause?")
 arrow([(1470, 720), (1435, 720), (1435, 790)])
-edge_label(1435, 758, "知道", LANES["fix"]["dark"], 22)
-node(1440, 860, 250, 130, "fix", label="说一句，加 test first", note="失败测试→修→绿")
+edge_label(1435, 758, "yes", LANES["fix"]["dark"], 22)
+node(1435, 860, 260, 130, "fix", label="Say it, test first", note="red → fix → green")
 arrow([(1750, 720), (1785, 720), (1785, 790)])
-edge_label(1785, 758, "不知道 / 偶发 / 变慢", LANES["fix"]["dark"], 22)
-node(1780, 860, 250, 130, "fix", cmd="/diagnosing-bugs", cmd_size=22, note="六个阶段\n不许先猜")
+edge_label(1785, 758, "no / flaky / slow", LANES["fix"]["dark"], 22)
+node(1785, 860, 260, 130, "fix", cmd="/diagnosing-bugs", cmd_size=22, note="six phases,\nno guessing first")
 paste_cat(cat_det, 1330, 935)
-bubble(1545, 925, 1900, 1090, "没有一条能变红的复现命令，就不许推理。这是整个 skill 的核心。", (1540, 1005), size=25)
+bubble(1545, 925, 1900, 1090, "No command that goes red on the bug, no theorising. That rule is the whole skill.", (1540, 1005), size=25)
 
 # REVIEW
-panel(RX0, 1170, RX1, 1560, "review", "③ REVIEW · 合并 / 上线前")
-node(1690, 1270, 430, 130, "review", cmd="/code-review main", cmd_size=30, note="两个子代理并行：\nStandards 轴 + Spec 轴")
+panel(RX0, 1170, RX1, 1560, "review", "③ REVIEW · before merge")
+node(1690, 1270, 430, 130, "review", cmd="/code-review main", cmd_size=30, note="two sub-agents in parallel:\nStandards axis + Spec axis")
 arrow([(1690, 1335), (1690, 1355)])
-node(1690, 1425, 430, 140, "review", cmd="security-review", cmd_size=30, note="碰路由/鉴权/查询/env/依赖\n时自动跑；上线前手动跑一次")
+node(1690, 1425, 430, 140, "review", cmd="security-review", cmd_size=30, note="auto on auth / routes / queries;\nonce more before shipping")
 paste_cat(cat_shield, 1308, 1270)
-bubble(1330, 1500, 1900, 1550, "只查五件事，但那五件事就是独立开发者被黑的原因。", (1400, 1445), size=22)
+bubble(1330, 1500, 1900, 1550, "Five checks. That is how solo apps get hacked.", (1400, 1445), size=22)
 
 # TIDY
-panel(RX0, 1620, RX1, 2010, "tidy", "④ TIDY · 每隔几天")
-node(1690, 1715, 430, 120, "tidy", cmd="/improve-codebase-architecture", cmd_size=23, note="HTML 报告：哪些浅模块该加深，\n选一个，它追问你")
+panel(RX0, 1620, RX1, 2010, "tidy", "④ TIDY · every few days")
+node(1690, 1715, 430, 120, "tidy", cmd="/improve-codebase-architecture", cmd_size=23, note="report of shallow modules;\npick one, it grills you")
 arrow([(1690, 1775), (1690, 1800)])
-node(1690, 1865, 430, 130, "tidy", label="新想法 → 回到 ① BUILD", note="diagnosing-bugs 说“没有接缝”\n也来这里")
+node(1690, 1865, 430, 130, "tidy", label="idea → back to ① BUILD", note="\u201cno seam\u201d from a diagnosis\nlands here too")
 paste_cat(cat_broom, 1305, 1720)
-bubble(1330, 1945, 1900, 1998, "扫一扫，agent 改东西就不用跳七个文件了。", (1400, 1895), size=22)
+bubble(1330, 1945, 1900, 1998, "Sweep: no more seven-file hops per change.", (1400, 1895), size=22)
 
 # =================== SESSION BAND: refocus / handoff / takeover ===================
-panel(80, 2080, 1920, 2480, "focus", "会话出问题了？三招", "同一个窗口走神 · 主动换地方 · 旧会话没了")
+panel(80, 2080, 1920, 2510, "focus", "Session trouble? Three moves", "drifting in this window · leaving on purpose · the old session is gone")
 paste_cat(cat_dizzy, 130, 2170)
 SX = [520, 1000, 1480]
-node(SX[0], 2215, 420, 120, "focus", cmd="/refocus", label="还在，走神了，不换窗口")
-node(SX[1], 2215, 420, 120, "focus", cmd="/handoff", label="还在，工作要挪地方")
-node(SX[2], 2215, 420, 120, "focus", cmd="/takeover", label="旧会话没了 / 太长不敢信")
-text(SX[0], 2295, "从磁盘重读 spec、ticket、CONTEXT.md 和你口头的决定，对着 diff 找漏做 / 多做 / 做反，有歧义问你一轮，答案回写到票里。先 refocus 再 compact。", F(23, False), fill=INK, maxw=400, align="center", spacing=1.4)
-text(SX[1], 2295, "走的那个会话写一份可携带的小文件到临时目录：换目录、换工具、分叉一个支线，或者去做 prototype 再回来。没有东西要搬就不需要它。", F(23, False), fill=INK, maxw=400, align="center", spacing=1.4)
-text(SX[2], 2295, "额度用完、崩了、关了窗口、在别的工具里聊的。新会话自己读记录（ID / 导出 / 链接 / handoff 文件），最多 10 句复述项目，问你一次确认，确认前只读不改。", F(23, False), fill=INK, maxw=400, align="center", spacing=1.4)
+node(SX[0], 2215, 420, 120, "focus", cmd="/refocus", label="still open, drifting, staying here")
+node(SX[1], 2215, 420, 120, "focus", cmd="/handoff", label="still open, the work is moving")
+node(SX[2], 2215, 420, 120, "focus", cmd="/takeover", label="session gone / too long to trust")
+text(SX[0], 2295, "Re-reads spec, ticket, CONTEXT.md and your spoken decisions from disk, diffs them against the work (dropped / drifted / contradicted), asks one round, saves the answers to the ticket. Then compact.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.35)
+text(SX[1], 2295, "The outgoing session writes a small portable file to the temp dir: new directory, new tool, a forked side task, a prototype detour. Nothing travelling? You don't need it.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.35)
+text(SX[2], 2295, "Quota gone, crashed, closed, or another tool. The new session reads the record itself (ID / export / URL / handoff), retells the project in 10 sentences at most, asks once. Read-only until you confirm.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.35)
 
 # =================== BOTTOM: context rules + stuck ===================
-panel(80, 2550, 980, 3020, "setup", "上下文规则（记住这 7 条就够）")
-rules = [("grill → spec → tickets", "", "同一个窗口，别 clear"),
-         ("每张票之间", "/clear", "，开新窗口"),
-         ("走神了", "/refocus", "，在 compact 之前"),
-         ("换目录 / 换工具 / 分叉", "/handoff", ""),
-         ("旧会话没了", "/takeover", " 它的记录"),
-         ("要跑代码才能定", "/handoff", " → prototype → 带答案回来"),
-         ("没听懂它在说什么", "/wait-what", "")]
+panel(80, 2550, 980, 3020, "setup", "Context rules (these seven are enough)")
+rules = [("grill → spec → tickets", "", "one window, don't clear"),
+         ("between tickets", "/clear", ", fresh window"),
+         ("agent drifted", "/refocus", ", before compact"),
+         ("new dir / tool / fork", "/handoff", ""),
+         ("old session gone", "/takeover", " its record"),
+         ("needs running code", "/handoff", " → prototype → answer back"),
+         ("didn't follow it", "/wait-what", "")]
 y = 2610
 for a, cmd, rest in rules:
     d.text((120, y), a, font=F(27), fill=INK)
@@ -307,17 +306,17 @@ for a, cmd, rest in rules:
         d.text((x, y), rest, font=F(27, False), fill=LANES["build"]["dark"])
     y += 56
 
-panel(1020, 2550, 1920, 3020, "fix", "改了三次还不对？停！")
-text(1060, 2600, "别让它改第五次。先扔掉半成品，/clear，写下一句话：", F(26, False), fill=INK, maxw=820)
+panel(1020, 2550, 1920, 3020, "fix", "Wrong three times? Stop!")
+text(1060, 2600, "No fifth attempt. Discard it, /clear, and write one sentence:", F(26, False), fill=INK, maxw=820)
 rbox(1060, 2660, 1880, 2730, (255, 255, 255), LANES["fix"]["edge"], r=18, width=3)
-text(1470, 2678, "输入 ___ 的时候，我期望 ___，但实际是 ___", F(28), fill=LANES["fix"]["dark"], align="center")
-text(1060, 2755, "写不出来 → 不是 bug，是需求没对齐 → /refocus 或 /grill-with-docs\n写得出来 → 先把它变成一个失败的测试：\n    改一下就绿 → 之前没有反馈回路（tdd）\n    还是红 / 修好又坏别的 → 真 bug（/diagnosing-bugs）\n    每次要碰五个文件 → 没有接缝（④ TIDY）", F(24, False), fill=INK, spacing=1.45)
+text(1470, 2678, "When I input ___, I expect ___, but I get ___", F(28), fill=LANES["fix"]["dark"], align="center")
+text(1060, 2755, "Can't write it → not a bug, misaligned requirements → /refocus or /grill-with-docs\nCan write it → turn it into one failing test first:\n    green after one fix → there was no feedback loop (tdd)\n    stays red / fixing it breaks something else → real bug (/diagnosing-bugs)\n    every attempt touches five files → no seam (④ TIDY)", F(24, False), fill=INK, spacing=1.45)
 
 # =================== FOOTER ===================
 d.line([(80, 3080), (1920, 3080)], fill=(210, 200, 185), width=3)
-text(80, 3110, "第一次试用：在一个空仓库里敲 /vibe，它会给你一张 First run 卡，9 步走完整个闭环，并陪你核对每一步的输出。", F(27), fill=INK, maxw=1840)
-text(80, 3165, "完整手册：skills/engineering/vibe/WORKFLOW.md   ·   23 个精选 skill，12 个你敲，11 个 agent 自己会用   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
-text(80, 3220, "口诀：先对齐，再写 spec；红了再绿；跑起来看；读 Claims；合并前 review；每周扫一扫；走神 refocus，断了 takeover。", F(28), fill=LANES["build"]["dark"], maxw=1840)
+text(80, 3110, "First time? Type /vibe in an empty repo: a First run card walks 9 steps through the whole loop and checks each step with you.", F(27), fill=INK, maxw=1840)
+text(80, 3165, "Full handbook: skills/engineering/vibe/WORKFLOW.md   ·   23 curated skills, 12 you type, 11 the agent reaches for   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3220, "Mantra: align, then spec; red, then green; run it; read the Claims; review before merge; sweep weekly; drifting → refocus, dead → takeover.", F(26), fill=LANES["build"]["dark"], maxw=1840)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.png"), optimize=True)
 print("saved")
