@@ -64,6 +64,25 @@ Two optional setup steps, both hooks rather than skills, both worth the two minu
 - **Git guardrails.** On Claude Code, run the `git-guardrails-claude-code` skill from the `misc/` bucket once, global scope. It installs a hook that blocks `git push`, `reset --hard`, `clean -f`, `branch -D`, `checkout .` and `restore .` before they run. An agent that is "cleaning up" after a failed attempt is the most common way a solo developer loses an hour of their own edits. Other harnesses: use their sandbox or approval policy for the same list.
 - **Pre-commit.** `/setup-feedback-loops` already proposes a guardrail; on Node it uses the `setup-pre-commit` (`misc/`) shape. Run that one directly only if you skipped the loops.
 
+## First run
+
+Trying the workflow for the first time, on a small project, new or existing. This is the shortest sequence that exercises every loop once. `/vibe` hands it back as a card when it finds a repo that has never been set up, and can stay in the session to check each step's output with you.
+
+| Step | Type | It's working if | It's broken if |
+| --- | --- | --- | --- |
+| 1 | `/setup-matt-pocock-skills` (Local markdown) | `docs/agents/issue-tracker.md` and `domain.md` exist; `CLAUDE.md` has an `## Agent skills` block | It asked about triage labels at length, or wrote nothing |
+| 2 | `/setup-feedback-loops` | You saw **every** loop go red on a deliberate fault before it was declared wired; `docs/agents/feedback-loops.md` has a duration beside each command | It declared a loop done on a green run; a "present" test script that runs zero tests was left alone |
+| 3 | `/vibe <a small feature>` | One route card: lane, size, next command, context rule. It stopped | It started grilling or coding; it said `/vibe` or another skill "isn't installed" (it is; type the command anyway) |
+| 4 | `/grill-with-docs` | Numbered rounds, a recommended answer per question, and `CONTEXT.md` gaining terms as you go | A single wall of questions, or it started building before you confirmed |
+| 5 | `/implement` | Each `tdd` slice red then green; `verify` produced a screenshot or captured output per criterion; `test-audit` produced a **Claims** list you can read as business rules and a mutant table; a **Checks run** block at the end; the ticket's `Status:` is `done` | "Tests pass" with no evidence; a claims list full of variable names; `git diff` not clean after the mutation probe; the ticket still says `ready-for-agent` |
+| 6 | Mid-`implement`, say "you forgot we agreed X", then `/refocus` | A one-screen brief quoting the spec and your words from disk; drift named with a hunk; it waited for you | A summary from memory; it kept working |
+| 7 | Introduce a bug on purpose, then `/diagnosing-bugs` | It refused to theorise until one command went red; ranked hypotheses shown to you before testing | It guessed a cause from reading code |
+| 8 | Next day, `/vibe` with no argument | A where-you-were block first: branch, tickets with status, last commits, next ticket | It asked the lane question cold |
+
+Two things to check by hand after step 5: `git status` is clean (the mutation probe left nothing), and the ticket file under `.scratch/<feature>/issues/` has `Status: done` and a `## Comments` section with the commit sha.
+
+Write down every place the agent did the "broken if" thing. That list is the first input to `retro`, and to whoever maintains these skills.
+
 ## The kit
 
 Twenty-two skills. Eleven you type, eleven the agent reaches for on its own (and you can type too).
@@ -330,6 +349,7 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | I want to… | Type |
 | --- | --- |
 | Not think about any of this, or remember where I was | `/vibe` |
+| Try the whole workflow once on a small project | `/vibe` in a fresh repo; it hands back the *First run* sequence and checks each step with you |
 | Set up a new repo | `/setup-matt-pocock-skills`, then `/setup-feedback-loops` |
 | Build something small | Just say it (add "test first") |
 | Build something with open questions | `/grill-with-docs` → `/implement` |

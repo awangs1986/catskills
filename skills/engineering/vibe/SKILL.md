@@ -15,13 +15,17 @@ Read [WORKFLOW.md](WORKFLOW.md) first. It is the map: the four lanes, the sizing
 
 Look before you ask. Don't report what you find unless it changes the route.
 
-- `docs/agents/issue-tracker.md` missing → the repo isn't set up. Tell the user to run `/setup-matt-pocock-skills` (recommend **local markdown** for a solo repo, **GitHub** if the project already lives there and they want issues and PRs) and stop. Nothing below works without it.
+- `docs/agents/issue-tracker.md` missing → the repo isn't set up. If `docs/agents/feedback-loops.md` and `CONTEXT.md` are also missing, this is a **first run**: don't stop, hand back the first-run card (below) instead of a lane. If only the tracker is missing, tell the user to run `/setup-matt-pocock-skills` (recommend **local markdown** for a solo repo, **GitHub** if the project already lives there and they want issues and PRs) and stop.
 - `git status`: mid-merge or mid-rebase with conflicts → that is the whole route. Call the Skill tool with "resolving-merge-conflicts".
 - `CONTEXT.md` present or not. Absent is fine (the first `/grill-with-docs` creates it); just don't promise vocabulary that isn't there.
 - `docs/agents/feedback-loops.md` missing → the loops the lanes depend on aren't wired. Don't stop, but the route card's **Then** line starts with `/setup-feedback-loops` before any Build or Fix step.
 - `.scratch/*/issues/` or open tracker issues labelled `ready-for-agent` → there may be an in-flight L build. If the user's ask matches it, the route is "next ticket on the frontier", not a fresh grill.
 
 **Invoked with no argument and in-flight work found?** Before asking anything, hand back a **where-you-were** block so the user doesn't have to remember: current branch and whether it's clean; the feature and its tickets with status (done / in progress / blocked / ready); the last three commit subjects; the newest `refocus-*.md` in the temp dir if one exists, one line; and the next ticket on the frontier. Then ask the lane question with "continue that" as the first option. A solo developer coming back after two weeks is the normal case, not the edge.
+
+### First run
+
+A repo with none of the three files, or a user who says they are trying the workflow out, gets a **first-run card** instead of a lane: the shortest sequence that exercises the whole loop once, with what to watch at each step so they can tell working from broken. Read *First run* in WORKFLOW.md and hand back its steps as the card, adapted to what you found (skip the tracker step if it exists; name a real S or M task from the repo if you can see one). At each step, say what a good result looks like and what a bad one looks like. Offer to stay in the session and check each step's output as they go; that check is the one thing you may do beyond routing on a first run.
 
 ## 2. Pick the lane
 
@@ -52,6 +56,7 @@ Some things the user says pick the route on their own, inside or across the four
 | "the agent wiped my changes", "the tree's a mess", "I'm mid-rebase" | Conflict in progress → `resolving-merge-conflicts`. Otherwise the recovery paragraph: reflog, stash list, plan shown before anything runs | Git in this workflow |
 | A finished L build with every ticket closed | Review: `/code-review main` across the whole branch | Lane 3 |
 | "it keeps making the same mistake", "we fixed this last week too", "why didn't the review catch that" | `/retro` (in-progress bucket; say so if it isn't installed): the lesson becomes a check via `/setup-feedback-loops` or a standing rule | The loop that improves the loop |
+| "I'm trying this workflow out", "first time", "walk me through it" | The first-run card, and stay to check each step | First run |
 | "I don't follow what you just said" | `/wait-what`, mid-conversation, inside whatever skill is running | Context rules |
 
 ## 3. Size (Build lane only)
