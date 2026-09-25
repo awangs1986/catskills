@@ -31,6 +31,7 @@
     "./skills/engineering/tdd",
     "./skills/engineering/verify",
     "./skills/engineering/test-audit",
+    "./skills/engineering/cattytest",
     "./skills/engineering/to-spec",
     "./skills/engineering/to-tickets",
     "./skills/engineering/wayfinder",

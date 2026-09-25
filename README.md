@@ -38,19 +38,20 @@ All the original skills are still here, unchanged in spirit. Cat Skills is a pat
 
 ## What Cat Skills does
 
-The workflow covers the seven jobs a solo developer keeps doing by hand, and gives each one a skill.
+The workflow covers the eight jobs a solo developer keeps doing by hand, and gives each one a skill.
 
 | Job | What used to go wrong | What you type | What the agent does |
 | --- | --- | --- | --- |
 | **Talk through the requirement** | You explain once, the agent nods, builds something else | `/grill-with-docs` | Interviews you in rounds until no branch of the design is open; writes the shared vocabulary to `CONTEXT.md` and hard decisions to ADRs |
 | **Split it into pieces** | One giant prompt, one giant diff, nothing you can review | `/to-spec` then `/to-tickets` | Synthesises the conversation into a spec with no new questions, then cuts it into tracer-bullet tickets with blocking edges |
 | **Write it down and build it** | The spec lives in the chat and evaporates with it | `/implement` | Claims a ticket, drives `tdd` red-then-green one slice at a time, then runs the checks below before it commits |
+| **Decide what to test** | Code exists, tests don't, and every test you can think of feels arbitrary | `/cattytest` | Interviews you about what must never break, at which seam, judged by what; writes a test plan of business-rule claims and the first five red tests, then hands them to `tdd` |
 | **Prove it works** | "All tests pass" and the app does not boot | automatic: `verify` | Runs the built thing, walks each acceptance criterion as a user would, screenshot or captured output per verdict |
 | **Find and fix bugs** | The agent guesses, patches the symptom, breaks something else | say it, or `/diagnosing-bugs` | A bug you understand becomes a failing test first. A bug you do not becomes six gated phases: red loop → minimise → hypothesise → instrument → fix → regression test |
 | **Check code quality** | Tests that can never fail, routes without auth, secrets in the bundle | automatic: `test-audit`, `code-review`, `security-review` | Translates every test into a business claim you can read and mutates the code to see if it catches anything; reviews the diff on two axes (standards, spec) in parallel; checks the five security failures solo apps actually ship |
 | **Check the architecture** | Every change touches seven files and you stopped noticing | `/improve-codebase-architecture` | Surveys the codebase for shallow modules, hands you an HTML report, grills you through the one you pick, which becomes the next thing you build |
 
-Two more jobs turned out to matter as much as the seven:
+Two more jobs turned out to matter as much as the eight:
 
 | Job | What you type | What the agent does |
 | --- | --- | --- |
@@ -174,7 +175,7 @@ Each cat on the poster stands for a part of the loop. `/askcat` puts them on a w
 
 ## What this fork adds
 
-Upstream ships twenty-five skills; this repo ships thirty-three. Everything below is new relative to upstream. Each one is a full skill with its own `SKILL.md`, docs page, and changeset.
+Upstream ships twenty-five skills; this repo ships thirty-four. Everything below is new relative to upstream. Each one is a full skill with its own `SKILL.md`, docs page, and changeset.
 
 | Skill | Why it was missing |
 | --- | --- |
@@ -186,6 +187,7 @@ Upstream ships twenty-five skills; this repo ships thirty-three. Everything belo
 | [`refocus`](./skills/engineering/refocus/SKILL.md) | Long sessions drift, and `/compact` throws away exactly the decisions that matter. Re-anchor on the primary sources before compacting |
 | [`takeover`](./skills/productivity/takeover/SKILL.md) | `handoff` needs the old session to be alive and cooperative. `takeover` is the other end of the bridge: rebuild from an export, ID, URL or handoff file, and confirm before continuing |
 | [`askcat`](./skills/productivity/askcat/SKILL.md) | `teach` pointed at the kit itself: one HTML page, every installed skill, plain words, cats |
+| [`cattytest`](./skills/engineering/cattytest/SKILL.md) | `tdd` asks "which seams?" and a half-built project can't answer. A grilling session that produces the answer: claims, seams, oracles, doubles, and the first red tests in order |
 
 Also changed across the whole repo:
 
@@ -196,7 +198,7 @@ Also changed across the whole repo:
 
 ## Credits and license
 
-Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), forked at v1.2.3. Twenty-five of the thirty-three skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the eight skills listed under *What this fork adds* were made for this repo.
+Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), forked at v1.2.3. Twenty-five of the thirty-four skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the nine skills listed under *What this fork adds* were made for this repo.
 
 MIT licensed, same as upstream. The original copyright notice is kept in [`LICENSE`](./LICENSE).
 
@@ -221,6 +223,7 @@ Skills I use daily for code work.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker. No interview, just synthesizes what you've already discussed.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, written as text in a local file, or as native blocking links on a real tracker.
 - **[implement](./skills/engineering/implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams, running `/verify` and `/test-audit` once green, and closing out with `/code-review` and a Checks run ledger before committing.
+- **[cattytest](./skills/engineering/cattytest/SKILL.md)**: Grill me about how to test a half-built feature or project: which behaviours must never break, at which seams, judged by what, with which parts real and which faked. Ends with a test plan of numbered business-rule claims and the first red tests, in order, ready for `tdd`.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker, and resolve them one at a time until the way to the destination is clear.
 
 **Model-invoked**

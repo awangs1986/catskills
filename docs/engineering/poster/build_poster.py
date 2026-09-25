@@ -315,7 +315,7 @@ text(1060, 2755, "Can't write it → not a bug, misaligned requirements → /ref
 # =================== FOOTER ===================
 d.line([(80, 3080), (1920, 3080)], fill=(210, 200, 185), width=3)
 text(80, 3110, "First time? Type /vibe in an empty repo: a First run card walks 9 steps through the whole loop and checks each step with you.", F(27), fill=INK, maxw=1840)
-text(80, 3165, "Full handbook: skills/engineering/vibe/WORKFLOW.md   ·   24 curated skills, 13 you type, 11 the agent reaches for   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3165, "Full handbook: skills/engineering/vibe/WORKFLOW.md   ·   25 curated skills, 14 you type, 11 the agent reaches for   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
 text(80, 3220, "Mantra: align, then spec; red, then green; run it; read the Claims; review before merge; sweep weekly; drifting → refocus, dead → takeover.", F(26), fill=LANES["build"]["dark"], maxw=1840)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.png"), optimize=True)

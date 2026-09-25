@@ -38,19 +38,20 @@ Vibe coding 有两种翻车方式：agent 根本没听懂你，做出来的不�
 
 ## 猫咪 Skills 做什么
 
-这套工作流覆盖一个独立开发者反复手工做的七件事，每一件配一个 skill。
+这套工作流覆盖一个独立开发者反复手工做的八件事，每一件配一个 skill。
 
 | 事情 | 以前哪里出错 | 你敲什么 | agent 做什么 |
 | --- | --- | --- | --- |
 | **把需求说清楚** | 你讲一遍，agent 点头，然后做出别的东西 | `/grill-with-docs` | 一轮一轮地访谈你，直到设计树上没有一个分支是悬着的；把共享词汇写进 `CONTEXT.md`，把难以逆转的决定写进 ADR |
 | **拆成小块** | 一个巨型 prompt，一个巨型 diff，什么都没法审 | `/to-spec` 然后 `/to-tickets` | 把对话整理成 spec，不再提新问题；然后切成带阻塞关系的 tracer-bullet tickets |
 | **写下来，做出来** | spec 活在聊天里，随聊天一起蒸发 | `/implement` | 认领一张 ticket，用 `tdd` 先红后绿，一次一小片；提交前跑完下面的所有检查 |
+| **决定测什么** | 代码有了，测试没有，能想到的每个测试都显得很随意 | `/cattytest` | 访谈你：什么绝不能坏、在哪个接缝上看、拿什么判断对错；写出一份由业务规则断言组成的测试计划和前五个红测试，然后交给 `tdd` |
 | **证明它能跑** | "测试全过"，但应用起不来 | 自动：`verify` | 把做出来的东西真的跑起来，像用户一样逐条走验收标准，每个结论配一张截图或一段捕获的输出 |
 | **找 bug、修 bug** | agent 靠猜，糊住症状，弄坏别的地方 | 直接说，或 `/diagnosing-bugs` | 你懂原因的 bug，先变成一个失败的测试。你不懂的 bug，走六个有闸门的阶段：让它变红 → 最小化 → 假设 → 插桩 → 修复 → 回归测试 |
 | **检查代码质量** | 永远不会失败的测试、没有鉴权的路由、打进包里的密钥 | 自动：`test-audit`、`code-review`、`security-review` | 把每个测试翻译成一条你看得懂的业务断言，再对代码做变异看测试能否察觉；从两个轴（规范、spec）并行审 diff；检查独立开发者最常上线的五种安全漏洞 |
 | **检查架构** | 每次改动都要碰七个文件，而你已经习惯了 | `/improve-codebase-architecture` | 巡检代码库里的浅模块，给你一份 HTML 报告，就你选中的那一个访谈你，它就是你下一个要做的东西 |
 
-后来发现还有两件事同样重要：
+后来发现还有两件事和这八件同样重要：
 
 | 事情 | 你敲什么 | agent 做什么 |
 | --- | --- | --- |
@@ -174,7 +175,7 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 这个分支新增了什么
 
-上游有二十五个 skill，这个仓库有三十三个。下面每一个相对上游都是新的，各自有完整的 `SKILL.md`、文档页和 changeset。
+上游有二十五个 skill，这个仓库有三十四个。下面每一个相对上游都是新的，各自有完整的 `SKILL.md`、文档页和 changeset。
 
 | Skill | 为什么原来缺它 |
 | --- | --- |
@@ -186,6 +187,7 @@ npx skills@latest add awangs1986/popcodeskills
 | [`refocus`](./skills/engineering/refocus/SKILL.md) | 长会话会跑偏，而 `/compact` 扔掉的恰恰是最要紧的那些决定。压缩之前先回到原始来源上重新对齐 |
 | [`takeover`](./skills/productivity/takeover/SKILL.md) | `handoff` 要求旧会话还活着并且配合。`takeover` 是这座桥的另一端：从导出、ID、URL 或 handoff 文件重建，确认之后再继续 |
 | [`askcat`](./skills/productivity/askcat/SKILL.md) | 把 `teach` 对准这套 skill 本身：一个 HTML 页面、每个装了的 skill、大白话、猫 |
+| [`cattytest`](./skills/engineering/cattytest/SKILL.md) | `tdd` 会问"测哪些接缝？"，做了一半的项目答不上来。这是一场能产出答案的访谈：断言、接缝、判据、真假依赖，以及按顺序排好的前几个红测试 |
 
 整个仓库范围内还改了这些：
 
@@ -196,7 +198,7 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 致谢与许可
 
-上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 分出。这里三十三个 skill 中的二十五个是他的，精神保持原样，只在单人工作流或宿主中立需要的地方做了调整；仓库的约定（`CLAUDE.md`、文档页、changeset 流程）也是他的。猫、`/vibe` 工作流、手册、海报，以及*这个分支新增了什么*里列的八个 skill，是为这个仓库做的。
+上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 分出。这里三十四个 skill 中的二十五个是他的，精神保持原样，只在单人工作流或宿主中立需要的地方做了调整；仓库的约定（`CLAUDE.md`、文档页、changeset 流程）也是他的。猫、`/vibe` 工作流、手册、海报，以及*这个分支新增了什么*里列的九个 skill，是为这个仓库做的。
 
 MIT 许可，与上游相同。原始版权声明保留在 [`LICENSE`](./LICENSE) 中。
 
@@ -223,6 +225,7 @@ skill 本身是英文写的；下面的说明是中文，名字和命令与英�
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**：把当前对话变成一份 spec 并发布到 issue tracker。不做访谈，只整理你已经讨论过的内容。
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**：把任何计划、spec 或对话拆成一组 tracer-bullet tickets，每张声明自己的阻塞关系；写成本地文件里的文字，或真实 tracker 上的原生阻塞链接。
 - **[implement](./skills/engineering/implement/SKILL.md)**：按 spec 或一组 ticket 做出功能：在事先约定的接缝上驱动 `/tdd`，变绿后跑 `/verify` 和 `/test-audit`，最后用 `/code-review` 和一份 Checks run 台账收尾，然后提交。
+- **[cattytest](./skills/engineering/cattytest/SKILL.md)**：就"这个做了一半的功能或项目该怎么测"访谈你：哪些行为绝不能坏、在哪个接缝上观察、拿什么判断对错、哪些用真的哪些用假的。产出一份测试计划：编号的业务规则断言，以及按顺序排好的前几个红测试，直接交给 `tdd`。
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**：规划一大块超出单个 agent 会话容量的工作：在 issue tracker 上建一张由决策 ticket 组成的共享地图，逐个解决，直到通往目的地的路清晰为止。
 
 **模型调用**

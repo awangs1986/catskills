@@ -88,6 +88,7 @@ Off the main flow entirely.
 - **`/wait-what`** is the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in plain words, in your language, using the `CONTEXT.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
 - **`/teach`**: learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/askcat`** is `/teach` pointed at this kit: it builds one HTML page where a cat guide explains every installed skill in plain words, with a "which one do I need?" picker. For the first week, or for someone you're onboarding; after that this map and `/vibe` are faster.
+- **`/cattytest`** is the grill for "I don't know how to test this": a half-built feature or project, tests missing or decorative. It reads the code and the existing tests, asks in rounds what must never break, at which seam, judged by what, and writes a test plan of business-rule claims with the first red tests in order. Upstream of `/tdd` (which needs the seams it produces) and the counterpart of `/test-audit` (which reads the written tests back as the same list).
 - **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
 
 ## Precondition

@@ -60,6 +60,7 @@ Some things the user says pick the route on their own, inside or across the four
 | "it keeps making the same mistake", "we fixed this last week too", "why didn't the review catch that" | `/retro` (in-progress bucket; say so if it isn't installed): the lesson becomes a check via `/setup-feedback-loops` or a standing rule | The loop that improves the loop |
 | "I'm trying this workflow out", "first time", "walk me through it" | The first-run card, and stay to check each step | First run |
 | "I don't follow what you just said" | `/wait-what`, mid-conversation, inside whatever skill is running | Context rules |
+| "I don't know how to test this", "where do I start with tests", "the tests I have are decoration", code with no tests halfway through | `/cattytest`: one scope question, then a grill that ends in a test plan of claims and the first red tests; `tdd` takes it from there. Build lane if the feature is in flight, Tidy-adjacent if it's the whole project | The kit |
 | "explain all these skills to me", "what do I have installed", "which skill does what" | `/askcat`: one HTML page, a cat explains every card, in their language. Not a lane | The kit |
 
 ## 3. Size (Build lane only)
@@ -79,7 +80,7 @@ Then: <the two or three steps after it, one line each>
 Context: <stay | /clear between tickets | /handoff because … | /takeover <record> first>
 ```
 
-Then stop, with one exception. Where the route's **first step is model-invoked**, offer to begin: "Say go and I'll start." On go, invoke that skill, passing along everything the user has told you. The model-invoked first steps are: `tdd` (S build, quick Fix), `diagnosing-bugs` (hard Fix), `code-review` (Review), `verify` ("does it actually work"), `test-audit` ("are these tests real"), `security-review` ("I want to deploy"), `research` (a library or API question), `prototype` (a question that needs running code), `domain-modeling` (a fuzzy term), `resolving-merge-conflicts` (a conflict in progress). User-invoked steps (`setup-feedback-loops`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`, `wait-what`, `askcat`, `wayfinder`) you cannot fire; the card names them and the user types them.
+Then stop, with one exception. Where the route's **first step is model-invoked**, offer to begin: "Say go and I'll start." On go, invoke that skill, passing along everything the user has told you. The model-invoked first steps are: `tdd` (S build, quick Fix), `diagnosing-bugs` (hard Fix), `code-review` (Review), `verify` ("does it actually work"), `test-audit` ("are these tests real"), `security-review` ("I want to deploy"), `research` (a library or API question), `prototype` (a question that needs running code), `domain-modeling` (a fuzzy term), `resolving-merge-conflicts` (a conflict in progress). User-invoked steps (`setup-feedback-loops`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`, `wait-what`, `askcat`, `cattytest`, `wayfinder`) you cannot fire; the card names them and the user types them.
 
 ## Rules
 

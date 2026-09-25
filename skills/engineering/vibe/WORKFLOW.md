@@ -96,7 +96,7 @@ Write down every place the agent did the "broken if" thing. That list is the fir
 
 ## The kit
 
-Twenty-four skills. Thirteen you type, eleven the agent reaches for on its own (and you can type too).
+Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (and you can type too).
 
 **You type these** (user-invoked):
 
@@ -108,6 +108,7 @@ Twenty-four skills. Thirteen you type, eleven the agent reaches for on its own (
 | `/grill-with-docs` | The interview. Sharpens the idea, writes `CONTEXT.md` and ADRs as you go |
 | `/to-spec` | Synthesises the conversation into a spec. No new questions |
 | `/to-tickets` | Cuts the spec into tracer-bullet tickets with blocking edges |
+| `/cattytest` | Code exists, tests don't, and you don't know where to start. One scope question, then a grill: what must never break, at which seam, judged by what, real or faked. Ends in a test plan of claims and the first red tests in order; `tdd` consumes it |
 | `/implement` | Builds one ticket or spec: `tdd` inside, `verify` and `test-audit` when green, `code-review` at the end, commits, ends with a Checks run ledger |
 | `/improve-codebase-architecture` | Surveys for shallow modules, HTML report, grills you through the one you pick |
 | `/refocus` | Long session, agent drifting: re-reads the spec and every decision from disk, checks the diff against them, reports drift, asks one round about anything ambiguous, writes the answers back to the spec |
@@ -185,6 +186,10 @@ Steps 1 to 3 happen in **one unbroken window**. Don't `/clear` or `/compact` unt
 3. **`/to-tickets`**. It proposes vertical slices with blocking edges and asks about granularity. Each slice must be demoable on its own and fit in a fresh window. Approve, and it writes `issues/01-*.md`, `02-*.md`, … in dependency order.
 4. **Per ticket**: `/clear`, then `/implement .scratch/<feature>/issues/NN-<slug>.md` (or the GitHub issue number). Work the frontier: any ticket whose blockers are done. Each run ends with its own `code-review` and commit. If a single ticket runs long enough that the agent starts forgetting the ticket's own criteria, `/refocus` before you do anything else.
 5. When the last ticket lands, **`test-audit`** across the whole feature (per-ticket audits can't see a user story that fell between two tickets), then **`/code-review main`** across the whole branch once, because per-ticket reviews can't see cross-ticket smells (Duplicated Code across slices is the usual one).
+
+### Halfway in, and no tests
+
+The build that started as vibe coding, before this workflow, and now has a working feature and no tests worth the name. Don't retrofit `tdd` blind, and don't ask the agent to "add tests": it will write green ones. **`/cattytest`** first. One scope question (this feature or the whole project), then a grill that reads your code and your existing tests before it asks anything, and ends in a `test-plan.md`: claims written as business rules, the seam each is observed at, what's real and what's faked, a keep / rewrite / delete sort of the tests you have, and the first five red tests in order. Say go and it drives `tdd` through the five. From there the feature is back on the M path: `test-audit` reads the tests as the same list of claims, `/code-review main` closes it.
 
 ### The prototype detour
 
@@ -392,6 +397,7 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | Fix a bug I understand | Say it (add "test first") |
 | Fix a bug I don't | `/diagnosing-bugs` |
 | See it actually work | `verify` (automatic at the end of `/implement`; say "verify it" any other time) |
+| Don't know how to test what I've built | `/cattytest`, then `tdd` through its first red tests |
 | Know what the tests actually check, and whether they can fail | `test-audit` (automatic in `/implement`; run it on the whole feature before merge) |
 | Check the branch | `/code-review main` |
 | Check before it goes public | `security-review` against `main` |

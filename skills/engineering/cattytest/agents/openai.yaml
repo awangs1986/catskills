@@ -1,0 +1,5 @@
+interface:
+  display_name: "Cattytest"
+  short_description: "Grill me about how to test this; ends with a test plan of claims and first red tests"
+policy:
+  allow_implicit_invocation: false
