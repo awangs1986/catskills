@@ -31,6 +31,8 @@ Look at the current repo to understand its starting state. Read whatever exists;
 
 ### 2. Present findings and ask
 
+Ask and explain in the language the user is writing in; the `docs/agents/*.md` files you write are English (they are read by the skills), and the user can translate them later if they want.
+
 Summarise what's present and what's missing. Then take the sections in order. One section, one answer, then the next.
 
 Lead each section with the recommended answer so the user can accept it in a word. Give a one-line explainer only when the choice genuinely branches; skip the section entirely when exploration already settled it (Section B when `triage` isn't installed, Section C when there's no monorepo).
@@ -97,7 +99,13 @@ The block:
 ### Domain docs
 
 [one-line summary of layout: "single-context" or "multi-context"]. See `docs/agents/domain.md`.
+
+### Language
+
+The skills are written in English. Reply, ask questions, and report in the language the user writes in. Documents the skills write (specs, tickets, `CONTEXT.md`, ADRs, review findings) follow the language the project's docs already use; if there are none yet, the user's language. Skill names, commands, code identifiers, and file paths stay as they are.
 ```
+
+The `### Language` sub-block is fixed text; write it as is. It is what lets every skill answer a Chinese user in Chinese and a German user in German without each skill saying so.
 
 Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
 

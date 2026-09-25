@@ -86,4 +86,4 @@ Then stop, with one exception. Where the route's **first step is model-invoked**
 - Don't start grilling, speccing, or coding. Route cards only. A user who wanted the interview would have typed `/grill-with-docs`.
 - Route only over the kit in WORKFLOW.md, plus the two the handbook names as bring-backs at a specific moment (`wayfinder` for a project split, `resolving-merge-conflicts` for a conflict in progress). If the ask genuinely involves other people (issues someone else filed, a stakeholder's answer, a colleague picking up the work), it has left the kit: say so in one line and point them at `/ask-matt`.
 - When you assert what another skill does, you have read its `SKILL.md` in this session. If you haven't, open it before claiming it.
-- Plain words. If the user has a `CONTEXT.md`, use its terms.
+- Plain words, in the language the user writes in. If the user has a `CONTEXT.md`, use its terms. Commands and skill names stay as they are.
