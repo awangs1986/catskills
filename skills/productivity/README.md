@@ -6,6 +6,7 @@ General workflow tools, not code-specific.
 
 Reachable only when you type them (Claude Code: `disable-model-invocation: true`; Codex: `policy.allow_implicit_invocation: false` in `agents/openai.yaml`).
 
+- **[askcat](./askcat/SKILL.md)**: Build one HTML page where a cartoon cat explains every installed skill in plain words: what it does, when to type it, what a good run looks like, plus a "which one do I need?" picker and a first-run checklist. In your language.
 - **[grill-me](./grill-me/SKILL.md)**: Get relentlessly interviewed about a plan or design until every branch of the design tree is resolved.
 - **[handoff](./handoff/SKILL.md)**: Compact the current conversation into a handoff document so another agent can continue the work.
 - **[takeover](./takeover/SKILL.md)**: Resume a long or stalled conversation in a fresh session from an ID, export, URL, or handoff file: the new session indexes the records, rebuilds concise context, describes the project in up to ten sentences, and confirms before continuing. Needs nothing from the old session.

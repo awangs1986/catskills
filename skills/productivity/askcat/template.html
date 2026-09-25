@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>askcat</title>
+<style>
+  :root{
+    --bg:#fff8ec; --paper:#ffffff; --ink:#2f2a26; --muted:#786f68; --line:#e8dfd2;
+    --orange:#f6a23c; --orange-dark:#d97b22; --cream:#fde9c9;
+    --build:#3b6fd6; --build-bg:#e8effc; --fix:#d64545; --fix-bg:#fde8e8;
+    --review:#2f8f5b; --review-bg:#e6f4ec; --tidy:#7a4fd0; --tidy-bg:#efe8fb;
+    --focus:#c9920e; --focus-bg:#fff3cf; --start:#5a5148; --start-bg:#efeae2; --other:#3a7f8f; --other-bg:#e4f2f4;
+    --radius:18px; --shadow:0 2px 0 rgba(0,0,0,.06), 0 10px 30px rgba(80,60,30,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",Roboto,sans-serif}
+  a{color:var(--build)}
+  code,kbd{font:0.92em ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;background:#f2ecdf;padding:.1em .4em;border-radius:6px}
+  .wrap{max-width:1120px;margin:0 auto;padding:24px 20px 80px}
+  header.hero{display:grid;grid-template-columns:1fr 220px;gap:24px;align-items:center;padding:12px 0 8px}
+  header.hero h1{font-size:2.2rem;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+  header.hero .sub{color:var(--muted);margin:0 0 14px;font-size:1.05rem}
+  .meta{font-size:.85rem;color:var(--muted)}
+  .catbox{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .cat{width:180px;height:180px}
+  .bubble{position:relative;background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);font-size:.98rem}
+  .bubble.left::before{content:"";position:absolute;left:-12px;top:22px;border:10px solid transparent;border-right-color:var(--ink);border-left:0}
+  .bubble.left::after{content:"";position:absolute;left:-8px;top:24px;border:8px solid transparent;border-right-color:var(--paper);border-left:0}
+  .bubble.top::before{content:"";position:absolute;top:-12px;left:50%;margin-left:-10px;border:10px solid transparent;border-bottom-color:var(--ink);border-top:0}
+  .bubble.top::after{content:"";position:absolute;top:-8px;left:50%;margin-left:-8px;border:8px solid transparent;border-bottom-color:var(--paper);border-top:0}
+  nav.toc{position:sticky;top:0;z-index:5;background:rgba(255,248,236,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin:8px -20px 20px;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  nav.toc a{text-decoration:none;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.9rem}
+  nav.toc a:hover{border-color:var(--orange-dark)}
+  nav.toc .grow{flex:1}
+  nav.toc input{width:min(320px,100%);padding:8px 12px;border:1.5px solid var(--line);border-radius:999px;font:inherit;font-size:.95rem;background:var(--paper)}
+  .progress{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--muted);margin:0 0 22px}
+  .progress .bar{flex:1;height:10px;background:#efe6d8;border-radius:999px;overflow:hidden;max-width:420px}
+  .progress .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));width:0;transition:width .3s}
+  section.block{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin:0 0 22px;box-shadow:var(--shadow)}
+  section.block h2{margin:0 0 8px;font-size:1.45rem}
+  section.block p.blurb{margin:0 0 14px;color:var(--muted)}
+  .chapter{border-left:8px solid var(--c,#999);}
+  .chapter .head{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin-bottom:12px}
+  .chapter .head .cat{width:110px;height:110px}
+  .chapter .tag{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--c);border-radius:6px;padding:2px 8px;margin-bottom:6px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .card{border:1.5px solid var(--line);border-radius:14px;padding:14px 16px 12px;background:var(--cbg,#fafafa);display:flex;flex-direction:column;gap:8px;scroll-margin-top:90px}
+  .card.hidden{display:none}
+  .card .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .card .name{font:700 1.05rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--c)}
+  .pill{font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;border:1.5px solid currentColor}
+  .pill.you{color:#8a4b08;background:#fff1dc}
+  .pill.agent{color:#1f5b8a;background:#e3f0fb}
+  .pill.beta{color:#7a4fd0;background:#f1eafc}
+  .card .one{font-size:1rem;margin:0}
+  .card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.92rem}
+  .card dt{color:var(--muted);white-space:nowrap;font-weight:600}
+  .card dd{margin:0}
+  .card .ex{background:#fff;border:1.5px dashed var(--line);border-radius:10px;padding:8px 10px;font:0.88rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}
+  .card .tip{display:flex;gap:8px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:8px 10px;font-size:.9rem}
+  .card .tip svg{width:28px;height:28px;flex:none;margin-top:1px}
+  .card .tells{font-size:.85rem;display:grid;gap:3px}
+  .card .tells .ok::before{content:"✓ ";color:var(--review);font-weight:700}
+  .card .tells .bad::before{content:"✗ ";color:var(--fix);font-weight:700}
+  .card .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.85rem;margin-top:2px;border-top:1px solid var(--line);padding-top:8px}
+  .card label{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--muted)}
+  .card input[type=checkbox]{width:18px;height:18px;accent-color:var(--orange-dark)}
+  .card.done{outline:2px solid var(--orange);outline-offset:-2px}
+  .picker .q{font-size:1.15rem;font-weight:700;margin:6px 0 12px}
+  .picker .opts{display:flex;flex-direction:column;gap:8px;max-width:640px}
+  .picker button{font:inherit;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer}
+  .picker button:hover{border-color:var(--orange-dark);background:var(--cream)}
+  .picker .result{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center}
+  .picker .result .cat{width:100px;height:100px}
+  .picker .crumbs{font-size:.85rem;color:var(--muted);margin-bottom:8px}
+  .picker .restart{margin-top:12px;background:none;border:none;color:var(--build);cursor:pointer;padding:0;font-size:.9rem;text-decoration:underline}
+  ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+  ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+  ol.steps li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.steps .t{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:700}
+  ol.steps .w{color:var(--muted);font-size:.92rem}
+  .gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px 18px;font-size:.93rem}
+  .gloss b{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  footer{color:var(--muted);font-size:.88rem;text-align:center;margin-top:30px}
+  .empty{color:var(--muted);font-style:italic}
+  @media (max-width:760px){
+    header.hero{grid-template-columns:1fr}
+    .catbox{flex-direction:row}
+    .chapter .head{grid-template-columns:80px 1fr}
+    .chapter .head .cat{width:76px;height:76px}
+    .picker .result{grid-template-columns:1fr}
+  }
+  @media print{
+    nav.toc,.progress,.picker,.card .foot label{display:none}
+    body{background:#fff}
+    section.block{box-shadow:none;break-inside:avoid}
+  }
+  /* cat accessories */
+  .cat .acc{display:none}
+  .cat[data-mood=teacher] .acc-glasses,.cat[data-mood=teacher] .acc-pointer{display:block}
+  .cat[data-mood=builder] .acc-hardhat,.cat[data-mood=builder] .acc-pencil{display:block}
+  .cat[data-mood=detective] .acc-deerstalker,.cat[data-mood=detective] .acc-magnifier{display:block}
+  .cat[data-mood=guard] .acc-helmet,.cat[data-mood=guard] .acc-shield{display:block}
+  .cat[data-mood=sweeper] .acc-scarf,.cat[data-mood=sweeper] .acc-broom{display:block}
+  .cat[data-mood=dizzy] .acc-swirl,.cat[data-mood=dizzy] .acc-stars{display:block}
+  .cat[data-mood=dizzy] .eyes{display:none}
+  .cat[data-mood=reader] .acc-clipboard{display:block}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="cat-shape">
+      <!-- tail -->
+      <path d="M150 168 q40 -10 30 -45 q-4 -14 -18 -10 q10 8 6 20 q-6 16 -28 22z" fill="#d97b22"/>
+      <!-- body -->
+      <ellipse cx="100" cy="165" rx="52" ry="30" fill="#f6a23c"/>
+      <path d="M74 150 q10 14 0 28 M100 146 q8 16 0 32 M126 150 q-10 14 0 28" stroke="#d97b22" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="100" cy="172" rx="26" ry="16" fill="#fff4e3"/>
+      <!-- ears -->
+      <path d="M52 78 L60 30 L96 62z" fill="#f6a23c"/><path d="M60 68 L64 42 L84 60z" fill="#f7b7c6"/>
+      <path d="M148 78 L140 30 L104 62z" fill="#f6a23c"/><path d="M140 68 L136 42 L116 60z" fill="#f7b7c6"/>
+      <!-- head -->
+      <circle cx="100" cy="95" r="54" fill="#f6a23c"/>
+      <path d="M84 48 q6 14 0 26 M100 44 q6 16 0 30 M116 48 q-6 14 0 26" stroke="#d97b22" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M50 96 q6 -6 12 0 M138 96 q6 -6 12 0" stroke="#d97b22" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- muzzle -->
+      <ellipse cx="100" cy="112" rx="26" ry="18" fill="#fff4e3"/>
+      <circle cx="72" cy="108" r="8" fill="#f8c6c0" opacity=".8"/><circle cx="128" cy="108" r="8" fill="#f8c6c0" opacity=".8"/>
+      <!-- eyes -->
+      <g class="eyes">
+        <ellipse cx="82" cy="92" rx="7" ry="9" fill="#2f2a26"/><ellipse cx="118" cy="92" rx="7" ry="9" fill="#2f2a26"/>
+        <circle cx="84.5" cy="88.5" r="2.6" fill="#fff"/><circle cx="120.5" cy="88.5" r="2.6" fill="#fff"/>
+      </g>
+      <!-- nose + mouth -->
+      <path d="M95 106 L105 106 L100 112z" fill="#e8807a"/>
+      <path d="M100 112 q0 6 -7 7 M100 112 q0 6 7 7" stroke="#2f2a26" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <!-- whiskers -->
+      <path d="M60 106 L34 100 M60 112 L34 116 M140 106 L166 100 M140 112 L166 116" stroke="#2f2a26" stroke-width="2" stroke-linecap="round"/>
+      <!-- accessories -->
+      <g class="acc acc-glasses"><circle cx="82" cy="92" r="13" fill="none" stroke="#2f2a26" stroke-width="3"/><circle cx="118" cy="92" r="13" fill="none" stroke="#2f2a26" stroke-width="3"/><path d="M95 92 L105 92 M69 90 L56 84 M131 90 L144 84" stroke="#2f2a26" stroke-width="3" stroke-linecap="round"/></g>
+      <g class="acc acc-pointer"><path d="M148 150 L192 96" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/><circle cx="192" cy="96" r="4" fill="#d64545"/></g>
+      <g class="acc acc-hardhat"><path d="M52 62 q48 -46 96 0 L148 70 L52 70z" fill="#f4c542"/><rect x="44" y="66" width="112" height="9" rx="4" fill="#e0ab1e"/><rect x="94" y="30" width="12" height="20" rx="4" fill="#e0ab1e"/></g>
+      <g class="acc acc-pencil"><path d="M150 150 L186 104" stroke="#f4c542" stroke-width="9" stroke-linecap="butt"/><path d="M186 104 L194 94 L190 108z" fill="#f3d2b0"/><path d="M150 150 L145 156" stroke="#f3a3b0" stroke-width="9" stroke-linecap="round"/></g>
+      <g class="acc acc-deerstalker"><path d="M48 66 q52 -40 104 0 L156 74 L44 74z" fill="#b07a3a"/><path d="M60 66 L96 44 L100 62z M140 66 L104 44 L100 62z" fill="#8a5a2b"/><path d="M40 72 L60 66 L60 76z M160 72 L140 66 L140 76z" fill="#b07a3a"/><path d="M60 58 L140 58" stroke="#8a5a2b" stroke-width="3"/></g>
+      <g class="acc acc-magnifier"><circle cx="160" cy="130" r="18" fill="#dff1fb" stroke="#2f2a26" stroke-width="4"/><path d="M172 143 L188 162" stroke="#2f2a26" stroke-width="7" stroke-linecap="round"/></g>
+      <g class="acc acc-helmet"><path d="M50 70 q50 -54 100 0 L150 78 L50 78z" fill="#8f9bb3"/><path d="M96 26 L104 26 L104 50 L96 50z" fill="#d64545"/><rect x="46" y="74" width="108" height="8" rx="4" fill="#6f7a92"/></g>
+      <g class="acc acc-shield"><path d="M150 112 L184 120 L182 150 q-4 20 -32 30 q-28 -10 -32 -30 L120 120z" fill="#3b6fd6" stroke="#2f2a26" stroke-width="3"/><path d="M138 142 L148 152 L166 128" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+      <g class="acc acc-scarf"><path d="M50 74 q50 -46 100 0 L150 80 L50 80z" fill="#d64545"/><circle cx="72" cy="62" r="3" fill="#fff"/><circle cx="100" cy="52" r="3" fill="#fff"/><circle cx="128" cy="62" r="3" fill="#fff"/><path d="M148 74 L168 62 L162 82z" fill="#d64545"/></g>
+      <g class="acc acc-broom"><path d="M156 84 L156 148" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/><path d="M142 146 L170 146 L178 182 L134 182z" fill="#f4c542" stroke="#c99a1a" stroke-width="2"/><path d="M146 150 L144 178 M152 150 L152 178 M158 150 L160 178 M164 150 L168 178" stroke="#c99a1a" stroke-width="2"/></g>
+      <g class="acc acc-swirl"><path d="M82 92 m-7 0 a7 7 0 1 1 7 7 a4 4 0 1 1 4 -4" fill="none" stroke="#2f2a26" stroke-width="2.6" stroke-linecap="round"/><path d="M118 92 m-7 0 a7 7 0 1 1 7 7 a4 4 0 1 1 4 -4" fill="none" stroke="#2f2a26" stroke-width="2.6" stroke-linecap="round"/></g>
+      <g class="acc acc-stars" fill="#f4c542"><path d="M40 40 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z"/><path d="M160 34 l2.5 6 6 1 -4.5 4 1 6 -5 -3 -5 3 1 -6 -4.5 -4 6 -1z"/><path d="M28 74 l2 4 4 .5 -3 3 .7 4.5 -3.7 -2 -3.7 2 .7 -4.5 -3 -3 4 -.5z"/></g>
+      <g class="acc acc-clipboard"><rect x="134" y="104" width="44" height="60" rx="5" fill="#8a5a2b"/><rect x="139" y="112" width="34" height="48" rx="3" fill="#fff"/><rect x="148" y="100" width="16" height="10" rx="3" fill="#5a3a1a"/><path d="M144 124 L168 124 M144 134 L168 134 M144 144 L162 144" stroke="#b8b0a6" stroke-width="2.5"/><path d="M143 122 L147 126 L152 119" stroke="#2f8f5b" stroke-width="2.5" fill="none"/></g>
+    </g>
+  </defs>
+</svg>
+
+<script>
+/*ASKCAT_DATA*/
+</script>
+<script>
+(function(){
+  var D = window.ASKCAT;
+  var app = document.getElementById('app');
+  if(!D){ app.innerHTML = '<p class="empty">No data. The skill replaces the /*ASKCAT_DATA*/ line with window.ASKCAT = {...}.</p>'; return; }
+  document.documentElement.lang = D.lang || 'en';
+  document.title = D.title || 'askcat';
+  var L = D.labels || {};
+  var COLORS = {start:['--start','--start-bg'],build:['--build','--build-bg'],fix:['--fix','--fix-bg'],review:['--review','--review-bg'],tidy:['--tidy','--tidy-bg'],session:['--focus','--focus-bg'],other:['--other','--other-bg']};
+  var MOODBYCH = {start:'teacher',build:'builder',fix:'detective',review:'guard',tidy:'sweeper',session:'dizzy',other:'reader'};
+  var STORE = 'askcat:' + (D.source||'') + ':';
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function cat(mood, cls){ return '<svg class="cat '+(cls||'')+'" data-mood="'+esc(mood||'teacher')+'" viewBox="0 0 200 200" role="img" aria-label="'+esc((D.cat&&D.cat.name)||'cat')+'"><use href="#cat-shape"/></svg>'; }
+  function chapterColor(ch){ var k = COLORS[ch.id] ? ch.id : (ch.color||'other'); var v = COLORS[k]||COLORS.other; return 'style="--c:var('+v[0]+');--cbg:var('+v[1]+')"'; }
+  function allSkills(){ var out=[]; (D.chapters||[]).forEach(function(ch){ (ch.skills||[]).forEach(function(s){ out.push({s:s,ch:ch}); }); }); return out; }
+  function tried(name){ try{ return localStorage.getItem(STORE+name)==='1'; }catch(e){ return false; } }
+  function setTried(name,v){ try{ v?localStorage.setItem(STORE+name,'1'):localStorage.removeItem(STORE+name); }catch(e){} }
+
+  function card(s, ch){
+    var h = '<article class="card'+(tried(s.name)?' done':'')+'" id="skill-'+esc(s.name)+'" data-name="'+esc(s.name)+'" data-text="'+esc((s.name+' '+s.oneLiner+' '+s.when+' '+s.see+' '+s.tip+' '+s.example).toLowerCase())+'">';
+    h += '<div class="top"><span class="name">'+(s.invoke==='you'?'/':'')+esc(s.name)+'</span>';
+    h += '<span class="pill '+(s.invoke==='you'?'you':'agent')+'">'+esc(s.invoke==='you'?L.youType:L.agentUses)+'</span>';
+    if(s.beta) h += '<span class="pill beta">'+esc(L.beta)+'</span>';
+    h += '</div>';
+    h += '<p class="one">'+esc(s.oneLiner)+'</p>';
+    h += '<dl>';
+    if(s.when) h += '<dt>'+esc(L.when)+'</dt><dd>'+esc(s.when)+'</dd>';
+    if(s.see) h += '<dt>'+esc(L.see)+'</dt><dd>'+esc(s.see)+'</dd>';
+    h += '</dl>';
+    if(s.example) h += '<div><div class="meta" style="margin-bottom:3px">'+esc(L.example)+'</div><div class="ex">'+esc(s.example)+'</div></div>';
+    if(s.tip) h += '<div class="tip">'+cat(ch.mood||MOODBYCH[ch.id]||'teacher')+'<div><b>'+esc(L.tip)+'</b> '+esc(s.tip)+'</div></div>';
+    if(s.working||s.broken){ h += '<div class="tells">'; if(s.working) h+='<div class="ok">'+esc(s.working)+'</div>'; if(s.broken) h+='<div class="bad">'+esc(s.broken)+'</div>'; h+='</div>'; }
+    h += '<div class="foot"><label><input type="checkbox" data-tried="'+esc(s.name)+'"'+(tried(s.name)?' checked':'')+'> '+esc(L.tried)+'</label>';
+    if(s.file) h += '<a href="'+esc(s.file)+'" target="_blank" rel="noopener">'+esc(L.openFile)+'</a>';
+    h += '</div></article>';
+    return h;
+  }
+
+  function render(){
+    var h = '';
+    h += '<header class="hero"><div><h1>'+esc(D.title)+'</h1><p class="sub">'+esc(D.subtitle)+'</p>';
+    h += '<div class="bubble left">'+esc(D.intro&&D.intro.bubble)+'</div>';
+    h += '<p class="meta" style="margin-top:10px">'+esc(D.source||'')+(D.generated?' · '+esc(D.generated):'')+'</p></div>';
+    h += '<div class="catbox">'+cat('teacher')+'</div></header>';
+
+    h += '<nav class="toc"><a href="#picker">'+esc(L.picker)+'</a>';
+    (D.chapters||[]).forEach(function(ch){ h += '<a href="#chapter-'+esc(ch.id)+'">'+esc(ch.title)+'</a>'; });
+    if(D.firstRun&&D.firstRun.length) h += '<a href="#firstrun">'+esc(L.firstRun)+'</a>';
+    if(D.glossary&&D.glossary.length) h += '<a href="#glossary">'+esc(L.glossary)+'</a>';
+    h += '<span class="grow"></span><input type="search" id="q" placeholder="'+esc(L.search)+'" aria-label="'+esc(L.search)+'"></nav>';
+
+    var n = allSkills().length, t = allSkills().filter(function(x){return tried(x.s.name);}).length;
+    h += '<div class="progress"><span>'+esc(L.progress)+'</span><div class="bar"><i id="bar" style="width:'+(n?Math.round(100*t/n):0)+'%"></i></div><span id="cnt">'+t+' / '+n+'</span></div>';
+
+    if(D.intro){ h += '<section class="block"><h2>'+esc(D.intro.heading)+'</h2>'; (D.intro.paragraphs||[]).forEach(function(p){ h+='<p>'+esc(p)+'</p>'; }); h += '</section>'; }
+
+    if(D.picker){ h += '<section class="block picker" id="picker"><h2>'+esc(L.picker)+'</h2><p class="blurb">'+esc(L.pickerIntro)+'</p><div id="pk"></div></section>'; }
+
+    (D.chapters||[]).forEach(function(ch){
+      h += '<section class="block chapter" id="chapter-'+esc(ch.id)+'" '+chapterColor(ch)+'>';
+      h += '<div class="head">'+cat(ch.mood||MOODBYCH[ch.id]||'teacher')+'<div><span class="tag">'+esc(L.chapters)+'</span><h2>'+esc(ch.title)+'</h2><p class="blurb">'+esc(ch.blurb)+'</p>';
+      if(ch.bubble) h += '<div class="bubble left">'+esc(ch.bubble)+'</div>';
+      h += '</div></div><div class="cards">';
+      (ch.skills||[]).forEach(function(s){ h += card(s, ch); });
+      h += '</div><p class="empty nomatch" hidden>'+esc(L.noMatch)+'</p></section>';
+    });
+
+    if(D.firstRun&&D.firstRun.length){
+      h += '<section class="block" id="firstrun"><h2>'+esc(L.firstRun)+'</h2><ol class="steps">';
+      D.firstRun.forEach(function(st){ h += '<li><div><div class="t">'+esc(st.type)+'</div><div class="w">'+esc(st.watch)+'</div></div></li>'; });
+      h += '</ol></section>';
+    }
+    if(D.glossary&&D.glossary.length){
+      h += '<section class="block" id="glossary"><h2>'+esc(L.glossary)+'</h2><div class="gloss">';
+      D.glossary.forEach(function(g){ h += '<div><b>'+esc(g.term)+'</b> · '+esc(g.plain)+'</div>'; });
+      h += '</div></section>';
+    }
+    h += '<footer>'+esc(D.footer||'')+'</footer>';
+    app.innerHTML = h;
+
+    // progress ticks
+    app.addEventListener('change', function(e){
+      var el = e.target; if(!el || !el.hasAttribute('data-tried')) return;
+      var name = el.getAttribute('data-tried'); setTried(name, el.checked);
+      var c = document.getElementById('skill-'+name); if(c) c.classList.toggle('done', el.checked);
+      var all = allSkills(), done = all.filter(function(x){return tried(x.s.name);}).length;
+      document.getElementById('bar').style.width = (all.length?Math.round(100*done/all.length):0)+'%';
+      document.getElementById('cnt').textContent = done+' / '+all.length;
+    });
+    // search
+    var q = document.getElementById('q');
+    q.addEventListener('input', function(){
+      var v = q.value.trim().toLowerCase();
+      document.querySelectorAll('.chapter').forEach(function(sec){
+        var any = false;
+        sec.querySelectorAll('.card').forEach(function(c){ var hit = !v || c.getAttribute('data-text').indexOf(v)>=0; c.classList.toggle('hidden', !hit); if(hit) any = true; });
+        sec.querySelector('.nomatch').hidden = any;
+      });
+    });
+    if(D.picker) picker();
+    if(location.hash){ var tgt = document.querySelector(location.hash); if(tgt) setTimeout(function(){ tgt.scrollIntoView({block:'start'}); }, 50); }
+  }
+
+  function picker(){
+    var box = document.getElementById('pk'), P = D.picker, byId = {}, trail = [];
+    (P.questions||[]).forEach(function(qq){ byId[qq.id] = qq; });
+    var skills = {}; allSkills().forEach(function(x){ skills[x.s.name] = x; });
+    function show(id){
+      var qq = byId[id]; if(!qq){ box.innerHTML = '<p class="empty">?</p>'; return; }
+      var h = trail.length ? '<div class="crumbs">'+trail.map(esc).join(' › ')+'</div>' : '';
+      h += '<div class="q">'+esc(qq.text)+'</div><div class="opts">';
+      qq.options.forEach(function(o,i){ h += '<button data-i="'+i+'">'+esc(o.label)+'</button>'; });
+      h += '</div>' + (trail.length ? '<button class="restart" data-restart>'+esc(L.restart)+'</button>' : '');
+      box.innerHTML = h;
+      box.querySelectorAll('button[data-i]').forEach(function(b){ b.addEventListener('click', function(){ var o = qq.options[+b.getAttribute('data-i')]; trail.push(o.label); o.skill ? result(o) : show(o.next); }); });
+      var r = box.querySelector('[data-restart]'); if(r) r.addEventListener('click', function(){ trail = []; show(P.start); });
+    }
+    function result(o){
+      var x = skills[o.skill], mood = x ? (x.ch.mood||MOODBYCH[x.ch.id]||'teacher') : 'teacher';
+      var h = '<div class="crumbs">'+trail.map(esc).join(' › ')+'</div><div class="result">'+cat(mood)+'<div>';
+      h += '<div class="meta">'+esc(L.result)+'</div><div class="q" style="margin:2px 0 6px"><a href="#skill-'+esc(o.skill)+'">'+(x&&x.s.invoke==='you'?'/':'')+esc(o.skill)+'</a></div>';
+      if(x) h += '<p style="margin:0 0 8px">'+esc(x.s.oneLiner)+'</p>';
+      if(o.prompt) h += '<div class="ex">'+esc(o.prompt)+'</div>';
+      h += '</div></div><button class="restart" data-restart>'+esc(L.restart)+'</button>';
+      box.innerHTML = h;
+      box.querySelector('[data-restart]').addEventListener('click', function(){ trail = []; show(P.start); });
+    }
+    show(P.start);
+  }
+  render();
+})();
+</script>
+</body>
+</html>
