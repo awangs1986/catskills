@@ -4,7 +4,7 @@
 
 It routes and stops. It does not grill, write a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or start coding; where a lane's first step is a model-invoked skill (`tdd`, `diagnosing-bugs`, `code-review`) it offers to fire that one on a "go", and otherwise you type what the card names.
 
-It is a curated subset, not the full map. The kit is twenty-two skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](https://aihero.dev/skills-ask-matt).
+It is a curated subset, not the full map. The kit is twenty-three skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](https://aihero.dev/skills-ask-matt).
 
 ## When to reach for it
 
@@ -17,6 +17,8 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 | A branch you want checked | `/code-review main`, and what to do with each axis of findings |
 | The codebase feels harder to change than it should | `/improve-codebase-architecture`, and how the idea it produces goes back onto Build |
 | You've asked for the same change three times and it's still wrong | Not a fifth attempt. Discard, clear, write one input / expected / actual example; whether you can write it picks the lane |
+| The session drifted, is about to move, or died on you | One of the three seam moves: [refocus](https://aihero.dev/skills-refocus) to stay, [handoff](https://aihero.dev/skills-handoff) to leave on purpose, [takeover](https://aihero.dev/skills-takeover) in the new window when the old one is gone |
+| A grill question only running code can settle | The prototype detour: `/handoff` the question, [prototype](https://aihero.dev/skills-prototype) in a fresh session, the decision comes back to the grill |
 | A team, stakeholders, or a greenfield product too foggy for one head | Not this. It says so in a line and points at [ask-matt](https://aihero.dev/skills-ask-matt) |
 
 ## Prerequisites
@@ -44,11 +46,11 @@ The sizing question is asked in order and the first yes wins: can you write it a
 
 **Can I skip it and just type the skills?**
 
-Yes, and after a week you will. The card exists for the first few sessions, and for the moments where you have a bug and can't tell whether it is a `tdd` bug or a `diagnosing-bugs` bug. The cheatsheet at the bottom of the skill's `WORKFLOW.md` is the same information as a table.
+Yes, and after a week you will. The card exists for the first few sessions, and for the moments where you have a bug and can't tell whether it is a `tdd` bug or a `diagnosing-bugs` bug. The cheatsheet at the bottom of the skill's `WORKFLOW.md` is the same information as a table, and [the poster](https://github.com/awangs1986/popcodeskills/blob/main/docs/engineering/vibe-workflow-poster.png) is the same information as one picture.
 
 **It offered to start `tdd` for me. Is that safe?**
 
-It only fires model-invoked skills, and only after you say go. Every user-invoked step (`grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`) stays yours to type; no skill in this repo can fire those for you.
+It only fires model-invoked skills, and only after you say go. Every user-invoked step (`grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`) stays yours to type; no skill in this repo can fire those for you.
 
 ## It's working if
 

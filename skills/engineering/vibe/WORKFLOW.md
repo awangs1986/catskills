@@ -2,7 +2,7 @@
 
 A solo developer's path through this repo's skills. One person, one agent, one codebase, no team process to keep happy. The goal is to keep the speed of vibe coding while removing its two failure modes: the agent built the wrong thing, and the codebase turned to mud before you noticed.
 
-The whole workflow is **four lanes** and **one setup step**. You are always in exactly one lane. `/vibe` puts you in it and names the next command; this file is the map it reads from.
+The whole workflow is **four lanes** and **one setup step**. You are always in exactly one lane. `/vibe` puts you in it and names the next command; this file is the map it reads from. The same map as a one-page poster: [docs/engineering/vibe-workflow-poster.png](../../../docs/engineering/vibe-workflow-poster.png).
 
 ```
                     once per repo:  /setup-matt-pocock-skills, /setup-feedback-loops
@@ -10,7 +10,10 @@ The whole workflow is **four lanes** and **one setup step**. You are always in e
         ┌───────────────┬───────────────┼───────────────┬───────────────┐
         ▼               ▼               ▼               ▼               ▼
       BUILD            FIX            REVIEW           TIDY          (STUCK)
-   idea → code    something broke   before merge   every few days   any time
+   idea → code    something broke   before merge   every few days   any time:
+                                                                    /refocus
+                                                                    /handoff
+                                                                    /takeover
 ```
 
 ```mermaid
@@ -37,6 +40,11 @@ flowchart LR
   fix -->|none| commit
 
   lane -->|Tidy| tidy["/improve-codebase-architecture"] --> pick["pick one candidate<br/>→ grilled"] --> size
+
+  lane -->|Stuck| sess{Session?}
+  sess -->|"open, drifted, staying"| rf["/refocus"]
+  sess -->|"open, work is moving"| ho["/handoff"]
+  sess -->|"gone, or no handoff"| to["/takeover<br/>in the new session"]
 ```
 
 ## Setup, once per repo
@@ -78,6 +86,7 @@ Trying the workflow for the first time, on a small project, new or existing. Thi
 | 6 | Mid-`implement`, say "you forgot we agreed X", then `/refocus` | A one-screen brief quoting the spec and your words from disk; drift named with a hunk; it waited for you | A summary from memory; it kept working |
 | 7 | Introduce a bug on purpose, then `/diagnosing-bugs` | It refused to theorise until one command went red; ranked hypotheses shown to you before testing | It guessed a cause from reading code |
 | 8 | Next day, `/vibe` with no argument | A where-you-were block first: branch, tickets with status, last commits, next ticket | It asked the lane question cold |
+| 9 | Close a window mid-ticket without a handoff, export or locate its record, open a fresh window, `/takeover <record>` | A short description of where you were (goal, what changed, where it stopped, next step), one confirmation question, nothing edited until you answer | A questionnaire; it started coding before you confirmed; it "found" edits that aren't in the repo and didn't say so |
 
 Two things to check by hand after step 5: `git status` is clean (the mutation probe left nothing), and the ticket file under `.scratch/<feature>/issues/` has `Status: done` and a `## Comments` section with the commit sha.
 
@@ -85,7 +94,7 @@ Write down every place the agent did the "broken if" thing. That list is the fir
 
 ## The kit
 
-Twenty-two skills. Eleven you type, eleven the agent reaches for on its own (and you can type too).
+Twenty-three skills. Twelve you type, eleven the agent reaches for on its own (and you can type too).
 
 **You type these** (user-invoked):
 
@@ -100,7 +109,8 @@ Twenty-two skills. Eleven you type, eleven the agent reaches for on its own (and
 | `/implement` | Builds one ticket or spec: `tdd` inside, `verify` and `test-audit` when green, `code-review` at the end, commits, ends with a Checks run ledger |
 | `/improve-codebase-architecture` | Surveys for shallow modules, HTML report, grills you through the one you pick |
 | `/refocus` | Long session, agent drifting: re-reads the spec and every decision from disk, checks the diff against them, reports drift, asks one round about anything ambiguous, writes the answers back to the spec |
-| `/handoff` | Writes a portable file when the work moves directory or harness |
+| `/handoff` | The outgoing session writes a portable file, when the work moves directory, harness, or forks a side task. The bridge out to a prototype and back |
+| `/takeover` | The incoming session rebuilds context from a record (ID, export, URL, handoff file) when the old one is gone or too long to trust. Confirms before it changes anything |
 | `/wait-what` | The agent said something you didn't follow. It re-pitches in plain words |
 
 **The agent reaches for these** (model-invoked):
@@ -117,7 +127,7 @@ Twenty-two skills. Eleven you type, eleven the agent reaches for on its own (and
 | `research` | A library or API question that needs the real docs, not the agent's memory of them. Runs in the background and leaves a cited file |
 | `diagnosing-bugs` | You say "debug", "broken", "flaky", "slow", or `/diagnosing-bugs` |
 | `codebase-design` | Whenever module shape is in question: pulled in by `tdd` and `improve-codebase-architecture` |
-| `prototype` | A design question that needs running code to settle |
+| `prototype` | A design question that needs running code to settle: a state model you have to feel, two UIs you have to see. Lives on a `prototype/<name>` branch; the answer folds into the grill or the spec |
 
 **Deliberately left out**, with the moment to bring each one back:
 
@@ -167,11 +177,22 @@ If the implementation runs long and the agent seems to have lost the plot (a dec
 
 Steps 1 to 3 happen in **one unbroken window**. Don't `/clear` or `/compact` until the tickets are written.
 
-1. **`/grill-with-docs`** as above. If a question can't be settled by talking (a state machine you need to feel, a UI you need to see), detour: `/handoff` → fresh session in a scratch directory → `/prototype` → `/handoff` the answer back. The prototype lives on a `prototype/<name>` branch and the spec points at it.
+1. **`/grill-with-docs`** as above. If a question can't be settled by talking, take *The prototype detour* below and come back to the same window.
 2. **`/to-spec`**. No new questions. It proposes the **seams** it will test at (fewer is better, one is ideal) and asks you to confirm them, then writes `spec.md` to the tracker with `ready-for-agent`. Read the User Stories list; it's long on purpose, and a missing story now is a missing feature later.
 3. **`/to-tickets`**. It proposes vertical slices with blocking edges and asks about granularity. Each slice must be demoable on its own and fit in a fresh window. Approve, and it writes `issues/01-*.md`, `02-*.md`, … in dependency order.
 4. **Per ticket**: `/clear`, then `/implement .scratch/<feature>/issues/NN-<slug>.md` (or the GitHub issue number). Work the frontier: any ticket whose blockers are done. Each run ends with its own `code-review` and commit. If a single ticket runs long enough that the agent starts forgetting the ticket's own criteria, `/refocus` before you do anything else.
 5. When the last ticket lands, **`test-audit`** across the whole feature (per-ticket audits can't see a user story that fell between two tickets), then **`/code-review main`** across the whole branch once, because per-ticket reviews can't see cross-ticket smells (Duplicated Code across slices is the usual one).
+
+### The prototype detour
+
+Some grill questions have no answer on paper: whether a state model feels right once you click through it, which of two layouts reads better, whether a library actually behaves the way its README says. Arguing them in the interview burns the window and settles nothing. The detour is a fixed four-step round trip, and it works from M as well as L:
+
+1. **`/handoff`** with the question as the argument ("prototype the draft/published/archived transitions; is a separate `scheduled` state needed?"). It writes a small file with the decisions so far and the question. The grill window stays open; don't close it.
+2. Fresh session (a scratch directory or the same repo, your choice): point it at the handoff file and say **`prototype`**. It picks the shape from the question: a single HTML file you can click for state and logic, or several deliberately different UI variants on one route for a design choice. Throwaway is a rule about how the code is written, not what happens to it: the prototype is committed on a `prototype/<name>` branch, never merged, and stays as a primary source.
+3. Look at it. Decide. Write the decision down in one or two sentences; the prototype session can `/handoff` them back, or you just carry them.
+4. Back in the grill window: "prototype settled it: <decision>, see branch `prototype/<name>`". The grill records it in `CONTEXT.md` or an ADR and the frontier moves on. `to-spec` will point the spec at the branch.
+
+If the grill window died while you were away (it happens: quota, a sleep, a crash), don't re-grill. `/takeover` its record in a new window, confirm the summary, and continue from step 4.
 
 ## Lane 2: FIX
 
@@ -251,7 +272,7 @@ The example is the whole trick. It is the smallest possible feedback loop, and `
 
 ## Context rules
 
-Six rules cover nearly every session. The full decision tree is in `ask-matt`'s `PHASE-BOUNDARIES.md`; these are the cases a solo developer actually hits.
+Eight rules cover nearly every session. The full decision tree is in `ask-matt`'s `PHASE-BOUNDARIES.md`; these are the cases a solo developer actually hits.
 
 | Situation | Do |
 | --- | --- |
@@ -261,6 +282,17 @@ Six rules cover nearly every session. The full decision tree is in `ask-matt`'s 
 | Moving to another directory or harness, or forking a side task mid-phase | **`/handoff`.** It buys portability and nothing else; if nothing is travelling, you don't need it |
 | Long session, the agent forgot a decision, widened scope, or is working the wrong criterion | **`/refocus`.** It re-reads the spec, ticket, `CONTEXT.md` and your mid-session decisions from disk, diffs them against the work, and reports dropped / drifted / contradicted items. Where the sources are ambiguous it asks one round of questions with recommended answers, and writes your answers back to the ticket. Same window. Run it *before* you compact |
 | Long session, relevant context, same place, and refocus said the window is nearly spent | **`/compact`** seeded with the refocus brief: `/compact continue from /tmp/refocus-<ts>.md`. Last resort, not first |
+| The old session is gone (quota, crash, closed window, another tool) and nobody wrote a handoff | **`/takeover`** in the new session, with the export, ID, or URL. It indexes the record, rebuilds goal / constraints / turning points / stopping point / next step, maps old paths onto this checkout, describes it in at most ten sentences, and asks once. Read-only until you confirm |
+| A handoff file exists and you are the session that continues it | **`/takeover <path>`** rather than "read this and go". Same confirmation step; the handoff's claims ("X is done") get checked against the repo instead of inherited |
+
+The three that touch a session's *identity* are easy to mix up, so, side by side:
+
+| | `/refocus` | `/handoff` | `/takeover` |
+| --- | --- | --- | --- |
+| Session is | Open, drifting | Open, about to move | Gone, or not to be trusted |
+| Who does the work | This session, from disk | The outgoing session writes | The incoming session reads |
+| Produces | A drift brief, answers written to the ticket | A portable file in temp | A confirmed summary, optionally a revised SPEC |
+| You stay in the window | Yes | The old one, if you are forking | New window, by definition |
 
 And one rule about the agent's words rather than its context: the moment a message doesn't land, **`/wait-what`**. It re-pitches with the context you were missing, in your `CONTEXT.md` vocabulary. Don't nod along; a misunderstanding here becomes a wrong spec three steps later.
 
@@ -366,5 +398,7 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | Same mistake keeps happening across sessions | `retro` (in-progress bucket): turn it into a check or a standing rule |
 | Split a project that's grown too big | Logical split first: see *When the project gets big*; bring back `/wayfinder` for the decisions |
 | It's come back wrong three times | Stop. Write "input / expected / actual", then route (see *When it keeps coming out wrong*) |
-| Move to another repo / tool | `/handoff` |
+| A question only running code can answer | The prototype detour: `/handoff` → `prototype` in a fresh session → the decision comes back |
+| Move to another repo / tool, or fork a side task | `/handoff` |
+| The old session died, ran out of quota, or is too long to trust | `/takeover <export / ID / URL / handoff file>` in a fresh session |
 | Understand what it just said | `/wait-what` |
