@@ -88,13 +88,15 @@ Trying the workflow for the first time, on a small project, new or existing. Thi
 | 8 | Next day, `/vibe` with no argument | A where-you-were block first: branch, tickets with status, last commits, next ticket | It asked the lane question cold |
 | 9 | Close a window mid-ticket without a handoff, export or locate its record, open a fresh window, `/takeover <record>` | A short description of where you were (goal, what changed, where it stopped, next step), one confirmation question, nothing edited until you answer | A questionnaire; it started coding before you confirmed; it "found" edits that aren't in the repo and didn't say so |
 
+Optional step 0, before any of it: `/askcat`. It reads the skills you have installed and writes one HTML page where a cat explains each one; keep it open in a tab while you walk the nine steps. It's working if the page lists the same skills the installer wrote and every command on it is one you can type; it's broken if it describes skills from memory that aren't installed.
+
 Two things to check by hand after step 5: `git status` is clean (the mutation probe left nothing), and the ticket file under `.scratch/<feature>/issues/` has `Status: done` and a `## Comments` section with the commit sha.
 
 Write down every place the agent did the "broken if" thing. That list is the first input to `retro`, and to whoever maintains these skills.
 
 ## The kit
 
-Twenty-three skills. Twelve you type, eleven the agent reaches for on its own (and you can type too).
+Twenty-four skills. Thirteen you type, eleven the agent reaches for on its own (and you can type too).
 
 **You type these** (user-invoked):
 
@@ -112,6 +114,7 @@ Twenty-three skills. Twelve you type, eleven the agent reaches for on its own (a
 | `/handoff` | The outgoing session writes a portable file, when the work moves directory, harness, or forks a side task. The bridge out to a prototype and back |
 | `/takeover` | The incoming session rebuilds context from a record (ID, export, URL, handoff file) when the old one is gone or too long to trust. Confirms before it changes anything |
 | `/wait-what` | The agent said something you didn't follow. It re-pitches in plain words |
+| `/askcat` | One HTML page where a cat explains every skill you have installed: what it does, when to type it, what a good run looks like, plus a "which one do I need?" picker. The kit, taught. Run it once after setup and again when the kit changes |
 
 **The agent reaches for these** (model-invoked):
 
@@ -139,7 +142,7 @@ Twenty-three skills. Twelve you type, eleven the agent reaches for on its own (a
 | `wizard` | Scripts human-only steps (credentials, dashboards) | A deploy or cutover you'll repeat |
 | `resolving-merge-conflicts` | Only useful mid-conflict | You're mid-conflict. Type it then |
 | `retro` (in-progress) | Beta, not in the plugin | The same finding shows up twice: see *The loop that improves the loop* |
-| `teach`, `writing-for-agents`, `grill-me` | Not code work; `grill-me` is `grill-with-docs` without the repo | Never, inside a repo |
+| `teach`, `writing-for-agents`, `grill-me` | Not code work; `grill-me` is `grill-with-docs` without the repo. `askcat` is `teach` pointed at this kit, and it *is* in | Never, inside a repo |
 
 ## Lane 1: BUILD
 
@@ -402,3 +405,4 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | Move to another repo / tool, or fork a side task | `/handoff` |
 | The old session died, ran out of quota, or is too long to trust | `/takeover <export / ID / URL / handoff file>` in a fresh session |
 | Understand what it just said | `/wait-what` |
+| Have the whole kit explained to me on one page, in my language | `/askcat` |

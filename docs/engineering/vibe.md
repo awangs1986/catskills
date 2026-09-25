@@ -4,7 +4,7 @@
 
 It routes and stops. It does not grill, write a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or start coding; where a lane's first step is a model-invoked skill (`tdd`, `diagnosing-bugs`, `code-review`) it offers to fire that one on a "go", and otherwise you type what the card names.
 
-It is a curated subset, not the full map. The kit is twenty-three skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](https://aihero.dev/skills-ask-matt).
+It is a curated subset, not the full map. The kit is twenty-four skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](https://aihero.dev/skills-ask-matt).
 
 ## When to reach for it
 
