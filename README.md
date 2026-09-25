@@ -128,7 +128,7 @@ This fork is not in the official marketplace. Add it as a marketplace once, then
 /plugin install mattpocock-skills@mattpocock
 ```
 
-If you would rather subscribe to Matt's upstream set instead, `claude plugins install mattpocock-skills` gets you the original skills without the Cat Skills additions.
+`claude plugins install mattpocock-skills` (the official listing) installs Matt's upstream set without the Cat Skills additions. The two plugins share a name, so have one or the other, not both.
 
 </details>
 

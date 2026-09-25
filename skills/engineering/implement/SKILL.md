@@ -12,7 +12,7 @@ Use /tdd where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end. If `docs/agents/feedback-loops.md` exists, it names the commands and how long each takes; use those.
 
-Once the suite is green, invoke the "verify" skill to run the built thing against the ticket's acceptance criteria. Each FAIL it reports goes back into the /tdd loop as a new red test. Do not proceed with a FAIL open; UNVERIFIABLE rows go to the user.
+Once the suite is green, invoke the "verify" skill to run the built thing against the ticket's acceptance criteria, and against the `test-cases.md` sheet beside the spec when one exists (the "cattytest" skill writes it; `verify` walks its rows marked `verify` and lists the `by hand` ones for the user). Each FAIL it reports goes back into the /tdd loop as a new red test. Do not proceed with a FAIL open; UNVERIFIABLE rows and by-hand cases go to the user.
 
 Then invoke the "test-audit" skill. Its **Next red tests** (mutation survivors, uncovered criteria, tests that claim nothing) go back into the /tdd loop before review. Leave its **Claims** list in the transcript untouched: the user reads it as business rules, and a wrong claim there is the finding that matters most.
 
@@ -28,7 +28,7 @@ End with a **Checks run** block so the user can see what was actually checked, n
 ## Checks run
 - typecheck: <command> → <result>
 - tests: <command> → <n passed, n files>; single-file runs: <n>
-- verify: <n criteria> → <pass / fail / unverifiable>, evidence at <path>
+- verify: <n criteria> → <pass / fail / unverifiable>, evidence at <path>; test cases: <n walked, n passed, n left for the user by hand> or none on file
 - test-audit: <n claims>, <n criteria uncovered>, <n of m mutants survived>
 - code-review: Standards <n>, Spec <n>, Security <n or skipped>
 - commit: <sha> <subject>

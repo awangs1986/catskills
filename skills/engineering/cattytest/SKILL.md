@@ -57,7 +57,7 @@ Rules of the interview, beyond `grilling`'s:
 
 ## 3. Write the sheet
 
-Where the tracker keeps specs: local markdown → `.scratch/<feature>/test-cases.md` (whole product: `.scratch/test-cases/test-cases.md`); a real tracker → the same file, plus an issue titled `Test cases: <scope>` whose body is the file, linked from the ticket.
+Beside the spec: `.scratch/<feature>/test-cases.md` (whole product: `.scratch/test-cases/test-cases.md`). On a real tracker the file lives in the same place and the ticket gets a one-line comment pointing at it; no separate issue.
 
 ```
 # Test cases: <scope>

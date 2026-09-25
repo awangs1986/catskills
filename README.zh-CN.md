@@ -128,7 +128,7 @@ npx skills@latest add awangs1986/popcodeskills
 /plugin install mattpocock-skills@mattpocock
 ```
 
-如果你更想订阅 Matt 的上游原版，`claude plugins install mattpocock-skills` 装的是不含猫咪 Skills 新增内容的原版 skill。
+`claude plugins install mattpocock-skills`（官方列表）装的是 Matt 的上游原版，不含猫咪 Skills 的新增内容。两个插件同名，二选一，不要同时装。
 
 </details>
 

@@ -42,3 +42,7 @@ It is a guide, not decoration: every bubble carries a fact, and the skill delete
 - The page opens from disk with no network, and looks the same in every browser you have.
 - Nothing on it describes a skill you don't have, and nothing you have is missing.
 - After a week the ticks show which skills you've actually run, and the untried ones are the ones you meant to try.
+
+## Where it fits
+
+The onboarding layer over the whole set. [vibe](https://aihero.dev/skills-vibe) routes you to the next command; [ask-matt](https://aihero.dev/skills-ask-matt) is the full map for someone who already knows the names; this page is for the week before either of those is fast. It reads the same `SKILL.md` files and, when present, `vibe/WORKFLOW.md`, so it never disagrees with them; regenerate it whenever the installed set changes. It is [teach](https://aihero.dev/skills-teach) pointed at the kit itself.

@@ -24,6 +24,16 @@ The body reuses the leading words already in your global `CLAUDE.md` and your pr
 
 If you have no `CONTEXT.md` (and no `CONTEXT-MAP.md` pointing to one for the context at hand), the skill still works. You lose only the domain-vocabulary half.
 
+## Common questions
+
+**Can I use it in the middle of another skill?**
+
+Yes. It doesn't end anything. The agent re-pitches its last message and the skill that was running carries on from where it was.
+
+**It re-pitched and I still don't follow.**
+
+Say so, and name the word or step you lost. The second pass narrows to that. If the same term keeps needing a re-pitch, it belongs in `CONTEXT.md`, and [grill-with-docs](https://aihero.dev/skills-grill-with-docs) or [domain-modeling](https://aihero.dev/skills-domain-modeling) is where it gets defined.
+
 ## It's working if
 
 - The re-pitch is **shorter and clearer**, not shorter and blunter.

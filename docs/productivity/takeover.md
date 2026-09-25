@@ -52,3 +52,7 @@ For a short record, the working summary in the conversation is enough. For a lon
 - Nothing in the repository changed before you confirmed.
 - A correction from you produced a revised SPEC to look at, not a fresh round of interviewing.
 - When the record was incomplete, it named the missing file or range instead of filling the gap with a plausible story.
+
+## Where it fits
+
+The incoming half of a session seam. [handoff](https://aihero.dev/skills-handoff) is the outgoing half: the session that is leaving writes a small portable file. `takeover` needs no such file; it rebuilds from whatever record survived (an export, an ID, a URL, or a handoff) and confirms before continuing. [refocus](https://aihero.dev/skills-refocus) is the same re-anchoring done inside a session that is still open. After confirmation it routes to [implement](https://aihero.dev/skills-implement), [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs), [tdd](https://aihero.dev/skills-tdd) or [vibe](https://aihero.dev/skills-vibe); [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
