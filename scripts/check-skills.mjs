@@ -113,7 +113,9 @@ for (const full of walk(repo)) {
   if (!PROSE_EXT.has(ext)) continue;
   const text = readFileSync(full, "utf8");
   if (rel !== "CHANGELOG.md" && text.includes("\u2014")) problem(`${rel}: contains an em-dash`);
-  if (rel !== "README.zh-CN.md" && !/^README\.md$/.test(rel) && /[\u4e00-\u9fff]/.test(text)) problem(`${rel}: contains non-English (CJK) text`);
+  // The Chinese poster generator carries Chinese strings for its PNG output.
+  const CJK_OK = new Set(["README.zh-CN.md", "docs/engineering/poster/build_poster_zh.py"]);
+  if (!CJK_OK.has(rel) && !/^README\.md$/.test(rel) && /[\u4e00-\u9fff]/.test(text)) problem(`${rel}: contains non-English (CJK) text`);
   if (rel === "README.md") {
     // The language switch line is the only CJK allowed in README.md.
     const stripped = text.replace(/\u7b80\u4f53\u4e2d\u6587/g, ""); // the "Simplified Chinese" switch label

@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw, ImageFont
 import re, math, os
 from pathlib import Path
 
-W, H = 2000, 3320
+W, H = 2000, 3920
 BG = (255, 248, 236)
 INK = (47, 42, 38)
 GRAY = (120, 112, 104)
@@ -29,7 +29,8 @@ d = ImageDraw.Draw(img)
 
 # ---------- text helpers ----------
 def tokens(s):
-    return re.findall(r"[A-Za-z0-9_/\-\.:,'\(\)\+→←=<>#\*]+|\s+|.", s)
+    # NOTE: newline first so an explicit break always tokenizes on its own.
+    return re.findall(r"[A-Za-z0-9_/\\-\\.:,'\\(\\)\\+→←=<>#\\*]+|\n|\s+|.", s)
 
 def wrap(s, font, maxw):
     lines, cur = [], ""
@@ -73,32 +74,46 @@ def panel(x0, y0, x1, y1, lane, title, subtitle=None):
     d.rounded_rectangle((x0 + 30, y0 - 34, x0 + 30 + tw, y0 + 34), radius=20, fill=c["edge"])
     d.text((x0 + 60, y0 - 27), title, font=tf, fill=(255, 255, 255))
     if subtitle:
-        d.text((x0 + 30 + tw + 24, y0 - 20), subtitle, font=F(30, False), fill=c["dark"])
+        # inside the panel, clear of the border
+        d.text((x0 + 30, y0 + 34), subtitle, font=F(28, False), fill=c["dark"])
 
-def node(cx, cy, w, h, lane, cmd=None, label=None, note=None, cmd_size=34):
+def measure_node(w, cmd=None, label=None, note=None, cmd_size=32, pad=40, hmin=0):
+    total = 0
+    if cmd: total += int(MONO(cmd_size).size * 1.3)
+    if label: total += text_h(label, F(30), w - pad)
+    if note: total += text_h(note, F(26, False), w - pad, 1.3)
+    return max(hmin, total + 52)
+
+def node(cx, cy, w, h, lane, cmd=None, label=None, note=None, cmd_size=32, pad=40):
     c = LANES[lane]
-    x0, y0, x1, y1 = cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2
-    rbox(x0, y0, x1, y1, c["fill"], c["edge"], r=22, width=5)
     parts = []
     if cmd: parts.append(("cmd", cmd))
     if label: parts.append(("lab", label))
     if note: parts.append(("note", note))
-    # measure
+    # measure, then grow the box to fit the text
     total = 0; measured = []
     for kind, s in parts:
         if kind == "cmd":
             f = MONO(cmd_size); hh = int(f.size * 1.3)
         elif kind == "lab":
-            f = F(30); hh = text_h(s, f, w - 40)
+            f = F(30); hh = text_h(s, f, w - pad)
         else:
-            f = F(26, False); hh = text_h(s, f, w - 40, 1.3)
+            f = F(26, False); hh = text_h(s, f, w - pad, 1.3)
         measured.append((kind, s, f, hh)); total += hh
+    h = max(h, total + 52)
+    x0, y0, x1, y1 = cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2
+    rbox(x0, y0, x1, y1, c["fill"], c["edge"], r=22, width=5)
     y = cy - total / 2
     for kind, s, f, hh in measured:
         col = c["dark"] if kind == "cmd" else (INK if kind == "lab" else GRAY)
-        text(cx, y, s, f, fill=col, maxw=w - 40, align="center", spacing=1.3)
+        text(cx, y, s, f, fill=col, maxw=w - pad, align="center", spacing=1.3)
         y += hh
     return (x0, y0, x1, y1)
+
+def place_below(prev_box, w, hmin=0, gap=28, **kw):
+    # Center-y for a node stacked under prev_box with a fixed gap.
+    h = measure_node(w, hmin=hmin, **kw)
+    return prev_box[3] + gap + h / 2
 
 def diamond(cx, cy, w, h, lane, label):
     c = LANES[lane]
@@ -160,9 +175,9 @@ def bubble(x0, y0, x1, y1, s, tail, size=28, fill=(255, 255, 255), edge=INK):
     d.polygon([base[0], base[1], (tx, ty)], fill=fill)
     # redraw inner edge fix
     d.line([base[0], (tx, ty)], fill=edge, width=4); d.line([base[1], (tx, ty)], fill=edge, width=4)
-    f = F(size)
+    f = F(size, False)
     lines = wrap(s, f, (x1 - x0) - 50)
-    lh = int(size * 1.4)
+    lh = int(size * 1.45)
     y = cy - len(lines) * lh / 2 + 4
     for l in lines:
         d.text((x0 + 25, y), l, font=f, fill=INK); y += lh
@@ -170,125 +185,130 @@ def bubble(x0, y0, x1, y1, s, tail, size=28, fill=(255, 255, 255), edge=INK):
 cat_teacher = load_cat((HERE / "cats" / "cat_teacher.png"), 330)
 cat_det = load_cat((HERE / "cats" / "cat_detective.png"), 165)
 cat_clip = load_cat((HERE / "cats" / "cat_clipboard.png"), 240)
-cat_broom = load_cat((HERE / "cats" / "cat_broom.png"), 170)
+cat_broom = load_cat((HERE / "cats" / "cat_broom.png"), 155)
 cat_dizzy = load_cat((HERE / "cats" / "cat_dizzy.png"), 190)
-cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 170)
+cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 155)
 
 # =================== HEADER ===================
 d.text((80, 60), "The Vibe Coding Workflow", font=F(72), fill=INK)
 d.text((84, 160), "One developer + one agent, a closed loop  ·  with a cat guide", font=F(30, False), fill=GRAY)
 paste_cat(cat_teacher, 1640, 10)
-bubble(1140, 40, 1600, 210, "Not sure where to start? Type /vibe in the project. I'll put you on the right lane and name the next command.", (1650, 150), size=27)
+bubble(1100, 40, 1600, 215, "Not sure where to start? Type /vibe in the project. I'll put you on the right lane and name the next command.", (1650, 150), size=27)
 
 # =================== SETUP BAND ===================
-panel(80, 300, 1920, 560, "setup", "Step 0 · Foundations", "once per repo; every skill after this depends on them")
-node(430, 430, 560, 160, "setup", cmd="/setup-matt-pocock-skills", label="where issues live, where the glossary goes", note="solo project: pick Local markdown")
-arrow([(715, 430), (785, 430)])
-node(1105, 430, 620, 160, "setup", cmd="/setup-feedback-loops", label="typecheck · lint · test · smoke\nlogs · browser · one command for all", note="watch every check go red once")
-text(1450, 350, "Why feedback loops first?", F(28), fill=LANES["setup"]["dark"])
-text(1450, 392, "tdd runs tests, verify boots the app, diagnosing-bugs reads logs. Without loops, every skill is guessing.", F(25, False), fill=GRAY, maxw=440, spacing=1.35)
+panel(80, 330, 1920, 650, "setup", "Step 0 · Foundations", "once per repo; every skill after this depends on them")
+node(430, 510, 560, 150, "setup", cmd="/setup-matt-pocock-skills", cmd_size=30, label="where issues live, where the glossary goes", note="solo project: pick Local markdown")
+arrow([(715, 510), (785, 510)])
+node(1105, 510, 620, 150, "setup", cmd="/setup-feedback-loops", cmd_size=30, label="typecheck · lint · test · smoke\nlogs · browser · one command for all", note="watch every check go red once")
+text(1450, 400, "Why feedback loops first?", F(28), fill=LANES["setup"]["dark"])
+text(1450, 448, "tdd runs tests, verify boots the app, diagnosing-bugs reads logs. Without loops, every skill is guessing.", F(25, False), fill=GRAY, maxw=440, spacing=1.4)
 
 # =================== BUILD LANE (left) ===================
-BX0, BY0, BX1, BY1 = 80, 630, 1240, 2010
+BX0, BY0, BX1, BY1 = 80, 730, 1240, 2560
 panel(BX0, BY0, BX1, BY1, "build", "① BUILD lane · I have an idea", "90% of your time is here")
 
-node(660, 700, 220, 70, "build", label="★ an idea", cmd=None)
-arrow([(660, 735), (660, 770)])
-diamond(660, 830, 300, 110, "build", "How big is it?")
+node(660, 870, 240, 76, "build", label="★ an idea")
+arrow([(660, 912), (660, 940)])
+diamond(660, 1010, 360, 130, "build", "How big is it?")
 
 # three branches
-cols = {"S": 250, "M": 660, "L": 1070}
-arrow([(585, 830), (250, 830), (250, 905)])
-arrow([(735, 830), (1050, 830), (1050, 905)])
-arrow([(660, 885), (660, 905)])
-edge_label(250, 930, "S · one clear sentence", LANES["build"]["dark"])
-edge_label(660, 930, "M · one sitting, open questions", LANES["build"]["dark"])
-edge_label(1050, 930, "L · several evenings", LANES["build"]["dark"])
+arrow([(480, 1010), (250, 1010), (250, 1080)])
+arrow([(840, 1010), (1050, 1010), (1050, 1080)])
+arrow([(660, 1075), (660, 1080)])
+edge_label(250, 1112, "S · one clear sentence", LANES["build"]["dark"])
+edge_label(660, 1112, "M · one sitting, open questions", LANES["build"]["dark"])
+edge_label(1050, 1112, "L · several evenings", LANES["build"]["dark"])
 
 # S column
-node(250, 1060, 330, 170, "build", label="Just say it", note="\u201cadd --json to export,\ntest first\u201d\nthe agent uses tdd itself")
-arrow([(250, 1145), (250, 1440)])
+s_box = node(250, 1260, 330, 150, "build", label="Just say it", note="“add --json to export,\ntest first”\nthe agent uses tdd itself")
+arrow([(250, s_box[3]), (250, 1920)])
 # M column
-node(660, 1050, 360, 150, "build", cmd="/grill-with-docs", note="asks in rounds; writes\nCONTEXT.md and ADRs")
-arrow([(660, 1125), (660, 1175)])
-node(660, 1240, 350, 130, "build", cmd="/implement", note="same window,\ndon't clear in between")
-arrow([(660, 1305), (660, 1440)])
+m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="asks in rounds; writes\nCONTEXT.md and ADRs")
+m2_cy = place_below(m1_box, 350, 130, cmd="/implement", note="same window,\ndon't clear in between")
+m2_box = node(660, m2_cy, 350, 130, "build", cmd="/implement", note="same window,\ndon't clear in between")
+arrow([(660, m1_box[3]), (660, m2_box[1])])
+arrow([(660, m2_box[3]), (660, 1920)])
 # L column
-node(1050, 1030, 360, 110, "build", cmd="/grill-with-docs", note="stuck? try a prototype")
-arrow([(1050, 1085), (1050, 1110)])
-node(1050, 1160, 360, 100, "build", cmd="/to-spec", note="synthesis, no questions")
-arrow([(1050, 1210), (1050, 1235)])
-node(1050, 1300, 360, 130, "build", cmd="/to-tickets", note="slices + blocking edges\n(steps 1 to 3: one window)")
-arrow([(1050, 1365), (1050, 1385)])
-node(1050, 1425, 360, 80, "build", cmd="/clear → /implement", cmd_size=26, note="a fresh window per ticket")
+l1_box = node(1050, 1220, 360, 110, "build", cmd="/grill-with-docs", cmd_size=32, note="stuck? try a prototype")
+l2_cy = place_below(l1_box, 360, 100, cmd="/to-spec", note="synthesis, no questions")
+l2_box = node(1050, l2_cy, 360, 100, "build", cmd="/to-spec", note="synthesis, no questions")
+arrow([(1050, l1_box[3]), (1050, l2_box[1])])
+l3_cy = place_below(l2_box, 360, 130, cmd="/to-tickets", note="slices + blocking edges\n(steps 1 to 3: one window)")
+l3_box = node(1050, l3_cy, 360, 130, "build", cmd="/to-tickets", note="slices + blocking edges\n(steps 1 to 3: one window)")
+arrow([(1050, l2_box[3]), (1050, l3_box[1])])
+l4_cy = place_below(l3_box, 360, 100, cmd="/clear → /implement", cmd_size=26, note="a fresh window per ticket")
+l4_box = node(1050, l4_cy, 360, 100, "build", cmd="/clear → /implement", cmd_size=26, note="a fresh window per ticket")
+arrow([(1050, l3_box[3]), (1050, l4_box[1])])
+arrow([(1050, l4_box[3]), (1050, 1920)])
 
 # converge into implement internals box
-d.line([(1050, 1465), (1050, 1470)], fill=INK, width=6)
-d.line([(250, 1470), (1050, 1470)], fill=INK, width=6)
-d.line([(250, 1440), (250, 1470)], fill=INK, width=6)
-arrow([(660, 1470), (660, 1500)])
+d.line([(250, 1920), (1050, 1920)], fill=INK, width=6)
+arrow([(660, 1920), (660, 1955)])
 
-IX0, IY0, IX1, IY1 = 130, 1505, 1190, 1795
+IX0, IY0, IX1, IY1 = 100, 1960, 1225, 2300
 rbox(IX0, IY0, IX1, IY1, (245, 249, 255), LANES["build"]["edge"], r=28, width=4)
-d.text((IX0 + 24, IY0 + 14), "What happens inside /implement (automatic; you only read the results)", font=F(30), fill=LANES["build"]["dark"])
+d.text((IX0 + 24, IY0 + 18), "What happens inside /implement (automatic; you only read the results)", font=F(30), fill=LANES["build"]["dark"])
 chain = [("tdd", "red, then green\none slice at a time"), ("verify", "really runs it\nscreenshot as proof"), ("test-audit", "do tests guard logic?\nyou get a Claims list"), ("code-review", "standards + spec\n(+ security)"), ("commit", "ends with a\nChecks run ledger")]
-cx = IX0 + 130
+step = ((IX1 - IX0) - 60) / 5
+chain_cy = IY0 + 120
 for i, (c, n) in enumerate(chain):
-    node(cx, IY0 + 110, 190, 66, "build", cmd=c, cmd_size=28)
-    text(cx, IY0 + 160, n, F(23, False), fill=GRAY, align="center", spacing=1.3)
+    cx = IX0 + 30 + step / 2 + i * step
+    node(cx, chain_cy, 180, 66, "build", cmd=c, cmd_size=22, pad=30)
+    text(cx, IY0 + 170, n, F(21, False), fill=GRAY, align="center", spacing=1.3)
     if i < len(chain) - 1:
-        arrow([(cx + 98, IY0 + 110), (cx + 122, IY0 + 110)], width=5, head=16)
-    cx += 220
-text(IX0 + 24, IY0 + 236, "Every FAIL and surviving mutant goes back to tdd as a new red test. No review while a FAIL is open.", F(24, False), fill=GRAY)
+        arrow([(cx + 92, chain_cy), (cx + 121, chain_cy)], width=5, head=15)
+text(IX0 + 24, IY0 + 255, "Every FAIL and surviving mutant goes back to tdd as a new red test. No review while a FAIL is open.", F(24, False), fill=GRAY, maxw=1090, spacing=1.4)
 
 # clipboard cat + bubble (bottom of build panel)
-paste_cat(cat_clip, 120, 1770)
-bubble(400, 1835, 1200, 1990, "Read test-audit's Claims list! Each line is one business rule. The test and the code can share the same misunderstanding and be green together; no tool catches that. You can, at a glance.", (395, 1910), size=26)
+paste_cat(cat_clip, 120, 2300)
+bubble(400, 2315, 1200, 2485, "Read test-audit's Claims list! Each line is one business rule. The test and the code can share the same misunderstanding and be green together; no tool catches that. You can, at a glance.", (395, 2400), size=26)
 
 # =================== RIGHT COLUMN ===================
 RX0, RX1 = 1300, 1920
 
 # FIX
-panel(RX0, 630, RX1, 1110, "fix", "② FIX lane · it broke")
-diamond(1610, 720, 280, 100, "fix", "Know the cause?")
-arrow([(1470, 720), (1435, 720), (1435, 790)])
-edge_label(1435, 758, "yes", LANES["fix"]["dark"], 22)
-node(1435, 860, 260, 130, "fix", label="Say it, test first", note="red → fix → green")
-arrow([(1750, 720), (1785, 720), (1785, 790)])
-edge_label(1785, 758, "no / flaky / slow", LANES["fix"]["dark"], 22)
-node(1785, 860, 260, 130, "fix", cmd="/diagnosing-bugs", cmd_size=22, note="six phases,\nno guessing first")
-paste_cat(cat_det, 1330, 935)
-bubble(1545, 925, 1900, 1090, "No command that goes red on the bug, no theorising. That rule is the whole skill.", (1540, 1005), size=25)
+panel(RX0, 730, RX1, 1330, "fix", "② FIX lane · it broke")
+diamond(1610, 880, 340, 120, "fix", "Know the cause?")
+arrow([(1440, 880), (1450, 880), (1450, 955)])
+edge_label(1450, 918, "yes", LANES["fix"]["dark"], 22)
+node(1450, 1050, 260, 140, "fix", label="Say it, test first", note="red → fix → green")
+arrow([(1780, 880), (1780, 955)])
+edge_label(1780, 918, "no / flaky / slow", LANES["fix"]["dark"], 22)
+node(1780, 1050, 260, 140, "fix", cmd="/diagnosing-bugs", cmd_size=20, note="six phases, no\nguessing first")
+paste_cat(cat_det, 1320, 1150)
+bubble(1560, 1150, 1900, 1300, "No command that goes red on the bug, no theorising. That rule is the whole skill.", (1555, 1225), size=24)
 
 # REVIEW
-panel(RX0, 1170, RX1, 1560, "review", "③ REVIEW · before merge")
-node(1690, 1270, 430, 130, "review", cmd="/code-review main", cmd_size=30, note="two sub-agents in parallel:\nStandards axis + Spec axis")
-arrow([(1690, 1335), (1690, 1355)])
-node(1690, 1425, 430, 140, "review", cmd="security-review", cmd_size=30, note="auto on auth / routes / queries;\nonce more before shipping")
-paste_cat(cat_shield, 1308, 1270)
-bubble(1330, 1500, 1900, 1550, "Five checks. That is how solo apps get hacked.", (1400, 1445), size=22)
+panel(RX0, 1390, RX1, 1950, "review", "③ REVIEW · before merge")
+r1_box = node(1690, 1540, 430, 140, "review", cmd="/code-review main", cmd_size=30, note="two sub-agents in parallel:\nStandards axis + Spec axis")
+r2_cy = place_below(r1_box, 430, 140, cmd="security-review", cmd_size=30, note="auto on auth / routes / queries;\nonce more before shipping")
+r2_box = node(1690, r2_cy, 430, 140, "review", cmd="security-review", cmd_size=30, note="auto on auth / routes / queries;\nonce more before shipping")
+arrow([(1690, r1_box[3]), (1690, r2_box[1])])
+paste_cat(cat_shield, 1310, 1785)
+bubble(1480, 1830, 1900, 1940, "Five checks. That is how solo apps get hacked.", (1452, 1885), size=22)
 
 # TIDY
-panel(RX0, 1620, RX1, 2010, "tidy", "④ TIDY · every few days")
-node(1690, 1715, 430, 120, "tidy", cmd="/improve-codebase-architecture", cmd_size=23, note="report of shallow modules;\npick one, it grills you")
-arrow([(1690, 1775), (1690, 1800)])
-node(1690, 1865, 430, 130, "tidy", label="idea → back to ① BUILD", note="\u201cno seam\u201d from a diagnosis\nlands here too")
-paste_cat(cat_broom, 1305, 1720)
-bubble(1330, 1945, 1900, 1998, "Sweep: no more seven-file hops per change.", (1400, 1895), size=22)
+panel(RX0, 2010, RX1, 2560, "tidy", "④ TIDY · every few days")
+t1_box = node(1670, 2160, 440, 130, "tidy", cmd="/improve-codebase-architecture", cmd_size=21, note="report of shallow modules;\npick one, it grills you")
+t2_cy = place_below(t1_box, 440, 130, label="idea → back to ① BUILD", note="“no seam” from a diagnosis\nlands here too")
+t2_box = node(1670, t2_cy, 440, 130, "tidy", label="idea → back to ① BUILD", note="“no seam” from a diagnosis\nlands here too")
+arrow([(1670, t1_box[3]), (1670, t2_box[1])])
+paste_cat(cat_broom, 1305, 2335)
+bubble(1480, 2440, 1900, 2540, "Sweep: no more seven-file\nhops per change.", (1452, 2490), size=22)
 
 # =================== SESSION BAND: refocus / handoff / takeover ===================
-panel(80, 2080, 1920, 2510, "focus", "Session trouble? Three moves", "drifting in this window · leaving on purpose · the old session is gone")
-paste_cat(cat_dizzy, 130, 2170)
+panel(80, 2640, 1920, 3120, "focus", "Session trouble? Three moves", "drifting in this window · leaving on purpose · the old session is gone")
+paste_cat(cat_dizzy, 130, 2730)
 SX = [520, 1000, 1480]
-node(SX[0], 2215, 420, 120, "focus", cmd="/refocus", label="still open, drifting, staying here")
-node(SX[1], 2215, 420, 120, "focus", cmd="/handoff", label="still open, the work is moving")
-node(SX[2], 2215, 420, 120, "focus", cmd="/takeover", label="session gone / too long to trust")
-text(SX[0], 2295, "Re-reads spec, ticket, CONTEXT.md and your spoken decisions from disk, diffs them against the work (dropped / drifted / contradicted), asks one round, saves the answers to the ticket. Then compact.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.35)
-text(SX[1], 2295, "The outgoing session writes a small portable file to the temp dir: new directory, new tool, a forked side task, a prototype detour. Nothing travelling? You don't need it.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.35)
-text(SX[2], 2295, "Quota gone, crashed, closed, or another tool. The new session reads the record itself (ID / export / URL / handoff), retells the project in 10 sentences at most, asks once. Read-only until you confirm.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.35)
+node(SX[0], 2800, 420, 120, "focus", cmd="/refocus", label="still open, drifting, staying here")
+node(SX[1], 2800, 420, 120, "focus", cmd="/handoff", label="still open, the work is moving")
+node(SX[2], 2800, 420, 120, "focus", cmd="/takeover", label="session gone / too long to trust")
+text(SX[0], 2895, "Re-reads spec, ticket, CONTEXT.md and your spoken decisions from disk, diffs them against the work (dropped / drifted / contradicted), asks one round, saves the answers to the ticket. Then compact.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
+text(SX[1], 2895, "The outgoing session writes a small portable file to the temp dir: new directory, new tool, a forked side task, a prototype detour. Nothing travelling? You don't need it.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
+text(SX[2], 2895, "Quota gone, crashed, closed, or another tool. The new session reads the record itself (ID / export / URL / handoff), retells the project in 10 sentences at most, asks once. Read-only until you confirm.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 
 # =================== BOTTOM: context rules + stuck ===================
-panel(80, 2550, 980, 3020, "setup", "Context rules (these seven are enough)")
+panel(80, 3200, 1010, 3660, "setup", "Context rules (these seven are enough)")
 rules = [("grill → spec → tickets", "", "one window, don't clear"),
          ("between tickets", "/clear", ", fresh window"),
          ("agent drifted", "/refocus", ", before compact"),
@@ -296,27 +316,27 @@ rules = [("grill → spec → tickets", "", "one window, don't clear"),
          ("old session gone", "/takeover", " its record"),
          ("needs running code", "/handoff", " → prototype → answer back"),
          ("didn't follow it", "/wait-what", "")]
-y = 2610
+y = 3280
 for a, cmd, rest in rules:
-    d.text((120, y), a, font=F(27), fill=INK)
-    x = 470
+    d.text((120, y), a, font=F(25), fill=INK)
+    x = 520
     if cmd:
-        d.text((x, y + 2), cmd, font=MONO(26), fill=LANES["build"]["dark"]); x += MONO(26).getlength(cmd)
+        d.text((x, y + 2), cmd, font=MONO(25), fill=LANES["build"]["dark"]); x += MONO(25).getlength(cmd)
     if rest:
-        d.text((x, y), rest, font=F(27, False), fill=LANES["build"]["dark"])
-    y += 56
+        d.text((x, y), rest, font=F(25, False), fill=LANES["build"]["dark"])
+    y += 52
 
-panel(1020, 2550, 1920, 3020, "fix", "Wrong three times? Stop!")
-text(1060, 2600, "No fifth attempt. Discard it, /clear, and write one sentence:", F(26, False), fill=INK, maxw=820)
-rbox(1060, 2660, 1880, 2730, (255, 255, 255), LANES["fix"]["edge"], r=18, width=3)
-text(1470, 2678, "When I input ___, I expect ___, but I get ___", F(28), fill=LANES["fix"]["dark"], align="center")
-text(1060, 2755, "Can't write it → not a bug, misaligned requirements → /refocus or /grill-with-docs\nCan write it → turn it into one failing test first:\n    green after one fix → there was no feedback loop (tdd)\n    stays red / fixing it breaks something else → real bug (/diagnosing-bugs)\n    every attempt touches five files → no seam (④ TIDY)", F(24, False), fill=INK, spacing=1.45)
+panel(1050, 3200, 1920, 3660, "fix", "Wrong three times? Stop!")
+text(1090, 3260, "No fifth attempt. Discard it, /clear, and write one sentence:", F(26, False), fill=INK, maxw=790)
+rbox(1090, 3310, 1880, 3380, (255, 255, 255), LANES["fix"]["edge"], r=18, width=3)
+text(1485, 3328, "When I input ___, I expect ___, but I get ___", F(28), fill=LANES["fix"]["dark"], align="center")
+text(1090, 3405, "Can't write it → not a bug, misaligned requirements → /refocus or\n/grill-with-docs\nCan write it → turn it into one failing test first:\n    green after one fix → there was no feedback loop (tdd)\n    stays red / fixing it breaks something else → real bug (/diagnosing-bugs)\n    every attempt touches five files → no seam (④ TIDY)", F(23, False), fill=INK, maxw=790, spacing=1.5)
 
 # =================== FOOTER ===================
-d.line([(80, 3080), (1920, 3080)], fill=(210, 200, 185), width=3)
-text(80, 3110, "First time? Type /vibe in an empty repo: a First run card walks 9 steps through the whole loop and checks each step with you.", F(27), fill=INK, maxw=1840)
-text(80, 3165, "Full handbook: skills/engineering/vibe/WORKFLOW.md   ·   25 curated skills, 14 you type, 11 the agent reaches for   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
-text(80, 3220, "Mantra: align, then spec; red, then green; run it; read the Claims; review before merge; sweep weekly; drifting → refocus, dead → takeover.", F(26), fill=LANES["build"]["dark"], maxw=1840)
+d.line([(80, 3720), (1920, 3720)], fill=(210, 200, 185), width=3)
+text(80, 3745, "First time? Type /vibe in an empty repo: a First run card walks 9 steps through the whole loop and checks each step with you.", F(27), fill=INK, maxw=1840)
+text(80, 3788, "Full handbook: skills/engineering/vibe/WORKFLOW.md   ·   25 curated skills, 14 you type, 11 the agent reaches for   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3828, "Mantra: align, then spec; red, then green; run it; read the Claims; review before merge; sweep weekly; drifting → refocus, dead → takeover.", F(26), fill=LANES["build"]["dark"], maxw=1840)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.png"), optimize=True)
 print("saved")
