@@ -25,7 +25,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
-- **[fresh-agent](./fresh-agent/SKILL.md)**: Audit agent instructions for unnecessary stops, redundant confirmation, and incomplete work; propose precise edits while preserving explicit approvals.
+- **[fresh-agent](./fresh-agent/SKILL.md)**: Streamline bloated AGENTS.md files: remove proven stale guidance, merge repeated rules, and reorganize instructions while preserving effective constraints and approvals.
 - **[fresh-spec](./fresh-spec/SKILL.md)**: Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences.
 - **[prototype](./prototype/SKILL.md)**: Build a throwaway prototype to answer a design question: a single shareable HTML file for state/logic, or several toggleable UI variations.
 

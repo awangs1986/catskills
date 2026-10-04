@@ -32,7 +32,7 @@ Vibe coding has two failure modes. The agent builds the wrong thing because it n
 - **`/vibe`**: one command that looks at your repo, puts you on the right lane, and names the exact next thing to type. You never have to remember the map.
 - **`/tell-a-story`**: describe a person using your product, or rediscover what an unfamiliar or long-running project is for through a connected human story. Agree on the understanding first; a product SPEC or proposed BACKLOG is optional. No requirements-writing expertise needed.
 - **A closed loop**: requirements → spec → tickets → tests → running proof → review → commit, with the agent calling each step itself and you reading the results.
-- **Instruction and spec maintenance**: `fresh-agent` audits rules that cause redundant confirmation or unnecessary stops; `fresh-spec` refreshes stale specs from code while keeping unmet requirements visible.
+- **Instruction and spec maintenance**: `fresh-agent` streamlines bloated AGENTS.md files by pruning stale guidance and consolidating rules; `fresh-spec` refreshes stale specs from code while keeping unmet requirements visible.
 - **Session care**: `refocus`, `handoff`, and `takeover` for when the conversation drifts, moves, or dies.
 - **`/askcat`**: a cat that explains every installed skill on one HTML page, in plain words, in your language.
 
@@ -58,7 +58,7 @@ Four more jobs cover maintenance and session care:
 
 | Job | What you type | What the agent does |
 | --- | --- | --- |
-| **Resolve instruction friction** | `/fresh-agent` | Quotes rules and locations, explains unnecessary stops, and proposes specific edits; preserves explicit approvals and flags authority expansion |
+| **Simplify accumulated instructions** | `/fresh-agent` | Edits bloated AGENTS.md files, removes proven stale guidance, and consolidates repeated rules; preserves effective constraints and explicit approvals |
 | **Refresh a stale spec** | `/fresh-spec` | Updates the spec from current code evidence, retaining unmet requirements and identifying unresolved differences |
 | **Keep the agent honest in a long session** | `/refocus` | Re-reads the spec, the ticket, and every spoken decision from disk, diffs them against the work, reports what was dropped or drifted, asks one round of questions, writes the answers back |
 | **Survive a session ending** | `/handoff` (leaving on purpose) or `/takeover` (the old session is gone) | The outgoing session writes a small portable file; the incoming session rebuilds context from an export, ID, URL, or handoff file and confirms its understanding before touching anything |
@@ -194,7 +194,7 @@ Upstream ships twenty-five skills; this repo ships thirty-seven. Everything belo
 
 | Skill | Why it was missing |
 | --- | --- |
-| [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | Audit agent instructions for unnecessary stops, redundant confirmation, and incomplete work; propose precise edits while preserving explicit approvals. |
+| [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | Streamline bloated AGENTS.md files: remove proven stale guidance, merge repeated rules, and reorganize instructions while preserving effective constraints and approvals. |
 | [`fresh-spec`](./skills/engineering/fresh-spec/SKILL.md) | Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences. |
 | [`vibe`](./skills/engineering/vibe/SKILL.md) | Upstream has `ask-matt`, a router over all twenty-five upstream skills. A solo developer needs a smaller map with a default at every fork, plus a First run card and a "where was I" block for coming back after two weeks |
 | [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | A person can describe using a product before they can write its requirements. Two-way storytelling aligns the experience, then turns the confirmed scenes into a product SPEC or proposed BACKLOG without choosing a stack |
@@ -249,7 +249,7 @@ Skills I use daily for code work.
 
 **Model-invoked**
 
-- **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**: Audit agent instructions for unnecessary stops, redundant confirmation, and incomplete work; propose precise edits while preserving explicit approvals.
+- **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**: Streamline bloated AGENTS.md files: remove proven stale guidance, merge repeated rules, and reorganize instructions while preserving effective constraints and approvals.
 - **[fresh-spec](./skills/engineering/fresh-spec/SKILL.md)**: Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences.
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: Build a throwaway prototype to answer a design question, either a single shareable HTML file for state/logic questions, or several radically different UI variations toggleable from one route.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test.

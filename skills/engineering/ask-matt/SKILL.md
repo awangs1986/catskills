@@ -57,7 +57,7 @@ Not feature work, just upkeep.
 
 - **`/improve-codebase-architecture`** runs whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/grill-with-docs`. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
 
-- **`/fresh-agent`** audits the instructions governing work: ambiguity, conflicts, and overlap that cause unnecessary stops, redundant confirmation, or incomplete delivery. It proposes exact edits with file quotations and an authority-impact note, preserving explicit approvals. Use it for recurring instruction friction; `/writing-for-agents` is the general authoring reference.
+- **`/fresh-agent`** streamlines AGENTS.md and related instructions that have accumulated over a long-running project. It edits the files to remove proven stale guidance, merge repeated rules, and group scattered instructions, then explains the changes. Effective constraints and explicit approvals remain. Use it for bloated project instructions; `/writing-for-agents` is the general authoring reference.
 - **`/fresh-spec`** refreshes an existing spec against current code with source evidence. It updates stale facts while retaining unmet requirements and recording unresolved differences. Use `/to-spec` to create a spec from agreed intent, or `/refocus` to bring a drifting session back to that intent.
 
 ## Vocabulary underneath

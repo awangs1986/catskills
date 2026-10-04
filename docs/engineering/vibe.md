@@ -28,7 +28,7 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 | The session drifted, is about to move, or died on you | One of the three seam moves: [refocus](refocus.md) to stay, [handoff](../productivity/handoff.md) to leave on purpose, [takeover](../productivity/takeover.md) in the new window when the old one is gone |
 | A grill question only running code can settle | The prototype detour: `/handoff` the question, [prototype](prototype.md) in a fresh session, the decision comes back to the grill |
 | A greenfield product with decisions spanning several sessions | [wayfinder](./wayfinder.md), with story alignment first if the destination is still unclear |
-| Conflicting instructions or an outdated spec | [fresh-agent](./fresh-agent.md) for instruction friction, or [fresh-spec](./fresh-spec.md) for evidence-backed spec maintenance; both are standalone tools outside the daily kit |
+| Bloated project instructions or an outdated spec | [fresh-agent](./fresh-agent.md) for pruning and consolidating accumulated instructions, or [fresh-spec](./fresh-spec.md) for evidence-backed spec maintenance; both are standalone tools outside the daily kit |
 | A team or outside stakeholders | [ask-matt](./ask-matt.md), the broader map |
 
 ## Prerequisites

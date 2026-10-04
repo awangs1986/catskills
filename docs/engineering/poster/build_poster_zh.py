@@ -386,9 +386,9 @@ panel(80, y + 25, 1920, y + 355, "tidy", '维护指令与规格 · 按需使用'
 d.line([(1000, y + 80), (1000, y + 270)], fill=LANES["tidy"]["fill"], width=4)
 text(120, y + 85, "/fresh-agent", MONO(36), fill=LANES["tidy"]["dark"])
 text(1040, y + 85, "/fresh-spec", MONO(36), fill=LANES["tidy"]["dark"])
-text(120, y + 142, '指令冲突，让 agent 反复停下来？', F(28), maxw=820)
+text(120, y + 142, '项目久了，AGENTS.md 越来越臃肿？', F(28), maxw=820)
 text(1040, y + 142, '代码变了，spec 还停在过去？', F(28), maxw=820)
-text(120, y + 198, '引用原文与位置，解释影响，提出具体修改。\n保留明确审批要求，标出扩大权限的建议。', F(25, False), maxw=820, spacing=1.5)
+text(120, y + 198, '清理过时内容，合并重复规则，整理结构。\n保留有效约束和明确审批要求。', F(25, False), maxw=820, spacing=1.5)
 text(1040, y + 198, '依据当前代码更新过时描述，附来源证据。\n保留未实现需求，列出差异和不确定项。', F(25, False), maxw=820, spacing=1.5)
 text(120, y + 300, '两个命令都能手动调用，也可由 agent 在匹配任务中使用。属于完整工具集，不改变四条车道。', F(23, False), fill=GRAY, maxw=1760)
 

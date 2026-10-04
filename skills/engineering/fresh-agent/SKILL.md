@@ -1,45 +1,47 @@
 ---
 name: fresh-agent
-description: Review AGENTS.md files and skill instructions for ambiguity, conflicts, and overlap that cause unnecessary stops, redundant confirmation, or incomplete work. Use when the user wants an instruction audit or recurring workflow stalls point to instruction conflicts.
+description: Streamline AGENTS.md and related project instructions that have grown bloated over a long-running project. Use when the user wants to prune stale guidance, consolidate repeated rules, or reorganize accumulated instructions while preserving effective constraints and explicit approvals.
 ---
 
 # Fresh Agent
 
-Review the instructions that govern the requested workspace and explain where their wording can obstruct authorized work. Deliver an evidence-backed review with specific replacement text. Reviewing instructions does not authorize changing them.
+Refresh a project's accumulated agent instructions so the next agent can find and follow the rules that still matter. The main deliverable is a concise, maintained instruction file, with a reviewable explanation of what was removed, merged, moved, or kept. A smaller file is useful only if it preserves the project's effective requirements.
 
-## Find the effective instructions
+## Establish scope and preserve the original
 
-Start with the user's named files or workspace. Read applicable ancestor and nested `AGENTS.md` files, equivalent project instructions such as `CLAUDE.md`, and the skill instructions relevant to the workflow. Follow references that define autonomy, clarification, approval, stopping, or completion. Resolve symlinks and count shared sources once while noting which installed copies use them.
+Start with the user's named files, otherwise the project's `AGENTS.md` and equivalent instructions such as `CLAUDE.md`. Read applicable ancestor and nested rules, referenced guidance, and relevant skill instructions to understand scope and dependencies. Inspect related files for context; edit only the instruction sources covered by the request. Resolve symlinks and generated copies so changes land in the maintained source rather than a disposable installation.
 
-State the scope and inaccessible sources. Apply each rule only where its directory, invocation, and condition make it relevant; two rules in disjoint scopes are not a conflict. Distinguish active requirements from examples, quoted prompts, and superseded text. Honor governing instructions while reviewing them.
+A request to freshen or simplify the files authorizes the cleanup within the governing approval rules. If the user asks only for an audit or proposed edits, return a concrete proposed revision without applying it. Preserve a recoverable copy of the exact starting contents before edits, including any uncommitted changes; a tracked file with uncommitted edits is not fully backed up by its last commit. Report the backup location when one is created. Preserve all explicit approval requirements.
 
-## Review the decision points
+## Separate durable guidance from accumulated clutter
 
-Look for concrete cases where the wording could cause an unnecessary stop, repeated confirmation, or unfinished work:
+Read the current project structure, configuration, workflows, and linked decisions where needed to judge whether guidance still applies. Age or a missing search result alone does not establish that a rule is obsolete. Account for directory scope and invocation conditions before merging similar instructions.
 
-- **Autonomy:** routine, reversible work or already-authorized actions accidentally require a new approval.
-- **Clarification:** optional preferences or discoverable facts become mandatory questions; a missing answer blocks independent work.
-- **Approval:** an explicit safeguard is conflated with a suggestion, or its trigger and the action it protects are unclear.
-- **Completion:** vague stopping rules, contradictory definitions of done, or handoff rules let the agent finish before delivering the requested result.
-- **Overlap:** repeated rules drift, hide precedence, or require the same decision twice. Identical compatible copies are maintenance concerns, not automatically behavioral failures.
+| Material | Treatment |
+| --- | --- |
+| Repeated rules with the same meaning and scope | Consolidate into one clear authoritative statement, preserving exceptions and trigger conditions |
+| Related rules scattered across sections | Group by the decision or task they govern, retaining required ordering |
+| Old paths, commands, or workflow descriptions contradicted by current sources | Update with evidence; remove only when the guidance has demonstrably been superseded or retired |
+| Completed task notes or historical incident narratives | Retain any still-useful lesson; move history to an existing appropriate record when its context matters |
+| Verbose examples or detailed guidance needed only for a particular task | Shorten or move to an accessible reference with a precise condition for reading it, if this reduces routine context without hiding essential rules |
+| Project-specific constraints, rationale, approval gates, or exceptions that remain effective | Keep them explicit and easy to find, even if they prevent a large reduction in length |
+| Conflicting rules or uncertain relevance | Preserve the unresolved requirement, explain the decision needed, and continue independent safe cleanup |
 
-For each suspected issue, trace a realistic task through the applicable rules. Explain the competing readings and the resulting action or stop. Account for instruction precedence and authorization already present in the conversation before calling a confirmation redundant. Treat intentional human decision points as safeguards, even when they slow the task down.
+Keep always-needed rules in the entrypoint. A pointer must name when to read its target, and that target must be available wherever these instructions are used. Preserve intentional portable copies needed by standalone skills. Do not turn one bloated file into an unnecessary maze of small files or replace precise rules with vague slogans to meet a word-count target.
 
-## Report actionable findings
+## Edit without changing authority
 
-Order findings by their effect on completing work. For each finding include:
+Apply the supported cleanup, using the project's language and vocabulary. Keep a compact disposition record for substantive deletions, merges, moves, and meaning changes, with original file locations and the evidence or retained rule that justifies them. Quote original wording when explaining a conflict or proposing a change in meaning; a purely cosmetic edit does not need a separate finding.
 
-1. File paths and line numbers, with exact quotations of all relevant instructions.
-2. The triggering situation, competing interpretations, and likely effect on behavior.
-3. Whether this is accidental friction, an intentional safeguard with unclear wording, or an unresolved policy choice.
-4. Specific replacement wording and its location, preserving the protected action and approval trigger.
-5. An explicit **Authority impact**: unchanged, or **would expand authority**, explaining which action would become newly permitted and under what conditions.
+As part of the cleanup, check autonomy, clarification, approval, and completion rules for ambiguity or overlap that could cause unnecessary stops, repeated confirmation, or unfinished work. Distinguish intentional safeguards from wording that accidentally broadens their triggers. Preserve each explicit approval requirement, including the protected action, conditions, and scope.
 
-Preserve all explicit approval requirements in proposed edits. If removing or weakening a gate seems useful, record that separately as an authority-expanding policy option, never as the recommended wording cleanup. Do not silently resolve a policy conflict by choosing greater autonomy.
+Flag any proposed expansion of authority separately and leave it unapplied without specific authorization. General permission to shorten instructions is not permission to remove a gate, choose the more permissive side of a conflict, or erase a requirement merely because current code does not satisfy it. Ask only for policy decisions that affect the disputed edit; finish the independent cleanup already supported by evidence.
 
-Finish with the scope reviewed, any meaningful limitations, and the safeguards retained. If there are no supported findings, say so without manufacturing edits. A review is complete when each supported finding has evidence, a behavioral explanation, and a concrete proposed edit.
+## Check and deliver the cleaned instructions
 
-Apply changes only when the user has requested edits as well as review, within that authorization and all explicit approval requirements. A general cleanup request does not authorize expanding authority. Complete independent authorized edits while any genuine policy decision remains unresolved.
+Compare the result against the original: every substantive requirement must still be present, be reachable under the right conditions, or have an evidence-backed reason for retirement. Check links, scoped overrides, source/copy synchronization, and applicable repository checks. Review a representative task against the remaining instructions to catch lost exceptions or altered approval behavior.
+
+Finish with changed files, before/after size as a descriptive measure, the main removals and consolidations with reasons, preserved safeguards, and unresolved decisions. If the file needed reorganization more than shortening, say so. If no supported cleanup is warranted, explain that instead of manufacturing deletions. Complete when the authorized files are refreshed and their remaining rules retain the intended meaning, with uncertain policy changes explicitly left for a decision.
 
 <!-- cat-skills:conversation:start -->
 ## Conversation style

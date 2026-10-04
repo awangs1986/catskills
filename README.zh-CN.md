@@ -32,7 +32,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 - **`/vibe`**：一条命令解决"我现在该干啥"。它看一眼你的仓库，告诉你走哪条道，下一步敲哪条命令。你不用背整张地图。
 - **`/tell-a-story`**：讲一个真人怎样使用产品的故事，或者通过一个连贯的人物故事，重新认识陌生或运行多年的项目到底有什么用。先对齐理解，需要时再整理成产品 SPEC 或待办 BACKLOG。不用先学会写专业需求。
 - **一条闭环**：需求 → spec → tickets → 测试 → 跑起来的证据 → 审查 → 提交。agent 自己一步步往下走，你只管看结果。
-- **指令与规格维护**：`fresh-agent` 审查导致重复确认和无谓停顿的指令；`fresh-spec` 对照当前代码更新过时规格，同时保留未实现需求。
+- **指令与规格维护**：`fresh-agent` 精简长期变臃肿的 AGENTS.md，清理过时内容、合并重复规则；`fresh-spec` 对照当前代码更新过时规格，同时保留未实现需求。
 - **会话兜底**：`refocus`、`handoff`、`takeover`。聊偏了、要换地方、会话直接没了，都有招。
 - **`/askcat`**：一只猫在一个 HTML 页面上，把你装的每个 skill 用大白话讲一遍，说的是你的话。
 
@@ -58,7 +58,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 | 事情 | 你敲什么 | agent 做什么 |
 | --- | --- | --- |
-| **清理指令冲突** | `/fresh-agent` | 引用原文和位置，解释无谓停顿的原因，提出具体修改；保留明确审批要求，标出扩大权限的建议 |
+| **精简积累的指令** | `/fresh-agent` | 直接整理臃肿的 AGENTS.md，清理有证据的过时内容、合并重复规则；保留有效约束和明确审批要求 |
 | **更新过时规格** | `/fresh-spec` | 对照当前代码更新 spec，附来源证据；保留未实现需求，标明差异与不确定项 |
 | **长会话别跑偏** | `/refocus` | 把 spec、ticket 和你亲口定的每个决定重新读一遍，跟做出来的东西对照：丢了啥，偏了啥；不清楚的问一轮，答案写回去 |
 | **会话没了也不丢活** | `/handoff`(主动走)或 `/takeover`(旧会话没了) | 要走的会话留一个小文件；接手的会话拿着导出、ID、URL 或 handoff 文件把上下文找回来，动手之前先跟你对一遍 |
@@ -194,7 +194,7 @@ npx skills@latest add awangs1986/popcodeskills
 
 | Skill | 为什么原来缺它 |
 | --- | --- |
-| [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | 审查 agent 指令里导致无谓停顿、重复确认或半途收工的歧义与冲突，给出具体修改建议，保留明确审批要求。 |
+| [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | 精简长期维护后变臃肿的 AGENTS.md：清理有证据表明已过时的内容、合并重复规则、整理结构，保留有效约束和审批要求。 |
 | [`fresh-spec`](./skills/engineering/fresh-spec/SKILL.md) | 对照当前代码更新过时 spec，提供来源证据，保留未实现需求并标明尚未解决的差异。 |
 | [`vibe`](./skills/engineering/vibe/SKILL.md) | 上游有个 `ask-matt`，二十五个 skill 全覆盖的路由器。一个人用不了那么多，这里换成一张小地图：每个岔路都有默认走法，再加一张 First run 卡片，和一段"隔两周回来，上次做到哪" |
 | [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | 不会写专业需求，也能讲一个人怎么使用产品的故事。双向讲故事先对齐体验，再把确认过的场景转成产品 SPEC 或待办 BACKLOG，不急着选技术栈 |
@@ -251,7 +251,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 **模型调用**
 
-- **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**：审查 agent 指令里导致无谓停顿、重复确认或半途收工的歧义与冲突，给出具体修改建议，保留明确审批要求。
+- **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**：精简长期维护后变臃肿的 AGENTS.md：清理有证据表明已过时的内容、合并重复规则、整理结构，保留有效约束和审批要求。
 - **[fresh-spec](./skills/engineering/fresh-spec/SKILL.md)**：对照当前代码更新过时 spec，提供来源证据，保留未实现需求并标明尚未解决的差异。
 - **[prototype](./skills/engineering/prototype/SKILL.md)**：拿一次性的原型回答设计问题：状态逻辑问题给一个能点的 HTML 单文件，UI 问题给同一路由下几个长得完全不一样的版本随便切。
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**：专治难缠 bug 和性能倒退，固定六步：先造一条碰到这个 bug 就变红的命令 → 缩小范围 → 列假设 → 加日志 → 修 → 回归测试。

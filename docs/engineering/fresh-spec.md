@@ -15,7 +15,7 @@ Type `/fresh-spec`, or the agent reaches for it automatically when the task is t
 - Use it after implementation or refactoring has left the spec out of date.
 - Use [to-spec](./to-spec.md) to turn an agreed conversation into a new spec.
 - Use [refocus](./refocus.md) when ongoing work has drifted from its requirements.
-- Use [fresh-agent](./fresh-agent.md) when the stale or conflicting material governs the agent's own behavior.
+- Use [fresh-agent](./fresh-agent.md) when AGENTS.md or related agent instructions have grown bloated and need pruning or consolidation.
 
 ## Prerequisites
 

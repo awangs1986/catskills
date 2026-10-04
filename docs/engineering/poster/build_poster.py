@@ -392,9 +392,9 @@ panel(80, y + 25, 1920, y + 355, "tidy", 'Maintain instructions and specs · Whe
 d.line([(1000, y + 80), (1000, y + 270)], fill=LANES["tidy"]["fill"], width=4)
 text(120, y + 85, "/fresh-agent", MONO(36), fill=LANES["tidy"]["dark"])
 text(1040, y + 85, "/fresh-spec", MONO(36), fill=LANES["tidy"]["dark"])
-text(120, y + 142, 'Conflicting rules keep stopping the agent?', F(28), maxw=820)
+text(120, y + 142, 'AGENTS.md grown bloated over time?', F(28), maxw=820)
 text(1040, y + 142, 'The code changed, but the spec did not?', F(28), maxw=820)
-text(120, y + 198, 'Quote rules and locations; explain the effect; propose edits.\nKeep explicit approvals. Flag any expansion of authority.', F(25, False), maxw=820, spacing=1.5)
+text(120, y + 198, 'Prune stale guidance. Merge duplicates. Organize the rules.\nKeep effective constraints and explicit approvals.', F(25, False), maxw=820, spacing=1.5)
 text(1040, y + 198, 'Refresh stale descriptions from current code evidence.\nKeep unmet requirements and unresolved gaps visible.', F(25, False), maxw=820, spacing=1.5)
 text(120, y + 300, 'Both commands can be typed or used automatically for matching tasks. Part of the full collection, outside the daily kit.', F(23, False), fill=GRAY, maxw=1760)
 
