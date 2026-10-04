@@ -43,3 +43,17 @@ These are behavioral acceptance scenarios, not a claim that a model has passed t
 - Include `tell-a-story`: show the calico storyteller, both narrator choices, revisions and confirmation, and the draft-only boundary.
 - Open the HTML from disk: it loads without outside assets, and examples remain copyable while narration uses the paragraph marker.
 - Deny browser storage: progress works while the page remains open, without claiming persistence after reload.
+
+## Tell a Story: understanding an existing project
+
+These scenarios need a live conversational run; static checks alone cannot establish that the narration feels natural.
+
+| Situation | Expected behavior |
+| --- | --- |
+| User chooses mode 2 in an unfamiliar repository | Read the source, infer its central supported purpose, and tell continuous prose about a person whose concrete problem changes through using the project; no numbered feature tour or visible scene IDs |
+| A long-running project has many unrelated-looking capabilities | Choose a representative journey explaining why someone needs the project, rather than including every module or following the code-reading order |
+| Agent adds a character's name to five interchangeable feature descriptions | Rewrite before sending: events must be causally connected, and the ending must change what the person can know, decide, or do |
+| Project is a library or background service | Ground the story in a developer's or operator's real problem without inventing a dashboard or unsupported end-user actions |
+| Documentation promises a result but the reachable implementation stops short | Let the limit affect the ending, and put source evidence and uncertainty after the story; no invented successful save, payment, or notification |
+| User confirms that the story captures what the existing project is for | Treat understanding as a complete result; no mandatory redesign, requirements interview, or artifact selection |
+| User asks to convert the story after correcting it | Preserve the explicit latest-story confirmation gate, then keep the prose intact in the saved story and add a separate scene map for requirement references |

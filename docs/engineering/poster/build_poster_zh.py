@@ -366,7 +366,7 @@ rbox(885, 495, 1305, 655, LANES["story"]["fill"], LANES["story"]["edge"], r=22, 
 d.ellipse((908, 516, 952, 560), fill=LANES["story"]["edge"])
 d.text((930, 538), "2", font=F(28), fill="white", anchor="mm")
 text(970, 514, "Agent 来讲", F(30), fill=LANES["story"]["dark"])
-text(910, 568, "照着当前代码讲个故事，\n你来听、纠正、补充。", F(24, False), maxw=370, spacing=1.3)
+text(910, 568, "谁遇到了什么难题，\n这个项目怎样帮到他。", F(24, False), maxw=370, spacing=1.3)
 
 arrow([(1325, 575), (1410, 575)], color=LANES["story"]["edge"], width=5, head=18)
 node(1650, 575, 440, 170, "story", cmd="SPEC / BACKLOG", label="两者都要 / 只保留故事", note="你确认后，才整理", cmd_size=29)

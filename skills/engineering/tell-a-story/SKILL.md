@@ -1,15 +1,15 @@
 ---
 name: tell-a-story
-description: "Align on a product through stories: tell the agent how someone should use it, or hear a code-grounded story of the current experience, then refine it together into a product SPEC or BACKLOG."
+description: "Align on a product through stories: tell the agent how someone should use it, or understand an unfamiliar or long-running project through a code-grounded human story. Refine that understanding together; SPEC and BACKLOG are optional."
 disable-model-invocation: true
 argument-hint: "An idea, feature, or saved story; otherwise choose who tells the story"
 ---
 
 # Tell a Story
 
-A person can imagine using a product long before they can write its requirements. Help them tell that **story**, or tell one from the current workspace for them to correct. The agreement is about **who does what, what happens in response, and what becomes better in their world**. A feature inventory or an architecture tour is not a story.
+A story gives a person a way to understand what a project is for, including a repository neither they nor the agent has seen before, or a long-running product whose purpose has become hard to explain. It also helps someone describe a product they want before they can write requirements. Help them tell that **story**, or tell one from the current workspace for them to correct. The agreement is about **who does what, what happens in response, and what becomes better in their world**. A feature inventory or an architecture tour is not a story.
 
-This is product alignment, not implementation or technical-stack selection. `wayfinder` maps decisions across a large effort; this skill makes the intended experience concrete enough to decide what work belongs in that effort. Stay with one person's journey at a time.
+Shared understanding of the project is a complete outcome. An existing-project explanation need not become a redesign or a new requirements exercise. This is product alignment, not implementation or technical-stack selection. `wayfinder` maps decisions across a large effort; this skill makes the intended experience concrete enough to decide what work belongs in that effort. Stay with one person's journey at a time.
 
 No setup or issue tracker is required. Reply in the user's language, including the opening choices and the story. Written artifacts follow the project's existing docs language, otherwise the user's; names, commands, and paths stay unchanged.
 
@@ -21,7 +21,7 @@ For a fresh invocation without an explicit mode, the first reply is only this ch
 >
 > **1. You (the user) tell me a story.** Describe someone using the product you want to build. I'll help you make it concrete and turn the agreed story into a SPEC or BACKLOG.
 >
-> **2. I (the agent) tell you a story.** I'll read this workspace and describe a realistic experience of using the product. You tell me what fits and what should change.
+> **2. I (the agent) tell you a story.** I'll read this workspace and tell you about someone with a problem, how this project helps them, and what changes for them afterwards. You can correct my understanding of what the project is for.
 
 **Wait for the answer before exploring the product, asking follow-ups, or writing anything.** The numbers never swap: 1 is user-led, 2 is agent-led. An idea or a file path supplied with the command is context, not a choice. If the user explicitly supplied a mode already, acknowledge it and continue; an ambiguous answer gets a short clarification, not a guessed branch.
 
@@ -52,7 +52,9 @@ Read existing project instructions, vocabulary, and relevant code when they can 
 
 Read before narrating. Start with project instructions, README, `CONTEXT.md` or its map, relevant product docs and manifests; then follow a real user entry point through its implementation and relevant tests or fixtures to its observable result. For a CLI, library, service, or skill collection, the person may be an operator or developer. Don't invent a web interface for a product that has none.
 
-Choose one representative journey. If several products are equally plausible, ask which one first. Facts the workspace can answer are your job, not homework for the user.
+Discover the project's purpose before choosing the journey: who encounters a problem, how they would handle it without this project, what they bring to it, and what useful outcome they take away. Read enough of the workspace to choose a journey that explains its central job, rather than the first endpoint or easiest screen you find. Keep the reading order out of the narration. Distinguish the supported present purpose from historical intent you cannot establish.
+
+Choose one representative journey that makes that purpose understandable to someone who knows none of the project's terminology. If several products are equally plausible, ask which one first. Facts the workspace can answer are your job, not homework for the user.
 
 Keep a small evidence ledger for the journey:
 
@@ -66,17 +68,36 @@ A button, test, or README claim alone does not prove an end-to-end capability. T
 
 If there is no usable implementation, no workspace access, or not enough evidence for a current-state journey, say so. Ask whether to switch to mode 1 or co-create an explicitly **imagined future** story. Wait; don't present an invented current product as the fallback.
 
-Tell a realistic but illustrative story, not a claim about an observed customer. Give the person a name or role, a concrete need, a few actions, and a visible ending. Use one helpful everyday analogy to make the experience vivid, then anchor it in literal behavior: "like a coat-check ticket: she receives a reference she can use to retrieve the file." The analogy explains the behavior; it cannot add a capability the code lacks. Use fictional, non-sensitive example data.
+### Narrate a human situation
 
-Label this **Current experience, story v1**. Usually three to six short scenes are enough. If a step is partial, the story stops or shows that limitation rather than conjuring a happy ending. Put brief source pointers and uncertainties **after** the story, keyed to its scenes, so the story itself remains readable.
+Tell one connected, illustrative story in natural paragraphs. Start in the person's world before the software appears: a concrete moment, something they need to accomplish, and why their usual way leaves them stuck. Let the project enter when it becomes useful. Each next action follows from what just happened, and the ending shows what the person can now know, decide, or do. Use ordinary vocabulary first; introduce a project term only when the person needs it, explaining it through the situation.
+
+Keep the person and their problem as the thread. Choose the few supported behaviors that change their situation; the story does not need to tour every capability. A library's person may be a developer whose program cannot use an incoming file, and an infrastructure project's person may be an operator trying to understand an interruption. Follow the real human consequence without inventing a graphical interface.
+
+The narration is continuous prose, without numbered steps, bullet lists, feature headings, scene IDs, or a repeated "then they click" rhythm. Keep the scene structure and evidence ledger as working notes. Invented names, dialogue, timestamps, or decorative drama cannot substitute for a reason one event leads to the next. Use fictional, non-sensitive details sparingly, clearly as an illustration rather than an observed customer or a claim about the project's origins. An everyday analogy is optional, only where it clarifies a difficult idea without implying unsupported behavior.
+
+For example, if source evidence supports reconciling delivery records and showing unmatched deliveries, the shape could be:
+
+> At the end of the month, Maya has a supplier's bill and a folder of delivery slips. One total looks too high, but she cannot remember which delivery explains it. Usually she would spend the afternoon comparing the slips with the bill, line by line.
+>
+> She gives the records to the project. It puts the deliveries it can match together and leaves one unmatched delivery visible. Now she has a particular delivery to ask the supplier about, instead of a vague feeling that the bill is wrong. The project has not decided who owes what; it has helped her find where to look.
+
+This is a writing example, not a domain or capability to import into the current repository. The story's turning point is the narrowing of Maya's problem, and its ending is her ability to take a useful next action. Adapt that causal shape to the actual project.
+
+Before sending, check whether the paragraphs could be reordered without changing the meaning, or the character removed while leaving a feature catalog intact. If so, rewrite around the person's unresolved problem and its changing state. A reader should be able to explain who needs the project and why after hearing the story, without memorizing its modules or commands.
+
+Frame it briefly as an illustrative **current experience**, with a revision number kept for subsequent corrections. Let the journey determine the length, usually a few short paragraphs rather than a fixed scene quota. If a consequential step is partial, let that limitation shape the ending instead of conjuring success. After the narrative, add a short plain-language statement of what the project appears to help people accomplish. Put compact source pointers and material uncertainties after that, using narrative anchors such as "the unmatched delivery". Keep source inspection distinct from runtime proof.
 
 ## 2. Retell, react, revise
 
-Both paths meet here. Use a short story with stable scene IDs (`S1`, `S2`, ...), an explicit frame (**current experience** or **intended experience**), and a revision number. The mode-2 narration is already the first retelling; don't repeat it just to enter this loop. Keep IDs when a scene is revised; add new IDs for new scenes.
+Both paths meet here. Keep an explicit frame (**current experience** or **intended experience**) and track revisions. Maintain stable scene IDs (`S1`, `S2`, ...) in working notes and saved artifacts for traceability; keep them out of the conversational narrative unless the user asks for them. The mode-2 narration is already the first retelling; do not repeat it just to enter this loop. Keep IDs when a scene is revised; add new IDs for new scenes.
 
-For a user-led story, say what you heard rather than silently embellishing it. For an agent-led story, start from the source-grounded version. Ask:
+For a user-led story, say what you heard rather than silently embellishing it. For an agent-led story, start from the source-grounded version. Ask one question appropriate to the purpose:
 
-> Is this the experience you want? Which scene feels wrong, missing, or unnecessarily complicated?
+- **Understanding an existing project:** "Does this capture what this project is for, or have I misunderstood something important?"
+- **Shaping an intended experience:** "Is this the experience you want, or is there a moment that should happen differently?"
+
+A correction about the project's purpose calls for rereading relevant evidence and retelling the story. It is not automatically a request to build something new.
 
 Then **wait**. The user is the authority on the intended product, not a character whose answers you simulate.
 
@@ -85,7 +106,7 @@ On each reply:
 1. Say what changed in the understanding, in a sentence or two. Preserve accepted scenes and scope boundaries.
 2. Separate a **misreading of existing behavior** (check the source and correct the baseline) from a **request for different behavior** (revise the intended story). Keep the current baseline visible; approval of a future scene does not make it implemented.
 3. Retell the affected scenes, or the whole story if the change alters the journey. Mark assumptions and unresolved choices alongside it, not as settled facts inside it.
-4. Ask one next question and wait. Repeat for as many rounds as the user needs. A user may switch narrator or pause without being forced into a document.
+4. If alignment is still open, ask one next question and wait. Repeat for as many rounds as the user needs. Once the user confirms that an existing-project explanation matches their understanding, that request is complete; leave it as a story unless they want an artifact or a change. A user may switch narrator or pause without being forced into a document.
 
 An existing saved story is a starting point for this loop, not a reason to repeat the interview. Read it after the mode choice, retain its scene IDs, and flag source evidence that the current workspace no longer supports.
 
@@ -93,11 +114,11 @@ An existing saved story is a starting point for this loop, not a reason to repea
 
 Before conversion, the latest story must make the person, goal, main actions and responses, observable ending, and first-version boundary clear. For an unchanged current-experience story, the boundary is simply that journey, with no new build implied. A consequential wrong path is either agreed or explicitly left open. Show the full latest story plus the short **Open** and **Not this version** lists and ask for explicit confirmation.
 
-An answer approving an earlier scene, silence, "keep going", or choosing an output format is not approval of the whole latest story. If the user says "yes, except...", incorporate the exception and confirm the revised version. Open questions may remain, but identify which block implementation. Approval means **this is the desired experience**, not **this is technically proven or ready to build**.
+An answer approving an earlier scene, silence, "keep going", or choosing an output format is not approval of the whole latest story. If the user says "yes, except...", incorporate the exception and confirm the revised version. Open questions may remain, but identify which block implementation. Approval confirms the shared understanding of a current experience or the agreement on an intended experience, according to the story's frame. It does not establish technical proof or implementation readiness.
 
 ## 3. Turn agreement into work, if wanted
 
-After story confirmation, offer the outputs in plain terms. If the user already requested one, honor it without asking again:
+If the user wants to turn the understanding into work, obtain the story confirmation above and offer the outputs in plain terms. If the user already requested one, honor it without asking again. For an explanation-only request that is already satisfied, end without an output-selection question:
 
 | Choice | What the user gets |
 | --- | --- |

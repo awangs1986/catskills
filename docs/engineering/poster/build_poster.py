@@ -372,7 +372,7 @@ rbox(885, 495, 1305, 655, LANES["story"]["fill"], LANES["story"]["edge"], r=22, 
 d.ellipse((908, 516, 952, 560), fill=LANES["story"]["edge"])
 d.text((930, 538), "2", font=F(28), fill="white", anchor="mm")
 text(970, 514, "Agent tells", F(30), fill=LANES["story"]["dark"])
-text(910, 568, "A story from the code.\nYou react and correct.", F(24, False), maxw=370, spacing=1.3)
+text(910, 568, "Who needs this project?\nA story makes it clear.", F(24, False), maxw=370, spacing=1.3)
 
 arrow([(1325, 575), (1410, 575)], color=LANES["story"]["edge"], width=5, head=18)
 node(1650, 575, 440, 170, "story", cmd="SPEC / BACKLOG", label="Both, or just the story", note="Only after you confirm", cmd_size=29)

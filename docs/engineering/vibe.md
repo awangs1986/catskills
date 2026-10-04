@@ -16,7 +16,7 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 
 | Your situation | What the card gives back |
 | --- | --- |
-| You can picture using the product but cannot write its requirements, or want to hear a user journey from the workspace | [tell-a-story](./tell-a-story.md), before setup or sizing if needed; the card names it and stops |
+| You can picture using the product but cannot write its requirements, or need a human story to understand what an unfamiliar or long-running project is for | [tell-a-story](./tell-a-story.md), before setup or sizing if needed; the card names it and stops |
 | You want a guide to the commands you have | [askcat](../productivity/askcat.md), without a setup detour |
 | You need proof cases, running evidence, or an audit of existing tests | [cattytest](./cattytest.md), [verify](./verify.md), or [test-audit](./test-audit.md), selected by what is missing rather than overlapping keywords |
 | A library or API fact needs checking | [research](./research.md), which is part of the solo kit |

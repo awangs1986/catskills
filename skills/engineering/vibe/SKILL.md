@@ -52,7 +52,7 @@ Some things the user says pick the route on their own, inside or across the four
 
 | The user says something like | Route | WORKFLOW.md section |
 | --- | --- | --- |
-| "I know what it should feel like but cannot write requirements", "what would a person actually do with this project", "help me describe my product through a story" | Build alignment: `/tell-a-story`, before setup or sizing if needed. The user chooses who tells; confirmed scenes become optional product drafts, not automatically published issues | Lane 1, Before sizing |
+| "I know what it should feel like but cannot write requirements", "what is this unfamiliar or long-running project for", "what would a person actually do with this project", "help me describe my product through a story" | Build alignment: `/tell-a-story`, before setup or sizing if needed. The user chooses who tells; a connected human story establishes the project's purpose. Shared understanding can stand alone; confirmed scenes become product drafts only if wanted | Lane 1, Before sizing |
 | "it's all green but it doesn't do what I asked", "how do I know it really works", "help me design test cases", "the tests only check what it thinks I meant" | `/cattytest`: one scope question, then a grill from the user's side of the screen that ends in a test-cases sheet; `verify` walks it. Not `tdd`: gates are the agent's, cases are the user's | Lane 1, Halfway in |
 | "explain all these skills to me", "what do I have installed", "which skill does what" | `/askcat`: one HTML page, a cat explains every card, in their language. Not a lane | The kit |
 | "sometimes", "since last week", "slow", "flaky" | Fix, hard branch: `diagnosing-bugs` | Lane 2 |

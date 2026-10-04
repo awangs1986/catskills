@@ -1,5 +1,5 @@
 interface:
   display_name: "Tell a Story"
-  short_description: "Align on a product through stories, then draft a SPEC or BACKLOG"
+  short_description: "Understand a project through a human story and align its purpose"
 policy:
   allow_implicit_invocation: false

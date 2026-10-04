@@ -5,7 +5,7 @@ Two one-page pictures of [the vibe handbook](../../../skills/engineering/vibe/WO
 - `../vibe-workflow-poster.png`, drawn by `build_poster.py` (English, linked from the top-level `README.md`).
 - `../vibe-workflow-poster.zh-CN.png`, drawn by `build_poster_zh.py` (Chinese, linked from `README.zh-CN.md`). Its Chinese strings are readable source on purpose; `scripts/check-skills.mjs` allows CJK in exactly that path (see `CLAUDE.md`).
 
-Both posters are 2000 × 4850 pixels. The story band sits before setup because storytelling needs no issue tracker: 1 is user-led, 2 is agent-led, both allow revisions, and only a confirmed story becomes optional SPEC / BACKLOG drafts. It does not add a fifth lane or authorize coding and issue publication. The maintenance band sits above the footer and covers instruction audits and spec refreshes, including their approval and requirement-preservation boundaries. These two standalone tools belong to the full collection of 37 promoted skills; the footer still counts the curated kit (26 skills).
+Both posters are 2000 × 4850 pixels. The story band sits before setup because storytelling needs no issue tracker: 1 is user-led, 2 is agent-led to explain who needs the project and why through a connected human story, both allow revisions, and only a confirmed story becomes optional SPEC / BACKLOG drafts. It does not add a fifth lane or authorize coding and issue publication. The maintenance band sits above the footer and covers instruction audits and spec refreshes, including their approval and requirement-preservation boundaries. These two standalone tools belong to the full collection of 37 promoted skills; the footer still counts the curated kit (26 skills).
 
 ## The cat crew
 

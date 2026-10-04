@@ -1,6 +1,6 @@
 ## What it does
 
-`tell-a-story` helps you and the agent agree on what a product should actually feel like to use. You can tell the story of someone using the product you want, or ask the agent to read the workspace and tell a story of the product that exists. You correct the story together before it becomes a product [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or a proposed BACKLOG.
+`tell-a-story` helps you and the agent understand what a project is for through a human story. This can be a repository you have just encountered, a product whose purpose people have lost track of, or a new experience you want to build. You can tell the story of someone using the product you want, or ask the agent to read the workspace and tell a story of the product that exists. Shared understanding can be the whole result. If you want to turn it into work, you correct and confirm the story before it becomes a product [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or a proposed BACKLOG.
 
 The story must be confirmed before it becomes requirements. In the agent-led direction, an appealing story is not permission to invent features: the agent separates what the source supports, what is uncertain, and what you want to change. It is aligning the product, not picking a stack or starting a build.
 
@@ -15,7 +15,7 @@ You invoke this by typing `/tell-a-story`, and the agent won't reach for it on i
 | Your situation | Start with |
 | --- | --- |
 | You can imagine using the product but cannot write professional requirements | **1: you tell the story**, and the agent helps you make it concrete |
-| You have a workspace but cannot tell whether the product it describes is what you intended | **2: the agent tells the story**, based on a real path through that workspace |
+| You are new to a repository, or nobody can explain what a long-running project actually does for people | **2: the agent tells the story**, following a person's problem through a supported path to a useful outcome |
 | You already share the product picture and need to resolve detailed design questions | [grill-with-docs](./grill-with-docs.md) |
 | The unresolved decisions span more than one conversation can hold | [wayfinder](./wayfinder.md) |
 | You know the intended experience but need to prove the built thing delivers it | [cattytest](./cattytest.md) |
@@ -30,13 +30,13 @@ When you ask for saved output, it uses the project's product-draft location, or 
 
 ## The story is the agreement
 
-Think in scenes, not feature lists. For example: a shopkeeper is closing for the evening, notices one unpaid order, opens it, and gets the information needed to decide what to do next. The next question is what that person should see or be able to do, not which database they want. A small everyday analogy can make a scene easier to picture, but cannot smuggle extra features into it.
+The story starts before the software appears: someone has a problem and a reason their usual approach is not enough. The project enters when it helps, and the ending shows what the person can now know, decide, or do. The telling uses connected paragraphs; scene IDs stay in the evidence notes and saved documents. For example: a shopkeeper is closing for the evening, notices one unpaid order, opens it, and gets the information needed to decide what to do next. The next question is what that person should see or be able to do, not which database they want. An everyday analogy is useful only if it clarifies the experience without adding unsupported features.
 
 The agent asks one focused question at a time, retells what changed, and keeps the accepted parts. If you say the product should send a reminder but the source only displays the unpaid order, the reminder becomes an intended change. It does not quietly become something the current product already does.
 
 ## What comes out
 
-After you approve the latest story, choose how far to take it:
+If you want an artifact after understanding the project, approve the latest story and choose how far to take it:
 
 | Output | What it contains |
 | --- | --- |
@@ -48,6 +48,14 @@ After you approve the latest story, choose how far to take it:
 Saved conversions include `story.md` alongside the requested documents. The BACKLOG is proposed work, not an issue tracker. Draft items live in `backlog/`, not the tracker's `issues/` directory, and nothing is automatically marked ready to build or published. Technical unknowns remain visible. If the existing behavior is already what you want, an empty implementation backlog is an honest result.
 
 ## Common questions
+
+**It still gives me five numbered features. How is that a story?**
+
+A list of capabilities with a name attached has missed the purpose. The person needs a concrete problem, each event must explain why the next happens, and the ending must change what they can do. If the paragraphs can be shuffled without affecting the story, the agent should rewrite it. Numbered scene references belong in the saved traceability map, not the telling.
+
+**Can I use it just to understand an old or unfamiliar repository?**
+
+Yes. Ask for the agent-led mode. It reads the source, chooses a journey that explains the project's central purpose, and asks whether that understanding is right. You do not need to request a redesign, SPEC, or BACKLOG. Code can support an account of today's behavior without establishing why the original authors built it.
 
 **Do I need to know how to write a SPEC before using this?**
 
@@ -69,7 +77,8 @@ No. Approval confirms the product picture. You choose whether to get a local pro
 
 ## It's working if
 
-- You can recognize the intended experience in a short story without knowing software terminology.
+- You can explain who needs the project, what problem brings them to it, and what changes for them without knowing software terminology.
+- The story reads as connected events in a person's life, and the conversation checks your understanding before proposing new work.
 - Corrections change the relevant scenes instead of restarting the interview or disappearing into a generic feature list.
 - You can tell which parts exist in the source, which are uncertain, and which are requests for the future.
 - Every proposed requirement or work item points back to something you actually agreed, and nothing starts building just because you liked the story.

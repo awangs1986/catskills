@@ -30,7 +30,7 @@ Cat Skills takes that set and curates and extends it for **solo vibe coding**: y
 Vibe coding has two failure modes. The agent builds the wrong thing because it never understood you, and the codebase turns to mud before you notice. Matt's skills fix both, but there are twenty-five of them and you have to know which one to type. Cat Skills adds the missing pieces for one person working alone:
 
 - **`/vibe`**: one command that looks at your repo, puts you on the right lane, and names the exact next thing to type. You never have to remember the map.
-- **`/tell-a-story`**: describe a person using your product, or hear a story grounded in the current workspace. Refine the experience together before turning it into a product SPEC or proposed BACKLOG. No requirements-writing expertise needed.
+- **`/tell-a-story`**: describe a person using your product, or rediscover what an unfamiliar or long-running project is for through a connected human story. Agree on the understanding first; a product SPEC or proposed BACKLOG is optional. No requirements-writing expertise needed.
 - **A closed loop**: requirements → spec → tickets → tests → running proof → review → commit, with the agent calling each step itself and you reading the results.
 - **Instruction and spec maintenance**: `fresh-agent` audits rules that cause redundant confirmation or unnecessary stops; `fresh-spec` refreshes stale specs from code while keeping unmet requirements visible.
 - **Session care**: `refocus`, `handoff`, and `takeover` for when the conversation drifts, moves, or dies.
@@ -44,7 +44,7 @@ The workflow covers the nine jobs a solo developer keeps doing by hand, and give
 
 | Job | What used to go wrong | What you type | What the agent does |
 | --- | --- | --- | --- |
-| **Picture the product** | You know the experience you want but not how to write requirements; the agent guesses the product | `/tell-a-story` | You tell a user story, or the agent tells one from the code; revise it together, confirm it, then choose a product SPEC, proposed BACKLOG, both, or just the story |
+| **Picture the product** | You know the experience you want but not how to write requirements; the agent guesses the product | `/tell-a-story` | You tell a user story, or the agent explains the project through a person's problem, actions, and changed situation; revise it together, confirm it, then choose a product SPEC, proposed BACKLOG, both, or just the story |
 | **Talk through the requirement** | You explain once, the agent nods, builds something else | `/grill-with-docs` | Interviews you in rounds until no branch of the design is open; writes the shared vocabulary to `CONTEXT.md` and hard decisions to ADRs |
 | **Split it into pieces** | One giant prompt, one giant diff, nothing you can review | `/to-spec` then `/to-tickets` | Synthesises the conversation into a spec with no new questions, then cuts it into tracer-bullet tickets with blocking edges |
 | **Write it down and build it** | The spec lives in the chat and evaporates with it | `/implement` | Claims a ticket, drives `tdd` red-then-green one slice at a time, then runs the checks below before it commits |
@@ -234,7 +234,7 @@ Skills I use daily for code work.
 
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[vibe](./skills/engineering/vibe/SKILL.md)**: Solo developer's dispatcher: puts you on one of four lanes (build, fix, review, tidy), sizes the work, and names the exact next command. A curated subset of the map for one person working alone.
-- **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**: Align the product through a user-told or source-grounded story, revise it together, then turn the confirmed experience into a product SPEC or proposed BACKLOG. No coding or issue publication.
+- **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**: Align the product through a user-told or source-grounded human story that makes an unfamiliar project's purpose clear, revise it together, then turn the confirmed experience into a product SPEC or proposed BACKLOG. No coding or issue publication.
 - **[refocus](./skills/engineering/refocus/SKILL.md)**: Re-anchor a long session on its requirements: re-read the spec, ticket, and every decision from its primary source, check what has actually been built against them, report the drift, and ask one round of questions about anything the sources leave ambiguous before continuing.
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
 - **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles.

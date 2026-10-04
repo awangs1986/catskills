@@ -30,7 +30,7 @@
 vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的；代码库在你发现之前已经烂成一锅粥。Matt 的 skill 两种都能治，问题是一共二十五个，你得自己知道这会儿该敲哪个。猫咪 Skills 补的就是一个人单干时最缺的几块：
 
 - **`/vibe`**：一条命令解决"我现在该干啥"。它看一眼你的仓库，告诉你走哪条道，下一步敲哪条命令。你不用背整张地图。
-- **`/tell-a-story`**：讲一个真人怎样使用产品的故事，或者听 agent 照着当前工作区讲。一起改到体验对上，再整理成产品 SPEC 或待办 BACKLOG。不用先学会写专业需求。
+- **`/tell-a-story`**：讲一个真人怎样使用产品的故事，或者通过一个连贯的人物故事，重新认识陌生或运行多年的项目到底有什么用。先对齐理解，需要时再整理成产品 SPEC 或待办 BACKLOG。不用先学会写专业需求。
 - **一条闭环**：需求 → spec → tickets → 测试 → 跑起来的证据 → 审查 → 提交。agent 自己一步步往下走，你只管看结果。
 - **指令与规格维护**：`fresh-agent` 审查导致重复确认和无谓停顿的指令；`fresh-spec` 对照当前代码更新过时规格，同时保留未实现需求。
 - **会话兜底**：`refocus`、`handoff`、`takeover`。聊偏了、要换地方、会话直接没了，都有招。
@@ -44,7 +44,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 | 事情 | 以前哪里出错 | 你敲什么 | agent 做什么 |
 | --- | --- | --- | --- |
-| **把产品想明白** | 知道想要什么体验，却不会写需求；agent 只好猜产品该长什么样 | `/tell-a-story` | 你讲用户故事，或者 agent 照着代码讲；一起修改、确认，再选产品 SPEC、待办 BACKLOG、两者都要，或者只保留故事 |
+| **把产品想明白** | 知道想要什么体验，却不会写需求；agent 只好猜产品该长什么样 | `/tell-a-story` | 你讲用户故事，或者 agent 讲一个人遇到问题、借助项目采取行动、处境发生变化的故事；一起修改、确认，再选产品 SPEC、待办 BACKLOG、两者都要，或者只保留故事 |
 | **把需求聊清楚** | 你讲一遍，agent 点头说懂了，做出来是另一个东西 | `/grill-with-docs` | 一轮一轮追问，问到每个岔路都有了答案；约定的词记进 `CONTEXT.md`，不好改的决定写成 ADR |
 | **拆成小块** | 一个巨型 prompt 带出一个巨型 diff，根本没法审 | `/to-spec` 然后 `/to-tickets` | 先把聊过的内容整理成 spec，一个新问题都不问；再切成一串 tracer-bullet tickets，每张写清楚卡在哪张后面 |
 | **写下来再动手** | spec 只活在聊天记录里，窗口一关就没 | `/implement` | 领一张 ticket，用 `tdd` 先红后绿，一次只做一小片；提交之前把下面的检查全跑完 |
@@ -236,7 +236,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**：拿不准用哪个 skill、走哪条流程，就问它。管着仓库里所有能敲的 skill 的路由器。
 - **[vibe](./skills/engineering/vibe/SKILL.md)**：一个人的调度：看你走四条道里的哪条(build、fix、review、tidy)，活有多大，下一条敲啥。整张地图里专给一个人挑出来的那部分。
-- **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**：你讲想要的使用体验，或 agent 照着代码讲当前体验；多轮修改、确认后，转成产品 SPEC 或待办 BACKLOG。不写代码，不自动发布 issue。
+- **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**：你讲想要的使用体验，或 agent 用连贯的人物故事讲清陌生项目的用途；多轮修改、确认后，转成产品 SPEC 或待办 BACKLOG。不写代码，不自动发布 issue。
 - **[refocus](./skills/engineering/refocus/SKILL.md)**：长会话跑偏了，把它拉回来：spec、ticket、每个决定对照原始材料重读一遍，看做出来的东西对不对得上，偏了就报出来，材料里没写清的问一轮再接着干。
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**：边访谈边建领域模型：术语当场磨，`CONTEXT.md` 和 ADR 当场记。
 - **[triage](./skills/engineering/triage/SKILL.md)**：issue 按分诊角色的状态机往下走。

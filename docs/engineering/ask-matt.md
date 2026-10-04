@@ -15,7 +15,7 @@ You invoke this by typing `/ask-matt`; the agent won't reach for it on its own.
 | Your situation | What the router gives back |
 | --- | --- |
 | An idea, and no idea where to start | The head of the main flow, and whether the build is small enough to skip the spec |
-| You can picture using a product but cannot describe its requirements, or want the workspace explained as a user journey | [tell-a-story](./tell-a-story.md), the product-alignment on-ramp before engineering planning |
+| You can picture using a product but cannot describe its requirements, or need to rediscover an unfamiliar or long-running project's purpose through a human story | [tell-a-story](./tell-a-story.md), the product-alignment on-ramp before engineering planning |
 | Bugs and requests arriving from other people | The [triage](triage.md) on-ramp, and why [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) you generated yourself don't belong on it |
 | Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](../productivity/grill-me.md) or [grill-with-docs](grill-with-docs.md) turns on whether you are in a working directory; [grill-with-docs](grill-with-docs.md) or [wayfinder](wayfinder.md) turns on whether the effort fits one session |
 | A long session and a decision about the [context](https://www.aihero.dev/ai-coding-dictionary/context) | The ordered tree over the five options at a phase boundary |

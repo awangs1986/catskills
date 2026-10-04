@@ -22,7 +22,7 @@ These are **product drafts**, not published issues. Keep backlog drafts out of t
 `story.md` contains:
 
 - **Scope and frame:** which product or feature, current or intended experience, revision, and the user's explicit confirmation of that revision. Record the actual confirmation, not an invented quotation.
-- **Story:** the latest approved scenes with stable IDs. Keep the vivid narrative here rather than copying it into every work item.
+- **Story:** the latest approved narrative in continuous paragraphs. Add a compact scene map with stable IDs below the narrative for requirement references; the identifiers do not turn the story into a numbered feature tour. Keep the vivid narrative here rather than copying it into every work item.
 - **Reality check:** each consequential scene's supported baseline, source pointer where available, uncertainties, and agreed desired changes. No code yet means no implementation claim. Source inspection and runtime observation are distinct evidence.
 - **First version**, **Not this version**, and **Open:** scope boundaries and unanswered questions, with the ones blocking implementation marked.
 
