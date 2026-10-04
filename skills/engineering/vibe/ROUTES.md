@@ -13,6 +13,8 @@ Every promoted skill has a place here. Read this alongside `WORKFLOW.md` when ch
 | `codebase-design` | kit | A module's interface, depth, or testing seam needs design work |
 | `diagnosing-bugs` | kit | A real bug is hard to reproduce, flaky, slow, or has an unknown cause |
 | `domain-modeling` | kit | Domain terms or relationships need clarification and documentation |
+| `fresh-agent` | full-map | Periodic instruction audits sit outside the daily kit; use this standalone when conflicting rules stall authorized work |
+| `fresh-spec` | full-map | Periodic spec maintenance sits outside the daily kit; use this standalone to reconcile documentation with current code without erasing requirements |
 | `grill-me` | full-map | A patient, thorough design interview with no repository or persistent docs |
 | `grill-with-docs` | kit | The product picture is shared and design decisions remain in a workspace |
 | `grilling` | kit | The interview primitive; normally used within an interview wrapper |

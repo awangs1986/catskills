@@ -19,6 +19,8 @@ You invoke this by typing `/ask-matt`; the agent won't reach for it on its own.
 | Bugs and requests arriving from other people | The [triage](triage.md) on-ramp, and why [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) you generated yourself don't belong on it |
 | Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](../productivity/grill-me.md) or [grill-with-docs](grill-with-docs.md) turns on whether you are in a working directory; [grill-with-docs](grill-with-docs.md) or [wayfinder](wayfinder.md) turns on whether the effort fits one session |
 | A long session and a decision about the [context](https://www.aihero.dev/ai-coding-dictionary/context) | The ordered tree over the five options at a phase boundary |
+| Conflicting instructions keep interrupting authorized work | [fresh-agent](./fresh-agent.md), an instruction review that preserves explicit approvals |
+| An existing spec no longer describes the code | [fresh-spec](./fresh-spec.md), an evidence-backed refresh that keeps unmet requirements visible |
 | A skill you have already picked | Nothing useful. Invoke that skill directly. |
 
 ## Prerequisites

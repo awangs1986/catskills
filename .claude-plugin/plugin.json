@@ -23,6 +23,8 @@
     "./skills/engineering/vibe",
     "./skills/engineering/tell-a-story",
     "./skills/engineering/refocus",
+    "./skills/engineering/fresh-agent",
+    "./skills/engineering/fresh-spec",
     "./skills/engineering/diagnosing-bugs",
     "./skills/engineering/grill-with-docs",
     "./skills/engineering/triage",

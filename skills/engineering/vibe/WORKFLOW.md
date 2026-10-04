@@ -141,6 +141,8 @@ Twenty-six skills. Fifteen you type, eleven the agent reaches for on its own (an
 | Skill | Why it's out | Bring it back when |
 | --- | --- | --- |
 | `ask-matt` | The full map, not the smaller solo kit | The work involves a team or a situation this kit deliberately leaves out |
+| `fresh-agent` | Periodic instruction maintenance outside the daily kit | Conflicting autonomy, clarification, or approval rules keep stopping authorized work; audit them while retaining explicit approvals |
+| `fresh-spec` | Periodic spec maintenance outside the daily kit | Refresh an existing spec from current code evidence while preserving unmet requirements |
 | `wayfinder` | Dense multi-session planning for efforts too foggy for one head | You start a greenfield product, or you're splitting a grown project into packages (see *When the project gets big*) |
 | `triage` | Processes issues *other people* filed | You have users filing bugs |
 | `to-questionnaire` | Extracts answers from someone else's head | A stakeholder appears |
@@ -435,6 +437,8 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | Check before it goes public | `security-review` against `main` |
 | Which library / how does this API work now | `research` |
 | Check the architecture | `/improve-codebase-architecture` |
+| Audit instructions that cause repeated stops or confirmations | `/fresh-agent`: quoted findings and specific edits, with explicit approvals preserved |
+| Refresh an outdated spec against current code | `/fresh-spec`: supported updates, source evidence, and remaining requirement gaps |
 | Get the agent back on track after a long session | `/refocus` |
 | Same mistake keeps happening across sessions | `retro` (in-progress bucket): turn it into a check or a standing rule |
 | Split a project that's grown too big | Logical split first: see *When the project gets big*; bring back `/wayfinder` for the decisions |

@@ -379,5 +379,24 @@ node(1650, 575, 440, 170, "story", cmd="SPEC / BACKLOG", label="Both, or just th
 text(440, 678, "Tell → react → revise → confirm", F(28), fill=LANES["story"]["dark"])
 text(440, 730, "Code-backed facts and wishes stay separate. Drafts only; no code or published issues.", F(24, False), fill=GRAY, maxw=1440, spacing=1.25)
 
+# =================== INSTRUCTION AND SPEC MAINTENANCE ===================
+# Insert above the footer so both standalone skills are visible beside the map.
+MAINTENANCE_TOP, MAINTENANCE_HEIGHT = 3720 + STORY_HEIGHT, 410
+flow = img
+img = Image.new("RGB", (W, flow.height + MAINTENANCE_HEIGHT), BG)
+img.paste(flow.crop((0, 0, W, MAINTENANCE_TOP)), (0, 0))
+img.paste(flow.crop((0, MAINTENANCE_TOP, W, flow.height)), (0, MAINTENANCE_TOP + MAINTENANCE_HEIGHT))
+d = ImageDraw.Draw(img)
+y = MAINTENANCE_TOP
+panel(80, y + 25, 1920, y + 355, "tidy", 'Maintain instructions and specs · When needed')
+d.line([(1000, y + 80), (1000, y + 270)], fill=LANES["tidy"]["fill"], width=4)
+text(120, y + 85, "/fresh-agent", MONO(36), fill=LANES["tidy"]["dark"])
+text(1040, y + 85, "/fresh-spec", MONO(36), fill=LANES["tidy"]["dark"])
+text(120, y + 142, 'Conflicting rules keep stopping the agent?', F(28), maxw=820)
+text(1040, y + 142, 'The code changed, but the spec did not?', F(28), maxw=820)
+text(120, y + 198, 'Quote rules and locations; explain the effect; propose edits.\nKeep explicit approvals. Flag any expansion of authority.', F(25, False), maxw=820, spacing=1.5)
+text(1040, y + 198, 'Refresh stale descriptions from current code evidence.\nKeep unmet requirements and unresolved gaps visible.', F(25, False), maxw=820, spacing=1.5)
+text(120, y + 300, 'Both commands can be typed or used automatically for matching tasks. Part of the full collection, outside the daily kit.', F(23, False), fill=GRAY, maxw=1760)
+
 img.save(str(HERE.parent / "vibe-workflow-poster.png"), optimize=True)
 print("saved")

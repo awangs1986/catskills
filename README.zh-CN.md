@@ -32,6 +32,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 - **`/vibe`**：一条命令解决"我现在该干啥"。它看一眼你的仓库，告诉你走哪条道，下一步敲哪条命令。你不用背整张地图。
 - **`/tell-a-story`**：讲一个真人怎样使用产品的故事，或者听 agent 照着当前工作区讲。一起改到体验对上，再整理成产品 SPEC 或待办 BACKLOG。不用先学会写专业需求。
 - **一条闭环**：需求 → spec → tickets → 测试 → 跑起来的证据 → 审查 → 提交。agent 自己一步步往下走，你只管看结果。
+- **指令与规格维护**：`fresh-agent` 审查导致重复确认和无谓停顿的指令；`fresh-spec` 对照当前代码更新过时规格，同时保留未实现需求。
 - **会话兜底**：`refocus`、`handoff`、`takeover`。聊偏了、要换地方、会话直接没了，都有招。
 - **`/askcat`**：一只猫在一个 HTML 页面上，把你装的每个 skill 用大白话讲一遍，说的是你的话。
 
@@ -53,20 +54,22 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 | **看代码质量** | 永远失败不了的测试、没鉴权的路由、打进包里的密钥 | 自动跑：`test-audit`、`code-review`、`security-review` | 每个测试翻译成一句你看得懂的业务话，再故意改坏代码，看测试能不能发现；从规范和 spec 两个角度并排审 diff；专查个人项目上线时最常见的五种安全漏洞 |
 | **看架构** | 改一处要碰七个文件，你都习惯了 | `/improve-codebase-architecture` | 把代码库扫一遍，找出浅模块，给你一份 HTML 报告；你挑一个，它追着你问到底，这个就是你下一件要做的事 |
 
-除了这九件，后来发现还有两件一样重要的事：
+除了这九件，还有四件维护和会话管理的事：
 
 | 事情 | 你敲什么 | agent 做什么 |
 | --- | --- | --- |
+| **清理指令冲突** | `/fresh-agent` | 引用原文和位置，解释无谓停顿的原因，提出具体修改；保留明确审批要求，标出扩大权限的建议 |
+| **更新过时规格** | `/fresh-spec` | 对照当前代码更新 spec，附来源证据；保留未实现需求，标明差异与不确定项 |
 | **长会话别跑偏** | `/refocus` | 把 spec、ticket 和你亲口定的每个决定重新读一遍，跟做出来的东西对照：丢了啥，偏了啥；不清楚的问一轮，答案写回去 |
 | **会话没了也不丢活** | `/handoff`(主动走)或 `/takeover`(旧会话没了) | 要走的会话留一个小文件；接手的会话拿着导出、ID、URL 或 handoff 文件把上下文找回来，动手之前先跟你对一遍 |
 
 ## 工作流一览
 
-四条车道，一次初始化，外加会话出状况时的三招。你在任何时候都只走一条道。`/vibe` 帮你看地图；完整文字版在 [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md)。
+四条车道，一次初始化，外加会话出状况时的三招，以及按需使用的指令与规格维护工具。你在任何时候都只走一条道。`/vibe` 帮你看地图；完整文字版在 [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md)。
 
 <p align="center">
   <a href="./docs/engineering/vibe-workflow-poster.zh-CN.png">
-    <img src="./docs/engineering/vibe-workflow-poster.zh-CN.png" alt="Vibe Coding 工作流海报中文版：七只不同花色的猫带你走过 Tell a Story 产品对齐、初始化、四条车道、implement 闭环和会话兜底" width="900">
+    <img src="./docs/engineering/vibe-workflow-poster.zh-CN.png" alt="Vibe Coding 工作流海报中文版：七只不同花色的猫带你走过 Tell a Story 产品对齐、初始化、四条车道、implement 闭环、会话兜底以及 fresh-agent / fresh-spec 维护工具" width="900">
   </a>
 </p>
 
@@ -187,10 +190,12 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 这个分支新增了什么
 
-上游二十五个 skill，这里三十五个。下面这些上游都没有，每个都有完整的 `SKILL.md`、文档页和 changeset。
+上游二十五个 skill，这里三十七个。下面这些上游都没有，每个都有完整的 `SKILL.md`、文档页和 changeset。
 
 | Skill | 为什么原来缺它 |
 | --- | --- |
+| [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | 审查 agent 指令里导致无谓停顿、重复确认或半途收工的歧义与冲突，给出具体修改建议，保留明确审批要求。 |
+| [`fresh-spec`](./skills/engineering/fresh-spec/SKILL.md) | 对照当前代码更新过时 spec，提供来源证据，保留未实现需求并标明尚未解决的差异。 |
 | [`vibe`](./skills/engineering/vibe/SKILL.md) | 上游有个 `ask-matt`，二十五个 skill 全覆盖的路由器。一个人用不了那么多，这里换成一张小地图：每个岔路都有默认走法，再加一张 First run 卡片，和一段"隔两周回来，上次做到哪" |
 | [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | 不会写专业需求，也能讲一个人怎么使用产品的故事。双向讲故事先对齐体验，再把确认过的场景转成产品 SPEC 或待办 BACKLOG，不急着选技术栈 |
 | [`setup-feedback-loops`](./skills/engineering/setup-feedback-loops/SKILL.md) | `tdd` 要跑测试，`verify` 要起应用，`diagnosing-bugs` 要读日志。原来没人管这些东西接没接好，更没人证明它们真会报警 |
@@ -213,7 +218,7 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 致谢与许可
 
-上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 fork 出来。这里三十五个 skill 里有二十五个是他的，用法原意都没动，只在单人流程和不挑 agent 这两处需要的地方改了改；仓库的规矩(`CLAUDE.md`、文档页、changeset 流程)也是他的。猫、`/vibe` 工作流、手册、海报，还有*这个分支新增了什么*里那十个 skill，是这个仓库自己加的。
+上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 fork 出来。这里三十七个 skill 里有二十五个是他的，用法原意都没动，只在单人流程和不挑 agent 这两处需要的地方改了改；仓库的规矩(`CLAUDE.md`、文档页、changeset 流程)也是他的。猫、`/vibe` 工作流、手册、海报，还有*这个分支新增了什么*里那十二个 skill，是这个仓库自己加的。
 
 MIT 许可，跟上游一样。原来的版权声明还在 [`LICENSE`](./LICENSE) 里。 Askcat 内嵌的两字形语气词字体来自 Noto Sans SC，保留 [SIL OFL 1.1 许可](./skills/productivity/askcat/assets/OFL.txt)，生成的 HTML 里也附有该许可。
 
@@ -246,6 +251,8 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 **模型调用**
 
+- **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**：审查 agent 指令里导致无谓停顿、重复确认或半途收工的歧义与冲突，给出具体修改建议，保留明确审批要求。
+- **[fresh-spec](./skills/engineering/fresh-spec/SKILL.md)**：对照当前代码更新过时 spec，提供来源证据，保留未实现需求并标明尚未解决的差异。
 - **[prototype](./skills/engineering/prototype/SKILL.md)**：拿一次性的原型回答设计问题：状态逻辑问题给一个能点的 HTML 单文件，UI 问题给同一路由下几个长得完全不一样的版本随便切。
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**：专治难缠 bug 和性能倒退，固定六步：先造一条碰到这个 bug 就变红的命令 → 缩小范围 → 列假设 → 加日志 → 修 → 回归测试。
 - **[research](./skills/engineering/research/SKILL.md)**：碰到要查真凭实据的问题(库、API)，对照一手来源查，后台跑，结论写成带引用的 Markdown 存仓库里。

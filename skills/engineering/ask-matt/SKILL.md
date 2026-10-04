@@ -57,6 +57,9 @@ Not feature work, just upkeep.
 
 - **`/improve-codebase-architecture`** runs whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/grill-with-docs`. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
 
+- **`/fresh-agent`** audits the instructions governing work: ambiguity, conflicts, and overlap that cause unnecessary stops, redundant confirmation, or incomplete delivery. It proposes exact edits with file quotations and an authority-impact note, preserving explicit approvals. Use it for recurring instruction friction; `/writing-for-agents` is the general authoring reference.
+- **`/fresh-spec`** refreshes an existing spec against current code with source evidence. It updates stale facts while retaining unmet requirements and recording unresolved differences. Use `/to-spec` to create a spec from agreed intent, or `/refocus` to bring a drifting session back to that intent.
+
 ## Vocabulary underneath
 
 Two model-invoked references that run *beneath* the other skills, each the single source of truth for its vocabulary. Reach for them directly when the **words**, not the process, are the problem; or let the skills above pull them in.

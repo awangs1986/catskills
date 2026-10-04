@@ -32,6 +32,7 @@ Vibe coding has two failure modes. The agent builds the wrong thing because it n
 - **`/vibe`**: one command that looks at your repo, puts you on the right lane, and names the exact next thing to type. You never have to remember the map.
 - **`/tell-a-story`**: describe a person using your product, or hear a story grounded in the current workspace. Refine the experience together before turning it into a product SPEC or proposed BACKLOG. No requirements-writing expertise needed.
 - **A closed loop**: requirements → spec → tickets → tests → running proof → review → commit, with the agent calling each step itself and you reading the results.
+- **Instruction and spec maintenance**: `fresh-agent` audits rules that cause redundant confirmation or unnecessary stops; `fresh-spec` refreshes stale specs from code while keeping unmet requirements visible.
 - **Session care**: `refocus`, `handoff`, and `takeover` for when the conversation drifts, moves, or dies.
 - **`/askcat`**: a cat that explains every installed skill on one HTML page, in plain words, in your language.
 
@@ -53,20 +54,22 @@ The workflow covers the nine jobs a solo developer keeps doing by hand, and give
 | **Check code quality** | Tests that can never fail, routes without auth, secrets in the bundle | automatic: `test-audit`, `code-review`, `security-review` | Translates every test into a business claim you can read and mutates the code to see if it catches anything; reviews the diff on two axes (standards, spec) in parallel; checks the five security failures solo apps actually ship |
 | **Check the architecture** | Every change touches seven files and you stopped noticing | `/improve-codebase-architecture` | Surveys the codebase for shallow modules, hands you an HTML report, grills you through the one you pick, which becomes the next thing you build |
 
-Two more jobs turned out to matter as much as the nine:
+Four more jobs cover maintenance and session care:
 
 | Job | What you type | What the agent does |
 | --- | --- | --- |
+| **Resolve instruction friction** | `/fresh-agent` | Quotes rules and locations, explains unnecessary stops, and proposes specific edits; preserves explicit approvals and flags authority expansion |
+| **Refresh a stale spec** | `/fresh-spec` | Updates the spec from current code evidence, retaining unmet requirements and identifying unresolved differences |
 | **Keep the agent honest in a long session** | `/refocus` | Re-reads the spec, the ticket, and every spoken decision from disk, diffs them against the work, reports what was dropped or drifted, asks one round of questions, writes the answers back |
 | **Survive a session ending** | `/handoff` (leaving on purpose) or `/takeover` (the old session is gone) | The outgoing session writes a small portable file; the incoming session rebuilds context from an export, ID, URL, or handoff file and confirms its understanding before touching anything |
 
 ## The workflow at a glance
 
-Four lanes, one setup step, and three moves for when a session goes sideways. You are always in exactly one lane. `/vibe` reads this map for you; the full text is in [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md).
+Four lanes, one setup step, three moves for when a session goes sideways, and optional instruction and spec maintenance tools. You are always in exactly one lane. `/vibe` reads this map for you; the full text is in [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md).
 
 <p align="center">
   <a href="./docs/engineering/vibe-workflow-poster.png">
-    <img src="./docs/engineering/vibe-workflow-poster.png" alt="The Vibe Coding Workflow poster: seven cats with distinct coats guide Tell a Story product alignment, setup, four lanes, the implement loop, and session recovery" width="900">
+    <img src="./docs/engineering/vibe-workflow-poster.png" alt="The Vibe Coding Workflow poster: seven cats with distinct coats guide Tell a Story product alignment, setup, four lanes, the implement loop, session recovery, and fresh-agent / fresh-spec maintenance" width="900">
   </a>
 </p>
 
@@ -187,10 +190,12 @@ Seven cats, seven coats, each responsible for a part of the loop. The new calico
 
 ## What this fork adds
 
-Upstream ships twenty-five skills; this repo ships thirty-five. Everything below is new relative to upstream. Each one is a full skill with its own `SKILL.md`, docs page, and changeset.
+Upstream ships twenty-five skills; this repo ships thirty-seven. Everything below is new relative to upstream. Each one is a full skill with its own `SKILL.md`, docs page, and changeset.
 
 | Skill | Why it was missing |
 | --- | --- |
+| [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | Audit agent instructions for unnecessary stops, redundant confirmation, and incomplete work; propose precise edits while preserving explicit approvals. |
+| [`fresh-spec`](./skills/engineering/fresh-spec/SKILL.md) | Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences. |
 | [`vibe`](./skills/engineering/vibe/SKILL.md) | Upstream has `ask-matt`, a router over all twenty-five upstream skills. A solo developer needs a smaller map with a default at every fork, plus a First run card and a "where was I" block for coming back after two weeks |
 | [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | A person can describe using a product before they can write its requirements. Two-way storytelling aligns the experience, then turns the confirmed scenes into a product SPEC or proposed BACKLOG without choosing a stack |
 | [`setup-feedback-loops`](./skills/engineering/setup-feedback-loops/SKILL.md) | `tdd` runs tests, `verify` boots the app, `diagnosing-bugs` reads logs. Nothing wired those up or proved they could fail |
@@ -213,7 +218,7 @@ Also changed across the whole repo:
 
 ## Credits and license
 
-Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), forked at v1.2.3. Twenty-five of the thirty-five skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the ten skills listed under *What this fork adds* were made for this repo.
+Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), forked at v1.2.3. Twenty-five of the thirty-seven skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the twelve skills listed under *What this fork adds* were made for this repo.
 
 MIT licensed, same as upstream. The original copyright notice is kept in [`LICENSE`](./LICENSE). Askcat's embedded two-glyph marker font is derived from Noto Sans SC and retains its [SIL OFL 1.1 license](./skills/productivity/askcat/assets/OFL.txt), also included in generated HTML.
 
@@ -244,6 +249,8 @@ Skills I use daily for code work.
 
 **Model-invoked**
 
+- **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**: Audit agent instructions for unnecessary stops, redundant confirmation, and incomplete work; propose precise edits while preserving explicit approvals.
+- **[fresh-spec](./skills/engineering/fresh-spec/SKILL.md)**: Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences.
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: Build a throwaway prototype to answer a design question, either a single shareable HTML file for state/logic questions, or several radically different UI variations toggleable from one route.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test.
 - **[research](./skills/engineering/research/SKILL.md)**: Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent.

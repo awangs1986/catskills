@@ -1,11 +1,11 @@
 # Vibe workflow poster
 
-Two one-page pictures of [the vibe handbook](../../../skills/engineering/vibe/WORKFLOW.md): the optional `tell-a-story` product-alignment on-ramp, setup, the four lanes, the `implement` chain, the three session-seam moves (`refocus`, `handoff`, `takeover`), the context rules and the "three times wrong" stop rule.
+Two one-page pictures of [the vibe handbook](../../../skills/engineering/vibe/WORKFLOW.md): the optional `tell-a-story` product-alignment on-ramp, setup, the four lanes, the `implement` chain, the three session-seam moves (`refocus`, `handoff`, `takeover`), the context rules the "three times wrong" stop rule, and the standalone `fresh-agent` / `fresh-spec` maintenance tools.
 
 - `../vibe-workflow-poster.png`, drawn by `build_poster.py` (English, linked from the top-level `README.md`).
 - `../vibe-workflow-poster.zh-CN.png`, drawn by `build_poster_zh.py` (Chinese, linked from `README.zh-CN.md`). Its Chinese strings are readable source on purpose; `scripts/check-skills.mjs` allows CJK in exactly that path (see `CLAUDE.md`).
 
-Both posters are 2000 × 4440 pixels. The story band sits before setup because storytelling needs no issue tracker: 1 is user-led, 2 is agent-led, both allow revisions, and only a confirmed story becomes optional SPEC / BACKLOG drafts. It does not add a fifth lane or authorize coding and issue publication. The footer counts the curated kit (26 skills), not the entire promoted collection.
+Both posters are 2000 × 4850 pixels. The story band sits before setup because storytelling needs no issue tracker: 1 is user-led, 2 is agent-led, both allow revisions, and only a confirmed story becomes optional SPEC / BACKLOG drafts. It does not add a fifth lane or authorize coding and issue publication. The maintenance band sits above the footer and covers instruction audits and spec refreshes, including their approval and requirement-preservation boundaries. These two standalone tools belong to the full collection of 37 promoted skills; the footer still counts the curated kit (26 skills).
 
 ## The cat crew
 

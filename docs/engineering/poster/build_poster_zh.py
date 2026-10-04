@@ -373,5 +373,24 @@ node(1650, 575, 440, 170, "story", cmd="SPEC / BACKLOG", label="两者都要 / �
 text(440, 678, "先讲 → 再聊 → 多轮修改 → 确认故事", F(28), fill=LANES["story"]["dark"])
 text(440, 730, "分清已有、待确认、希望新增。只做产品草稿，不自动写代码或发布 issue。", F(24, False), fill=GRAY, maxw=1440, spacing=1.25)
 
+# =================== INSTRUCTION AND SPEC MAINTENANCE ===================
+# Insert above the footer so both standalone skills are visible beside the map.
+MAINTENANCE_TOP, MAINTENANCE_HEIGHT = 3720 + STORY_HEIGHT, 410
+flow = img
+img = Image.new("RGB", (W, flow.height + MAINTENANCE_HEIGHT), BG)
+img.paste(flow.crop((0, 0, W, MAINTENANCE_TOP)), (0, 0))
+img.paste(flow.crop((0, MAINTENANCE_TOP, W, flow.height)), (0, MAINTENANCE_TOP + MAINTENANCE_HEIGHT))
+d = ImageDraw.Draw(img)
+y = MAINTENANCE_TOP
+panel(80, y + 25, 1920, y + 355, "tidy", '维护指令与规格 · 按需使用')
+d.line([(1000, y + 80), (1000, y + 270)], fill=LANES["tidy"]["fill"], width=4)
+text(120, y + 85, "/fresh-agent", MONO(36), fill=LANES["tidy"]["dark"])
+text(1040, y + 85, "/fresh-spec", MONO(36), fill=LANES["tidy"]["dark"])
+text(120, y + 142, '指令冲突，让 agent 反复停下来？', F(28), maxw=820)
+text(1040, y + 142, '代码变了，spec 还停在过去？', F(28), maxw=820)
+text(120, y + 198, '引用原文与位置，解释影响，提出具体修改。\n保留明确审批要求，标出扩大权限的建议。', F(25, False), maxw=820, spacing=1.5)
+text(1040, y + 198, '依据当前代码更新过时描述，附来源证据。\n保留未实现需求，列出差异和不确定项。', F(25, False), maxw=820, spacing=1.5)
+text(120, y + 300, '两个命令都能手动调用，也可由 agent 在匹配任务中使用。属于完整工具集，不改变四条车道。', F(23, False), fill=GRAY, maxw=1760)
+
 img.save(str(HERE.parent / "vibe-workflow-poster.zh-CN.png"), optimize=True)
 print("saved")
