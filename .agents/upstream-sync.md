@@ -23,3 +23,11 @@ The canonical installation commands and repository metadata now point to `awangs
 - English and Chinese catalog order and invocation groups agree; all 39 promoted skills resolve to the current checkout in all three local harnesses.
 - Both regenerated workflow posters were visually inspected. These checks do not claim a live agent conversation evaluation.
 - Claude Code 2.1.291: the marketplace manifest passes strict validation. Plugin validation passes with one warning about root `CLAUDE.md` not loading as installed project context; `claude plugin validate . --strict` fails because it treats that warning as an error. The same warning occurs on the unchanged starting snapshot. Keep `CLAUDE.md` for work in this repository; portable skill-local instructions carry the shipped context.
+
+## Fork follow-up: preferred implementation route
+
+New planned builds use `/to-spec` → `/to-tickets` → `/implement-spec`, including a graph with one ticket. The old implementation command remains available for explicit existing calls, outside Vibe's curated kit. The kit still contains 28 skills; all 39 promoted skills remain shipped.
+
+The spec orchestrator now runs the fork's integrated quality loop: final typecheck and full suite, `verify` across the spec and every ticket, `test-audit`, and `code-review` with conditional security review. Repair loops, the Claims list, acceptance evidence, and the Checks run ledger precede tracker close-out. Preserve these additions and existing explicit approval requirements during the next upstream sync.
+
+Both READMEs, routers, related docs, and generated workflow posters recommend this route. Validation: 47 tests pass, all 39 promoted skills satisfy the catalog and routing checks, conversation blocks and plugin versions agree, and both posters were visually inspected. This does not claim a live agent conversation evaluation.

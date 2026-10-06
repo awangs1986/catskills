@@ -40,17 +40,18 @@ Vibe coding has two failure modes. The agent builds the wrong thing because it n
 
 The inherited skills follow the current upstream collection; retired commands are kept outside the shipped set. Cat Skills is a path through them, plus the skills that path needed and did not have.
 
+> **Recommended build entry: `/implement-spec`.** Prepare the spec and tickets, then let one orchestrator parallelize ready work and validate the integrated result. A small feature can have just one ticket.
+
 ## What Cat Skills does
 
-The workflow covers the ten jobs a solo developer keeps doing by hand, and gives each one a skill.
+The workflow covers the nine jobs a solo developer keeps doing by hand, and gives each one a skill.
 
 | Job | What used to go wrong | What you type | What the agent does |
 | --- | --- | --- | --- |
 | **Picture the product** | You know the experience you want but not how to write requirements; the agent guesses the product | `/tell-a-story` | You tell a user story, or the agent explains the project through a person's problem, actions, and changed situation; revise it together, confirm it, then choose a product SPEC, proposed BACKLOG, both, or just the story |
 | **Talk through the requirement** | You explain once, the agent nods, builds something else | `/grill-with-docs` | Interviews you in rounds until no branch of the design is open; writes the shared vocabulary to `GLOSSARY.md` and hard decisions to ADRs |
 | **Split it into pieces** | One giant prompt, one giant diff, nothing you can review | `/to-spec` then `/to-tickets` | Synthesises the conversation into a spec with no new questions, then cuts it into tracer-bullet tickets with blocking edges |
-| **Build a whole task graph** | Driving every ticket by hand becomes slow when several are ready | `/implement-spec` | Schedules implementer agents on ready tickets in isolated worktrees and integrates their results on one branch |
-| **Write it down and build it** | The spec lives in the chat and evaporates with it | `/implement` | Claims a ticket, drives `tdd` red-then-green one slice at a time, then runs the checks below before it commits |
+| **Build and validate the spec** | Driving every ticket by hand becomes slow when several are ready | `/implement-spec` | Schedules ready tickets in isolated worktrees, integrates them on one branch, verifies the result, audits tests, reviews, and closes out with evidence |
 | **Design the tests that matter to you** | Everything is green and it still doesn't do what you asked; the agent's tests check what it understood, not what you wanted | `/cattytest` | Interviews you from the user's side: what had to be true afterwards, how each existing gate can pass while that's missing, what a person does step by step, what evidence shows the apple is in the basket; writes a test-cases sheet `verify` walks |
 | **Prove it works** | "All tests pass" and the app does not boot | automatic: `verify` | Runs the built thing, walks each acceptance criterion as a user would, screenshot or captured output per verdict |
 | **Find and fix bugs** | The agent guesses, patches the symptom, breaks something else | say it, or `/diagnosing-bugs` | A bug you understand becomes a failing test first. A bug you do not becomes six gated phases: red loop → minimise → hypothesise → instrument → fix → regression test |
@@ -85,8 +86,8 @@ Four lanes, one setup step, three moves for when a session goes sideways, and op
 Once that picture is shared, size the build:
 
 - **S**, one clear sentence: just say it and add "test first". The agent uses `tdd` on its own.
-- **M**, one sitting with open questions: `/grill-with-docs` → `/implement`, same window.
-- **L**, several evenings: `/grill-with-docs` → `/to-spec` → `/to-tickets`, then a fresh window and `/implement` per ticket, or `/implement-spec` for the whole graph. A question that needs running code to settle takes the `prototype` detour and folds the answer back into the grill.
+- **M**, one sitting with open questions: `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement-spec`. A small feature can have just one ticket.
+- **L**, several evenings: `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement-spec`. Prefer one orchestrator for the whole graph, with independent ready tickets running in parallel. A runnable question takes the `prototype` detour and brings the answer back into planning.
 
 **Lane 2, Fix: it broke.** Know the cause? Say it, test first. Don't, or it's flaky or slow? `/diagnosing-bugs`. No command that goes red on the bug, no theorising: that rule is the whole skill.
 
@@ -94,7 +95,7 @@ Once that picture is shared, size the build:
 
 **Lane 4, Tidy: every few days.** `/improve-codebase-architecture` finds shallow modules and grills you through one. The result is an idea, and ideas go back to Lane 1.
 
-**Inside `/implement`, automatically:** `tdd` → `verify` → `test-audit` → `code-review` → commit. Every FAIL and every surviving mutant goes back to `tdd` as a new red test. You only read the results, and the one result worth reading closely is `test-audit`'s Claims list: each line is a business rule, and the test and the code can share the same misunderstanding and be green together. No tool catches that. You can, at a glance.
+**Inside the recommended `/implement-spec` route:** workers use `tdd`; the orchestrator integrates their commits, runs typecheck and the full suite, then `verify` → `test-audit` → `code-review` → tracker close-out and a Checks run ledger. FAILs, surviving mutants, and review findings return to red-test repairs. Read the Claims list closely: code and tests can share the same wrong business rule, which you can recognize even when both are green.
 
 **Wrong three times? Stop.** No fifth attempt. Discard it and write one sentence: *When I input ___, I expect ___, but I get ___*. Can't write it? It's not a bug, the requirement is misaligned: `/refocus` or `/grill-with-docs`. Can write it? Turn it into one failing test first.
 
@@ -104,7 +105,7 @@ Once that picture is shared, size the build:
 
 Synced from Matt Pocock's `v1.3.1` through commit `4588b32` on 2026-10-06. The inherited collection now uses `GLOSSARY.md` / `GLOSSARY-MAP.md`; existing configured `CONTEXT.md` sources remain supported. `implement-spec`, `pr`, and `retro` are promoted and available in the plugin. Upstream retired `resolving-merge-conflicts`; its source is archived outside the shipped set. [The sync record](./.agents/upstream-sync.md) lists the preserved fork behavior and scope.
 
-For the full-spec route, choose `/implement-spec` after `/to-tickets`; `/implement` remains the one-ticket path with this fork's verification and test audit. `/retro` reviews the session after a build worth learning from. `/pr` writes the PR body when one is needed. `/vibe` routes to these current commands, and `/askcat` reads the current inventory rather than a remembered catalog.
+Prefer `/to-spec` → `/to-tickets` → `/implement-spec` for new planned builds, from a one-ticket graph to a whole feature. Independent ready work runs in parallel worktrees. `/retro` reviews the session, and `/pr` writes the PR body. `/vibe` recommends this build route; `/askcat` explains its prerequisites and quality loop from the actual installed files.
 
 ## Quick start
 
@@ -218,7 +219,7 @@ Upstream ships twenty-seven skills; this repo ships thirty-nine. Everything belo
 
 Also changed across the whole repo:
 
-- **`implement` is a closed chain.** Claim the ticket → `tdd` → `verify` → `test-audit` → `code-review` (+ `security-review`) → commit → close the ticket → a Checks run ledger. Every FAIL and every surviving mutant goes back to `tdd`.
+- **`implement-spec` is the recommended implementation chain.** Prepared spec and tickets → parallel `tdd` → integration → `verify` → `test-audit` → `code-review` (+ conditional `security-review`) → tracker close-out → a Checks run ledger. FAILs and surviving mutants return to red-test repairs.
 - **Every skill speaks gently and naturally.** A patient, attentive secretary-like manner, with the literal `喵！` at conversational paragraph boundaries. Commands, quotations, tables, and technical artifacts stay exact; evidence and confirmation gates stay strict. The rule travels with each skill and is written into setup output; the [shared conversation policy](./.agents/conversation-style.md) and automated checks prevent drift.
 - **Routing and onboarding are checked for omissions.** `/vibe` accounts for every promoted skill and handles stories, guides, and session care before setup; `/askcat` deduplicates actual files and validates cards and picker targets instead of trusting an old count or list.
 - **Every skill is host-neutral.** No Claude-only tool names anywhere. Skills say *Invoke the "X" skill*, which is the Skill tool in Claude Code, a skill reference in Codex, and "read that SKILL.md" in Pi or anything else (see [`.agents/invocation.md`](./.agents/invocation.md)).
@@ -242,7 +243,7 @@ Skills I use daily for code work.
 **User-invoked**
 
 - **[retro](./skills/engineering/retro/SKILL.md)**: Review a coding session and propose improvements to the agent environment: navigation, checks, standards, tooling, and instruction quality.
-- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**: Implement a whole spec on one integration branch, scheduling ready tickets as a task graph across implementer worktrees and reviewing the integrated result.
+- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**: Recommended spec-to-code entry. Schedule ready tickets in parallel worktrees, integrate on one branch, then verify, audit tests, review, and close out the tracker with a checks ledger.
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[vibe](./skills/engineering/vibe/SKILL.md)**: Solo developer's dispatcher: puts you on one of four lanes (build, fix, review, tidy), sizes the work, and names the exact next command. A curated subset of the map for one person working alone.
 - **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**: Align the product through a user-told or source-grounded human story that makes an unfamiliar project's purpose clear, revise it together, then turn the confirmed experience into a product SPEC or proposed BACKLOG. No coding or issue publication.
@@ -254,7 +255,7 @@ Skills I use daily for code work.
 - **[setup-feedback-loops](./skills/engineering/setup-feedback-loops/SKILL.md)**: Audit and wire the feedback loops the other skills spend (typecheck, lint, tests, formatter, smoke test, dev logs, browser, pre-commit guardrail), prove each one goes red, and record the commands in `docs/agents/feedback-loops.md`. Run once per repo, again when the stack changes.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker. No interview, just synthesizes what you've already discussed.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, written as text in a local file, or as native blocking links on a real tracker.
-- **[implement](./skills/engineering/implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams, running `/verify` and `/test-audit` once green, and closing out with `/code-review` and a Checks run ledger before committing.
+- **[implement](./skills/engineering/implement/SKILL.md)**: Compatibility entry for existing calls; prefer `/implement-spec` for new builds.
 - **[cattytest](./skills/engineering/cattytest/SKILL.md)**: Design the test cases that prove the software did what you wanted, from your side of the screen: what a person does, with what data, and what must be true in the world afterwards. Not the agent's gates. Ends in a test-cases sheet `verify` walks and you can run by hand.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker, and resolve them one at a time until the way to the destination is clear.
 
@@ -269,9 +270,9 @@ Skills I use daily for code work.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model: challenge terms against the glossary, stress-test with edge-case scenarios, and update `GLOSSARY.md` and ADRs inline.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
-- **[verify](./skills/engineering/verify/SKILL.md)**: Run the built thing and walk its acceptance criteria and user stories as a user would, one wrong path each, with a screenshot or captured output per verdict. Observes, never fixes; `implement` calls it after the suite is green.
+- **[verify](./skills/engineering/verify/SKILL.md)**: Run the built thing and walk its acceptance criteria and user stories as a user would, one wrong path each, with a screenshot or captured output per verdict. Observes, never fixes; `implement-spec` calls it after the suite is green.
 - **[security-review](./skills/engineering/security-review/SKILL.md)**: Check a diff for the five security failures solo-built apps actually ship: secrets in the bundle, routes without per-record authorisation, unvalidated input, data access that bypasses RLS, unaudited dependencies. A conditional third sub-agent of `code-review`.
-- **[test-audit](./skills/engineering/test-audit/SKILL.md)**: Do the tests behind a change protect the business logic or only pass? Translates each test into a plain-language claim the domain expert can judge, maps claims to the acceptance criteria, and runs a targeted mutation probe. `implement` calls it after `verify`.
+- **[test-audit](./skills/engineering/test-audit/SKILL.md)**: Do the tests behind a change protect the business logic or only pass? Translates each test into a plain-language claim the domain expert can judge, maps claims to the acceptance criteria, and runs a targeted mutation probe. `implement-spec` calls it after `verify`.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents so neither pollutes the other.
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
 

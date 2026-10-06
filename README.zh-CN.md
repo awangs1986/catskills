@@ -40,24 +40,25 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 继承的 skill 跟随当前上游工具集，已退役命令保留在不发布的归档中。猫咪 Skills 就是一条穿过它们的路，外加这条路上缺的那几个 skill。
 
+> **推荐实现入口：`/implement-spec`。** 先准备 spec 和 tickets，再让协调 agent 并行推进就绪工作、验证集成结果；小功能也可以只用一个 ticket。
+
 ## 猫咪 Skills 做什么
 
-一个人写代码，那些反复出现的累活有十件，每件配一个 skill。
+一个人写代码，那些反复出现的累活有九件，每件配一个 skill。
 
 | 事情 | 以前哪里出错 | 你敲什么 | agent 做什么 |
 | --- | --- | --- | --- |
 | **把产品想明白** | 知道想要什么体验，却不会写需求；agent 只好猜产品该长什么样 | `/tell-a-story` | 你讲用户故事，或者 agent 讲一个人遇到问题、借助项目采取行动、处境发生变化的故事；一起修改、确认，再选产品 SPEC、待办 BACKLOG、两者都要，或者只保留故事 |
 | **把需求聊清楚** | 你讲一遍，agent 点头说懂了，做出来是另一个东西 | `/grill-with-docs` | 一轮一轮追问，问到每个岔路都有了答案；约定的词记进 `GLOSSARY.md`，不好改的决定写成 ADR |
 | **拆成小块** | 一个巨型 prompt 带出一个巨型 diff，根本没法审 | `/to-spec` 然后 `/to-tickets` | 先把聊过的内容整理成 spec，一个新问题都不问；再切成一串 tracer-bullet tickets，每张写清楚卡在哪张后面 |
-| **写下来再动手** | spec 只活在聊天记录里，窗口一关就没 | `/implement` | 领一张 ticket，用 `tdd` 先红后绿，一次只做一小片；提交之前把下面的检查全跑完 |
-| **一次实现整张任务图** | 多个 ticket 已就绪，手动逐个推进很慢 | `/implement-spec` | 在独立 worktree 中调度 agent 实现就绪任务，把结果整合到一个分支 |
+| **实现并验证 spec** | 多个 ticket 已就绪，手动逐个推进很慢 | `/implement-spec` | 在独立 worktrees 中并行实现就绪任务，合入一个集成分支，验证运行结果、审计测试、审查代码，再附证据完成 tracker 收尾 |
 | **测你真正想要的东西** | 全绿了，但做的根本不是你要的：agent 的测试只能证明它"听懂了"，证明不了你"要的是这个" | `/cattytest` | 站在你这边问：做完之后啥必须成立、现有检查为啥全绿了还能漏掉它、一个真人会一步步干啥、啥证据能证明苹果在篮子里；最后交出一张 `verify` 照着走的测试表 |
 | **证明真能跑** | "测试全过"，应用起都起不来 | 自动跑：`verify` | 把东西真跑起来，像用户一样把验收标准走一遍，每条结论都附截图或抓到的输出 |
 | **找 bug，修 bug** | agent 靠猜，糊住表面，顺手弄坏别处 | 直接说，或者 `/diagnosing-bugs` | 知道原因的 bug，先写个失败的测试再修。吃不准的 bug，走六步，一步一过关：复现变红 → 缩小范围 → 列假设 → 加日志 → 修 → 回归测试 |
 | **看代码质量** | 永远失败不了的测试、没鉴权的路由、打进包里的密钥 | 自动跑：`test-audit`、`code-review`、`security-review` | 每个测试翻译成一句你看得懂的业务话，再故意改坏代码，看测试能不能发现；从规范和 spec 两个角度并排审 diff；专查个人项目上线时最常见的五种安全漏洞 |
 | **看架构** | 改一处要碰七个文件，你都习惯了 | `/improve-codebase-architecture` | 把代码库扫一遍，找出浅模块，给你一份 HTML 报告；你挑一个，它追着你问到底，这个就是你下一件要做的事 |
 
-除了这十件，还有四件维护和会话管理的事：
+除了这九件，还有四件维护和会话管理的事：
 
 | 事情 | 你敲什么 | agent 做什么 |
 | --- | --- | --- |
@@ -85,8 +86,8 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 产品画面对齐了，再掂掂开发的分量：
 
 - **S**，一句话说得清：直接说，再加一句"先写测试"。agent 自己会用 `tdd`。
-- **M**，一次能干完，但还有些问题没想明白：`/grill-with-docs` → `/implement`，别换窗口。
-- **L**，得花好几个晚上：`/grill-with-docs` → `/to-spec` → `/to-tickets`，然后每张 ticket 开个新窗口 `/implement`，或用 `/implement-spec` 实现整份任务图。有些问题不跑代码回答不了，那就绕去 `prototype` 跑一下，把答案带回访谈里。
+- **M**，一次能干完，但还有问题要对齐：`/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement-spec`。小功能可以只有一个 ticket。
+- **L**，需要多个晚上：`/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement-spec`，推荐把整份任务图交给协调 agent，就绪且独立的 tickets 并行执行。有些问题需要跑代码，就先走 `prototype` 绕道，再把结论带回规划。
 
 **车道 2，Fix：坏了。** 知道为啥坏？直接说，先写测试。不知道，或者时好时坏，或者变慢了？`/diagnosing-bugs`。规矩只有一条：拿出能让这个 bug 变红的命令之前，不许瞎猜。这个 skill 就这条规矩。
 
@@ -94,7 +95,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 **车道 4，Tidy：隔几天来一次。** `/improve-codebase-architecture` 把浅模块找出来，揪着其中一个问你。问完会落成一个想法，想法回车道 1。
 
-**`/implement` 里面全自动：** `tdd` → `verify` → `test-audit` → `code-review` → 提交。每个 FAIL、每个没被测出来的变异体，都会变成新的红测试打回 `tdd`。你只管看结果，其中最值得细看的是 `test-audit` 的 Claims 清单：每行都是一条业务规则。测试和代码可能错在同一个地方，还一起变绿，工具发现不了，你扫一眼就能看出来。
+**推荐的 `/implement-spec` 闭环：** worker 用 `tdd` 先红后绿，协调 agent 整合集成分支后运行类型检查和完整测试，再调用 `verify` → `test-audit` → `code-review`，最后按 tracker 约定收尾并给出 Checks run 台账。FAIL、存活变异体和审查问题回到红测试修复；你细看 Claims 清单，指出测试与代码共同误解的业务规则。
 
 **错了三次就停。** 别试第四第五次。扔掉，写一句话：*当我输入 ___，我期望 ___，但得到 ___*。写不出来？那不是 bug，是需求没对上：`/refocus` 或者 `/grill-with-docs`。写得出来？先把它变成一个失败的测试。
 
@@ -104,7 +105,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 2026-10-06 已同步 Matt Pocock 的 `v1.3.1`，对应提交 `4588b32`。继承的工具集现在使用 `GLOSSARY.md` / `GLOSSARY-MAP.md`，仍支持现有项目配置的 `CONTEXT.md` 来源。`implement-spec`、`pr`、`retro` 已转为正式 skill，并加入插件。上游已移除 `resolving-merge-conflicts`，其源码保留在不发布的归档中。[同步记录](./.agents/upstream-sync.md)说明范围和保留的分支行为。
 
-整份 spec 的路线是 `/to-tickets` 后选择 `/implement-spec`；`/implement` 仍负责单个 ticket，并保留本分支的运行验证和测试审计。有值得总结的会话，结束后用 `/retro`；需要 PR 时，由 `/pr` 整理正文。`/vibe` 已指向这些新版入口，`/askcat` 根据当前实际文件生成导览，不沿用记忆里的旧清单。
+新开发优先走 `/to-spec` → `/to-tickets` → `/implement-spec`，从一个 ticket 到完整任务图都能用；能并行的就绪工作交给独立 worktrees。`/retro` 用于会话复盘，`/pr` 整理 PR 正文。`/vibe` 默认推荐这条路线，`/askcat` 根据实际安装文件说明它的前提和质量闭环。
 
 ## 快速开始
 
@@ -218,7 +219,7 @@ npx skills@latest add awangs1986/catskills
 
 另外还有几处整个仓库通用的改动：
 
-- **`implement` 是一条闭环链。** 领 ticket → `tdd` → `verify` → `test-audit` → `code-review`(加 `security-review`)→ 提交 → 关 ticket → 一份 Checks run 台账。每个 FAIL、每个活下来的变异体都打回 `tdd`。
+- **`implement-spec` 是推荐的实现闭环。** 准备 spec 与 tickets → 并行 `tdd` → 集成 → `verify` → `test-audit` → `code-review`（含条件式安全审查）→ tracker 收尾 → Checks run 台账。验收失败和存活变异体回到红测试修复。
 - **所有 Skill 都用温柔、自然的口吻。** 像一位耐心、细心的女秘书，少些机械感；对话的每段末尾带一个“喵！”。代码、命令、引用、表格和正式产物保持原样，验收和确认也不会放松。规则随每个 Skill 独立安装，并写入初始化配置；[统一语气规范](./.agents/conversation-style.md) 和自动校验负责防止漏掉。
 - **路由和导览会检查是否漏项。** `/vibe` 逐项覆盖正式 Skill，不把讲故事、导览或会话恢复拦在初始化之前；`/askcat` 按实际文件去重，核对卡片和选择器，不再依赖旧数量或固定清单。
 - **每个 skill 都不挑 agent(宿主中立)。** 到处都没有 Claude 专属的工具名。skill 里写的都是 *Invoke the "X" skill*：Claude Code 里是 Skill 工具，Codex 里是 skill 引用，Pi 这些里就是"去读那个 SKILL.md"(见 [`.agents/invocation.md`](./.agents/invocation.md))。
@@ -244,7 +245,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 **用户调用**
 
 - **[retro](./skills/engineering/retro/SKILL.md)**：复盘一次编码会话，提出 agent 工作环境的改进建议：导航、自动检查、规范、工具和指令质量。
-- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**：在一个集成分支上实现整份 spec：按 ticket 的阻塞关系调度就绪任务，让多个 agent 在独立 worktree 中实现，最后审查集成结果。
+- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**：推荐的 spec 实现入口。按依赖关系并行执行就绪 tickets，合入一个集成分支，完成运行验证、测试审计、代码审查和 tracker 收尾，给出检查台账。
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**：拿不准用哪个 skill、走哪条流程，就问它。管着仓库里所有能敲的 skill 的路由器。
 - **[vibe](./skills/engineering/vibe/SKILL.md)**：一个人的调度：看你走四条道里的哪条(build、fix、review、tidy)，活有多大，下一条敲啥。整张地图里专给一个人挑出来的那部分。
 - **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**：你讲想要的使用体验，或 agent 用连贯的人物故事讲清陌生项目的用途；多轮修改、确认后，转成产品 SPEC 或待办 BACKLOG。不写代码，不自动发布 issue。
@@ -256,7 +257,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 - **[setup-feedback-loops](./skills/engineering/setup-feedback-loops/SKILL.md)**：把别的 skill 要用的反馈回路(typecheck、lint、测试、格式化、冒烟测试、开发日志、浏览器、pre-commit 门禁)接好，每条都亲手弄红一次，命令记到 `docs/agents/feedback-loops.md`。每个仓库跑一次，换技术栈再跑。
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**：把当前聊的内容整理成 spec，发到 issue tracker。不提问，只整理已经聊过的。
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**：计划、spec、聊天记录都行，拆成一串 tracer-bullet tickets，每张写清楚卡在哪张后面；写本地文件里，或者挂 tracker 原生阻塞链接上。
-- **[implement](./skills/engineering/implement/SKILL.md)**：照着 spec 或一串 ticket 干活：事先说好的接缝上跑 `/tdd`，绿了跑 `/verify` 和 `/test-audit`，最后 `/code-review` 加一份 Checks run 台账收尾，再提交。
+- **[implement](./skills/engineering/implement/SKILL.md)**：兼容旧调用；新开发优先使用 `/implement-spec`。
 - **[cattytest](./skills/engineering/cattytest/SKILL.md)**：站在你这边设计测试，证明软件干的是你想要的事：真人做啥操作、拿啥数据、完事之后世界上啥必须成立。跟 agent 自己的门禁两码事。最后交一张测试表，`verify` 照着走，你自己上手跑也行。
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**：活太大，一个会话装不下：先在 issue tracker 上铺一张决策 ticket 的地图，一个一个解，解到去目的地的路清楚为止。
 
@@ -271,9 +272,9 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 - **[tdd](./skills/engineering/tdd/SKILL.md)**：红绿重构的测试驱动：做功能、修 bug，一次只切一小片。
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**：主动打磨领域模型：术语拿词汇表较真，边界情况往死里试，`GLOSSARY.md` 和 ADR 当场更新。
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**：设计深模块的共用做法和说法：接口小，里面藏的活多，放在干净的接缝上，对着接口就能测。
-- **[verify](./skills/engineering/verify/SKILL.md)**：把东西跑起来，像用户一样把验收标准和用户故事走一遍，每条顺手走个错路，每条结论配截图或抓到的输出。只看不动手；`implement` 测试全绿之后叫它。
+- **[verify](./skills/engineering/verify/SKILL.md)**：把东西跑起来，像用户一样把验收标准和用户故事走一遍，每条顺手走个错路，每条结论配截图或抓到的输出。只看不动手；`implement-spec` 测试全绿之后叫它。
 - **[security-review](./skills/engineering/security-review/SKILL.md)**：专查个人项目最容易带上线的五种安全问题：打进包里的密钥、没按记录做鉴权的路由、没验过的输入、绕过 RLS 的数据访问、没审计过的依赖。`code-review` 里按条件触发的第三个检查。
-- **[test-audit](./skills/engineering/test-audit/SKILL.md)**：这次改动的测试，是真在保护业务逻辑，还是只会绿？每条测试翻译成懂业务的人看得懂的大白话，挨个对到验收标准上，再故意改坏几处逻辑看测试叫不叫。`implement` 跑完 `verify` 就叫它。
+- **[test-audit](./skills/engineering/test-audit/SKILL.md)**：这次改动的测试，是真在保护业务逻辑，还是只会绿？每条测试翻译成懂业务的人看得懂的大白话，挨个对到验收标准上，再故意改坏几处逻辑看测试叫不叫。`implement-spec` 跑完 `verify` 就叫它。
 - **[code-review](./skills/engineering/code-review/SKILL.md)**：从某个固定点开始的 diff，从规范和 spec 两个角度审：**规范**(守没守仓库的编码规矩，顺带按 Fowler 坏味道过一遍？)和 **spec**(跟源头 issue/spec 说的是不是一回事？)。两个检查并排跑，互不干扰。
 - **[wizard](./skills/engineering/wizard/SKILL.md)**：生成一个 bash 交互向导，陪人走完必须人动手的事：开基础设施、配凭据和 CI 密钥、在没见过的第三方控制台里点点点、跑一次性迁移和切换。
 

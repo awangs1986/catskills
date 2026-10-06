@@ -12,12 +12,12 @@ Conversation follows the [shared style](../../.agents/conversation-style.md): wa
 
 You invoke this by typing `/to-spec`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own.
 
-Reach for it when the build is too big for one agent [session](https://www.aihero.dev/ai-coding-dictionary/session) and must be split across several. That is the whole trigger:
+Reach for it when agreed planning needs a durable spec for the recommended implementation route. Keep a single-session feature concise; multi-session work needs enough detail for isolated workers:
 
 | Where you are | What to run |
 | --- | --- |
 | You haven't decided anything yet | [grill-with-docs](./grill-with-docs.md) first |
-| Decided, and the work fits one [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) | [implement](./implement.md): skip the spec |
+| Decided, and the planned work fits one [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) | A concise spec, [to-tickets](./to-tickets.md), then [implement-spec](./implement-spec.md); one ticket can be enough |
 | Decided, and the work spans several sessions | `/to-spec`, then [to-tickets](./to-tickets.md) |
 | A [wayfinder](./wayfinder.md) map has cleared | `/to-spec #<map_issue>` |
 
@@ -46,10 +46,11 @@ It is this skill, renamed in v1.1. "Spec" is now the one term used throughout, a
 The label means "no further triage needed": the document is complete enough for an agent to work from. It marks an input, not a work order. But [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) agents that poll for `ready-for-agent` cannot see that difference. They will try to build the whole spec in one run instead of picking up the ticket slices. This is the most-reported problem with the skill. Until it changes, exclude the parent spec explicitly in your AFK agent's prompt, or remove the label after `/to-tickets` has run.
 
 **Why not go straight from grilling to `/to-tickets` and skip the spec?**
-Often you should. The spec is worth its step only on multi-session work. Its value is that the tickets are disposable and the spec is not. Each ticket is sized for one fresh context window and then gets deleted or closed, while the spec stays as the one place that records the reasoning behind them. On a single-session change, that gives you nothing, and you pay for an extra synthesis step where the [model](https://www.aihero.dev/ai-coding-dictionary/model) can drift. Go from grilling to `/implement`.
+
+The recommended `/implement-spec` route needs a spec pointer and associated tickets. Capture the agreed reasoning in a concise spec rather than repeating the interview; a small feature may have one ticket. Keep the spec as the destination and the tickets as its execution graph. A tiny, already clear behavior can use [tdd](./tdd.md) directly.
 
 **I just finished a wayfinder map. What do I feed it?**
-Give it the main map issue, `/to-spec #<map_issue>`, not the individual decision tickets. [wayfinder](./wayfinder.md) produces decisions spread across a map, not deliverables. `to-spec` collapses them into one document you can build from. If you loop the map straight into `/implement`, you lose that step.
+Give it the main map issue, `/to-spec #<map_issue>`, not the individual decision tickets. [wayfinder](./wayfinder.md) produces decisions spread across a map, not deliverables. `to-spec` collapses them into one document you can build from. If you loop the map straight into `/implement-spec`, you lose that step.
 
 **Is the spec for me to review, or is it just for the agent?**
 Mostly for the agent, and it reads that way: complete, dense, and full of references. Read the seams and the out-of-scope section. In those two places, a wrong decision is cheapest to catch now and most expensive to find later. People do complain about reading the whole thing, and there is no summary mode. But if the spec surprises you, the grilling was too shallow; the spec is not too long.
@@ -76,10 +77,10 @@ A tracker issue may not return a very large spec in full, and there is no local 
 
 ## Where it fits
 
-`to-spec` is a step in the main build chain, but only on the multi-session branch of it:
+`to-spec` records the agreed plan for the recommended build chain. Keep a small feature concise and a larger one self-contained:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review → retro
+grill-with-docs → to-spec → to-tickets → implement-spec → code-review → retro
 ```
 
-Upstream, [grill-with-docs](./grill-with-docs.md) makes the decisions that this skill only records, and a finished [wayfinder](./wayfinder.md) map joins the chain here. Downstream, [to-tickets](./to-tickets.md) cuts the spec into tracer-bullet tickets for [implement](./implement.md) to build. When you're unsure which skill or flow fits, [ask-matt](./ask-matt.md) routes you.
+Upstream, [grill-with-docs](./grill-with-docs.md) makes the decisions that this skill only records, and a finished [wayfinder](./wayfinder.md) map joins the chain here. Downstream, [to-tickets](./to-tickets.md) cuts the spec into tracer-bullet tickets for [implement-spec](./implement-spec.md) to build. When you're unsure which skill or flow fits, [ask-matt](./ask-matt.md) routes you.

@@ -12,7 +12,7 @@ You observe. You do not fix. A failure here is a red test waiting to be written 
 ## Read first
 
 - `docs/agents/feedback-loops.md`: how to boot, where the logs land, whether a browser is wired. Missing? Fall back to the package scripts and say in the report that the user should run `/setup-feedback-loops`.
-- The **acceptance criteria** of the ticket and the **user stories** of the spec this work implements. When `implement` calls you, they are in context; standalone, take the path or issue from the argument, or ask which.
+- The **acceptance criteria** of every ticket in scope and the **user stories** of the associated spec. When `implement-spec` calls you on the integration branch, it supplies this scope; standalone, take the path or issue from the argument, or ask which.
 - A `test-cases.md` in scope (written by the "cattytest" skill): its rows marked `verify` are the criteria in executable form, with the steps, data and evidence already decided. Walk those rows as written, on top of the bare criteria; report the ones marked `by hand` as *for the user* rather than skipping them silently.
 - `CONTEXT.md`, so the report speaks the project's language.
 
@@ -76,7 +76,7 @@ Evidence lives in the OS temp directory under `verify-<timestamp>/` (`$TMPDIR`, 
 
 Stop after the report. Whoever called you decides what happens next:
 
-- `implement` takes each **FAIL** back into its `tdd` loop as a new red test and does not proceed to review with one open.
+- `implement-spec` takes each **FAIL** back into its `tdd` loop as a new red test and does not proceed to review with one open.
 - A **FAIL** whose cause is not obvious from the evidence is a `diagnosing-bugs` case; say so, and hand it the exact repro you just ran, which is already most of its Phase 1.
 - **UNVERIFIABLE** rows are for the user.
 

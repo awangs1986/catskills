@@ -21,15 +21,14 @@ The route most work travels. You have an idea and want it built.
    - **`/handoff`** out, then open a fresh session against that file,
    - **`/prototype`** to answer the question with throwaway code,
    - **`/handoff`** back what you learned, and reference it from the original idea thread.
-3. **Branch: is this a multi-session build?**
-   - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. Then work the tickets one of two ways:
-     - **`/implement`** per ticket, **`/clear`ing context between each one**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed. Each ticket is self-contained, so the last one's context is disposable.
-     - **`/implement-spec`** for the whole spec in one run. It reads the tickets as a **task graph**, runs implementer subagents across the ready **frontier** in parallel, and lands everything on one **integration branch**. Reach for it when you'd rather orchestrate the build than drive each ticket yourself.
-   - **No** → **`/implement`** right here, in the same context window.
+3. **Prepare and execute the build.** `/implement-spec` is the recommended implementation entry for planned features, including a graph with only one ticket.
+   - **Spec or tickets missing** → **`/to-spec`**, then **`/to-tickets`** as needed. Keep the planning thread intact, approve the seams and slices, and use actual blocking relationships.
+   - **Spec and associated tickets ready** → **`/implement-spec <spec reference>`**. It reads the task graph, runs independent ready tickets in parallel worktrees, and merges results onto one integration branch. Skip another sizing or requirements interview.
+   - **A tiny concrete behavior with no planning questions** → `tdd` directly remains enough.
 
-   The per-ticket **`/implement`** route builds each issue by driving **`/tdd`** internally (one red-green slice at a time), runs **`/verify`** once the suite is green (boots the thing and walks the acceptance criteria as a user would, with evidence per row; a FAIL goes back into `/tdd`), then **`/test-audit`** (renders every test as a plain-language claim for you to judge, maps claims to criteria, and probes with a dozen mutants to see which rules no test protects; survivors go back into `/tdd`), then closes out by running **`/code-review`**, a review of the diff along Standards and Spec, plus **`/security-review`** as a third sub-agent whenever the diff touches a route, auth, a query, env, or a dependency, before committing. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, **`/verify`** on its own when you want to see something work rather than be told it does, **`/test-audit`** on its own when a green suite is hiding logic errors and you want to know what the tests actually claim, **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point, and **`/security-review`** on its own before anything first faces the internet.
+   Workers use `tdd` and fast checks. The integrated result goes through typecheck and the full suite → `verify` → `test-audit` → `code-review` with conditional security review. FAILs, mutation survivors, uncovered criteria, and findings return to red-test repairs; checks repeat on the latest integration tip. The user reads the evidence and Claims. Accepted work closes through the tracker with a final Checks run record. Read the current source for its exact contract.
 
-   The whole-spec alternative, **`/implement-spec`**, runs implementers across the ticket frontier and one review over the integration branch; its own instructions define its checks.
+   `/implement` remains a compatibility command for an explicit old invocation. Read its source and retain the user's arguments when they choose it; recommend `/implement-spec` for new planned work.
 
    When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change, before/after evidence that it works, and a one-way or two-way door call with the blast radius. It is model- or user-invoked. Its output is the body; publishing or merging follows the existing authorization for the task. This writing step can stand alone before tracker setup.
 
@@ -37,7 +36,7 @@ The route most work travels. You have an idea and want it built.
 
 ### Context hygiene
 
-Keep steps 1–3 in **one unbroken context window** (don't compact or clear until after `/to-tickets`) so the grilling, spec, and tickets all build on the same thinking. Each `/implement` then starts fresh, working from the ticket. Run `/retro` in the session it's looking back on, before you clear; after clearing, point it at that session's log instead.
+Keep steps 1–3 in **one unbroken context window** (don't compact or clear until after `/to-tickets`) so the grilling, spec, and tickets all build on the same thinking. The `/implement-spec` coordinator reads the saved spec and graph; keep it running across tickets while worker contexts stay isolated. A fresh coordinator after planning is optional, not a per-ticket clear loop. Run `/retro` in the session it's looking back on, before you clear; after clearing, point it at that session's log instead.
 
 The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before `/to-tickets`, don't push on degraded; `/compact` at the nearest phase boundary and carry on (see Phase boundaries).
 
@@ -49,7 +48,7 @@ A starting situation that generates work, then merges onto the main flow.
 
   This aligns **what experience to build**, not the stack or a multi-session decision map. Carry the agreed story and drafts into **`/grill-with-docs`** when design decisions remain, or **`/to-spec`** and **`/to-tickets`** when ready to prepare and publish execution work. Product drafts are not automatically ready-for-agent issues. For proof that an already-agreed experience actually works, use **`/cattytest`** instead.
 
-- **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
+- **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which feed a prepared spec and its execution graph for **`/implement-spec`**. Retain or prepare that spec pointer before orchestration.
 
   Triage is only for issues **you didn't create**: bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.
 
@@ -57,7 +56,7 @@ A starting situation that generates work, then merges onto the main flow.
 
 - **A huge, foggy effort: a greenfield project or a huge feature build, too big for one session** → **`/wayfinder`**, the most cognitively demanding flow here. When the way from here to the destination isn't visible yet, it charts a **shared map** of **decision tickets** on the issue tracker and resolves them one at a time, producing **decisions, not deliverables**, until the fog is pushed back and the way is clear. Where **`/grill-with-docs`** sharpens an idea you can hold in one session, wayfinder is for the idea you can't, and it's slower and denser, so save it for exactly that, never a well-scoped feature.
 
-  When the map clears, **it hands off, it doesn't build**: merge onto the main flow at **`/to-spec`**, which collapses the map's linked decisions into a buildable plan, then `/to-tickets` and `/implement` as usual. Looping the map straight into `/implement` skips that collapse and throws the linked detail away, so go straight to `/implement` only when the effort turned out genuinely small.
+  When the map clears, **it hands off, it doesn't build**: merge onto the main flow at **`/to-spec`**, which collapses the map's linked decisions into a buildable plan, then `/to-tickets` and `/implement-spec` as usual. Looping the map straight into `/implement-spec` skips that collapse and throws the linked detail away, and `/implement-spec` begins only once its spec and execution tickets are prepared; use `tdd` directly for a genuinely tiny concrete change.
 
 ## Codebase health
 
@@ -109,7 +108,7 @@ Off the main flow entirely.
 
 **`/setup-matt-pocock-skills`**: run before your first tracker-dependent engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
 
-**`/setup-feedback-loops`**: run right after it, once per repo and again when the stack changes. It wires the typecheck, lint, test runner, formatter, smoke test, dev logs, browser and pre-commit guardrail that `/tdd`, `/implement`, `/verify` and `/diagnosing-bugs` all spend, proves each one goes red, and records the commands in `docs/agents/feedback-loops.md`. Without it every one of those skills is guessing at how to check its own work.
+**`/setup-feedback-loops`**: run right after it, once per repo and again when the stack changes. It wires the typecheck, lint, test runner, formatter, smoke test, dev logs, browser and pre-commit guardrail that `/tdd`, `/implement-spec`, `/verify` and `/diagnosing-bugs` all spend, proves each one goes red, and records the commands in `docs/agents/feedback-loops.md`. Without it every one of those skills is guessing at how to check its own work.
 
 <!-- cat-skills:conversation:start -->
 ## Conversation style

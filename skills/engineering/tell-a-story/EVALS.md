@@ -42,7 +42,7 @@ These are evaluation cases, not recorded passing results. Run them in fresh conv
 | Occupied or read-only destination | Request conversion with Existing drafts, then separately without write permission | Reads occupied files, proposes a safe alternative and waits before modifying existing material; saved checksums stay intact until authorized. Read-only output stays in the conversation |
 | Revisit | Supply a saved story, choose a mode, then change one accepted scene | Loads after the mode choice, resumes rather than re-interviews, flags stale evidence, confirms the new revision, and proposes coherent updates to affected drafts without silently overwriting them |
 | Language | Repeat opening and retelling with a user writing in another language, with and without an established project docs language | Menu and conversation match the user; saved artifacts follow the project's docs language if present, otherwise the user's. Commands, names and paths are unchanged |
-| Publication handoff | Ask for the next step after a confirmed draft | Names the user-invoked command for the human, including setup only when publication needs it. Does not invoke `to-spec`, `to-tickets`, `wayfinder`, or `implement` on its own |
+| Publication handoff | Ask for the next step after a confirmed draft | Names the user-invoked command for the human, including setup only when publication needs it. Does not invoke `to-spec`, `to-tickets`, `wayfinder`, or `implement-spec` on its own |
 | Router before setup | Ask `/vibe` for help describing the product experience in Empty | Recommends `/tell-a-story` before setup and sizing, without launching the skill or interviewing the user itself |
 
 ## Release checks

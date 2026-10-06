@@ -36,7 +36,7 @@ Not blindly, and that is the point of stating it. The agent that wrote the chang
 
 **Does it open the PR for me?**
 
-No. `pr` covers only the body. [implement](./implement.md) ends by committing to the current branch. Requests for a skill or option that opens the PR (a `/to-pr`, or `implement` opening a PR instead of committing) are still open proposals. One user's workaround is a one-sentence local override of `implement` that tells it to open a PR. [implement-spec](./implement-spec.md) is the exception: it opens a draft PR when your issue tracker closes work through PRs or when you ask for one. Because `pr` is model-invoked, the agent uses this shape for the body whenever you ask it to open a PR.
+`pr` writes the body. [implement-spec](./implement-spec.md) opens a draft after the first integrated commit when the tracker closes through PRs or you ask for one, then marks it ready after the quality loop. Publication and merging still follow the task's existing authorization; a body-writing request alone does not authorize either.
 
 **Won't it just produce another wall of text and diagrams?**
 
@@ -75,9 +75,9 @@ Not by itself. One user's approach is a standing instruction in the repo's agent
 
 ## Where it fits
 
-`pr` comes between review and retro when the build ships as a pull request: `to-spec → to-tickets → implement → code-review → pr → retro`. It is model-invoked, so it also fires on its own any time the agent writes a PR body outside that chain.
+`pr` comes between review and retro when the build ships as a pull request: `to-spec → to-tickets → implement-spec → code-review → pr → retro`. It is model-invoked, so it also fires on its own any time the agent writes a PR body outside that chain.
 
 - [code-review](./code-review.md) runs before it, because a PR body should describe a diff that has already been reviewed.
-- [implement](./implement.md) produces the commits the body describes.
+- [implement-spec](./implement-spec.md) produces the commits the body describes.
 
 [ask-matt](./ask-matt.md) routes across the whole set when you are unsure which skill the situation wants.

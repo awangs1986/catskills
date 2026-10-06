@@ -2,7 +2,7 @@
 
 `verify` starts the thing that was just built and walks its acceptance criteria and user stories the way a user would: a headless browser for a web UI, `curl` for an API, the command itself for a CLI, a direct trigger for a job. Each criterion comes back as PASS, FAIL or UNVERIFIABLE with a piece of **evidence** attached: a screenshot, a captured response, a transcript. It also tries one obvious wrong path per criterion (empty input, the second click, someone else's record) to catch a happy-path-only implementation.
 
-It observes and does not fix. A FAIL is handed back to whoever called it, usually `implement`, which turns it into the next red test. "The tests pass" is not treated as evidence that the feature works; only something the skill saw is.
+It observes and does not fix. A FAIL is handed back to whoever called it, usually `implement-spec`, which turns it into the next red test. "The tests pass" is not treated as evidence that the feature works; only something the skill saw is.
 
 <!-- cat-skills:conversation-doc:start -->
 Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
@@ -10,7 +10,7 @@ Conversation follows the [shared style](../../.agents/conversation-style.md): wa
 
 ## When to reach for it
 
-Type `/verify`, or the agent reaches for it automatically when a task fits. `implement` calls it after the suite goes green and before `code-review`; you can also say "does it actually work", "try it", or "show me" at any point.
+Type `/verify`, or the agent reaches for it automatically when a task fits. `implement-spec` calls it after the suite goes green and before `code-review`; you can also say "does it actually work", "try it", or "show me" at any point.
 
 | Your situation | Reach for |
 | --- | --- |
@@ -21,7 +21,7 @@ Type `/verify`, or the agent reaches for it automatically when a task fits. `imp
 
 ## Prerequisites
 
-It boots the app the way `docs/agents/feedback-loops.md` says, and drives a web UI with whatever browser that file names. Without the file it falls back to the package scripts and says so; [setup-feedback-loops](setup-feedback-loops.md) is what writes it. It needs the acceptance criteria to walk: the ticket or spec, in context or passed in.
+It boots the app the way `docs/agents/feedback-loops.md` says, and drives a web UI with whatever browser that file names. Without the file it falls back to the package scripts and says so; [setup-feedback-loops](setup-feedback-loops.md) is what writes it. It needs the acceptance criteria to walk: every ticket in the supplied scope and the associated spec. The recommended implementation route supplies the integration scope; a standalone run can cover a smaller ticket or feature.
 
 ## Evidence
 
@@ -31,7 +31,7 @@ The skill's word is **evidence**, and it means a file: a screenshot per step, th
 
 **How is this different from the old `qa` skill?**
 
-`qa` turned the findings of a testing session into tickets and was absorbed into [triage](triage.md) and [to-tickets](to-tickets.md). `verify` is the testing session itself, scoped to one ticket's criteria, run by the agent, with evidence per row. Its FAILs go to `tdd` rather than to the tracker.
+`qa` turned the findings of a testing session into tickets and was absorbed into [triage](triage.md) and [to-tickets](to-tickets.md). `verify` is the testing session itself, covering the supplied criteria and stories with evidence per row. Its FAILs go to `tdd` rather than to the tracker.
 
 **Doesn't this make every ticket slower?**
 
@@ -45,8 +45,8 @@ Usually one of two things. The app needs something the agent can't reach (a logi
 
 - Every row in the report has a path to a file, and opening the file shows what the row claims.
 - The wrong-path column catches something at least occasionally: a 500 on empty input, a second submit creating a duplicate.
-- `implement` sessions end with a screenshot you can look at rather than a sentence you have to trust.
+- `implement-spec` sessions end with a screenshot you can look at rather than a sentence you have to trust.
 
 ## Where it fits
 
-A **chain step** inside [implement](implement.md) (`tdd` → `verify` → `code-review` → commit) that also works as a reach-for-it-anytime standalone. It is the bridge between the spec's user stories and the running application that [tdd](tdd.md) and [code-review](code-review.md) both stop short of. [ask-matt](ask-matt.md) is the router over the whole set.
+A **chain step** inside [implement-spec](implement-spec.md) (`tdd` → `verify` → `code-review` → commit) that also works as a reach-for-it-anytime standalone. It is the bridge between the spec's user stories and the running application that [tdd](tdd.md) and [code-review](code-review.md) both stop short of. [ask-matt](ask-matt.md) is the router over the whole set.

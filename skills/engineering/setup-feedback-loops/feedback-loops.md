@@ -1,6 +1,6 @@
 # Feedback loops
 
-The commands that tell an agent whether what it just did is right. Written by `/setup-feedback-loops`; edit freely. Skills that run checks (`implement`, `tdd`, `diagnosing-bugs`, `verify`) read this file first.
+The commands that tell an agent whether what it just did is right. Written by `/setup-feedback-loops`; edit freely. Skills that run checks (`implement-spec`, `tdd`, `diagnosing-bugs`, `verify`) read this file first.
 
 Every loop below has been seen going **red** on a deliberate fault before being listed here.
 

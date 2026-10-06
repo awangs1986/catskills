@@ -2,7 +2,7 @@
 
 `tdd` builds a feature or fixes a bug test-first: one failing test, then just enough code to pass it, then the next behaviour. It carries the standards that make that loop produce tests worth keeping: what a good test is, where tests go, what mocks are for, and the three anti-patterns that make a suite worthless.
 
-It writes no test at a seam you have not agreed to first. Before any test exists, it names the public boundaries it intends to test at and stops for your confirmation. Testing effort is finite, and this step spends it on the critical paths instead of on every edge case. `tdd` is also a **reference**, not a driver. It contains the rules of the loop, and something else (you, or [implement](./implement.md)) runs the [session](https://www.aihero.dev/ai-coding-dictionary/session) that applies them.
+It writes no test at a seam you have not agreed to first. Before any test exists, it names the public boundaries it intends to test at and stops for your confirmation. Testing effort is finite, and this step spends it on the critical paths instead of on every edge case. `tdd` is also a **reference**, not a driver. It contains the rules of the loop, and something else (you, or [implement-spec](./implement-spec.md)) runs the [session](https://www.aihero.dev/ai-coding-dictionary/session) that applies them.
 
 <!-- cat-skills:conversation-doc:start -->
 Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
@@ -19,7 +19,7 @@ Reach for it when there is a concrete behaviour to build, with an input and an o
 | A behaviour with defined inputs and outputs (business logic, a request/response contract, a transformation, validation) | `tdd` |
 | The behaviour isn't pinned down yet | [to-spec](./to-spec.md), which also agrees the test seams before any code is written |
 | The question is really the shape of the interface, not the tests | [codebase-design](./codebase-design.md) |
-| You have a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) and want the whole build run for you | [implement](./implement.md), which drives `tdd` per ticket |
+| You have a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) and want the whole build run for you | [implement-spec](./implement-spec.md), which drives `tdd` per ticket |
 | Config, wiring, glue, type annotations, straight CRUD delegation | Nothing here fits well; see the open gap below |
 
 That last row is a real gap. The skill decides *where* the seams go, but nothing in it decides *whether* a change is worth the loop at all. If you run it on a change with no independent source of truth to assert against, you get a test that restates the implementation. That is the tautological anti-pattern the skill warns about, reached from the other direction. It is [issue #746](https://github.com/mattpocock/skills/issues/746), and it is open. Until it closes, you make that call yourself, or write the rule into your `CLAUDE.md`.
@@ -66,9 +66,9 @@ It happens. One user pushed the [model](https://www.aihero.dev/ai-coding-diction
 
 Usually not, and the skill will not stop it. A user reported the agent writing a Playwright test first, then spending a long loop re-running it and concluding the *test* was broken for a feature that did not exist yet. Browser tests are slow enough that the red-green feedback loop stops paying for itself. State in your repo's `CLAUDE.md` that browser tests come after the behaviour works.
 
-**Does `/tdd` replace `/implement`, or the course's `/do-work`?**
+**Does `/tdd` replace `/implement-spec`, or the course's `/do-work`?**
 
-No. `/tdd` documents the methodology; `/implement` is a simple work→feedback→commit loop and is the direct stand-in for `/do-work`. The course's single `/do-work` step is now split across `/implement`, `/tdd` and `/code-review`. If you are asking which one to run against a ticket, the answer is almost always `/implement`.
+`tdd` supplies the red-green method. `/implement-spec` is the recommended planned-build workflow: prepare the spec and tickets, then let workers use `tdd` while the orchestrator integrates and validates the result. Use `tdd` alone for a tiny concrete behavior that needs no spec-level planning.
 
 **Where did the deep-modules and interface-design guidance go?**
 
@@ -92,7 +92,7 @@ No. Run against one ticket, it can propose work that belongs to a sibling ticket
 `tdd` runs inside the build step of the main chain; it is not a step of its own:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review → retro
+grill-with-docs → to-spec → to-tickets → implement-spec → code-review → retro
 ```
 
-[to-spec](./to-spec.md) agrees the test seams up front, [implement](./implement.md) drives `tdd` per ticket, and [code-review](./code-review.md) checks afterwards that only the agreed seams were used, and owns the refactoring `tdd` no longer does. Its other neighbour is [codebase-design](./codebase-design.md), the shared source of the seam and deep-module vocabulary that `tdd` uses. You can also reach for it on its own, whenever there is a concrete behaviour to build and no full spec in play. When you are unsure which skill fits your situation, [ask-matt](./ask-matt.md) routes you.
+[to-spec](./to-spec.md) agrees the test seams up front, [implement-spec](./implement-spec.md) drives `tdd` per ticket, and [code-review](./code-review.md) checks afterwards that only the agreed seams were used, and owns the refactoring `tdd` no longer does. Its other neighbour is [codebase-design](./codebase-design.md), the shared source of the seam and deep-module vocabulary that `tdd` uses. You can also reach for it on its own, whenever there is a concrete behaviour to build and no full spec in play. When you are unsure which skill fits your situation, [ask-matt](./ask-matt.md) routes you.

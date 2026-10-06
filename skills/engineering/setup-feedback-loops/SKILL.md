@@ -7,7 +7,7 @@ argument-hint: "Optional: one loop to (re)wire, or nothing to audit them all"
 
 # Setup Feedback Loops
 
-A **feedback loop** is one command that tells the agent, in seconds, whether what it just did is right. Every skill in the kit spends them: `tdd` needs a test runner, `implement` runs the typecheck, `diagnosing-bugs` needs to reach the dev server, `verify` needs to boot the app, `code-review` skips whatever tooling already enforces. None of them installs one. This skill does, and proves each one bites.
+A **feedback loop** is one command that tells the agent, in seconds, whether what it just did is right. Every skill in the kit spends them: `tdd` needs a test runner, `implement-spec` runs the typecheck, `diagnosing-bugs` needs to reach the dev server, `verify` needs to boot the app, `code-review` skips whatever tooling already enforces. None of them installs one. This skill does, and proves each one bites.
 
 Prompt-driven, not a script. Explore, propose, confirm, wire, prove, record.
 
@@ -63,7 +63,7 @@ Record the durations. A full suite over 30s gets a note and the fastest single-f
 
 ### 5. Record
 
-Write `docs/agents/feedback-loops.md`: one section per loop with the exact command, the single-file variant where there is one, typical duration, and for dev logs and browser, how to read them. Use the template in [feedback-loops.md](feedback-loops.md). Add a `### Feedback loops` sub-block under `## Agent skills` in whichever of `CLAUDE.md` / `AGENTS.md` exists, pointing at the file. `implement`, `tdd`, `diagnosing-bugs`, and `verify` read it.
+Write `docs/agents/feedback-loops.md`: one section per loop with the exact command, the single-file variant where there is one, typical duration, and for dev logs and browser, how to read them. Use the template in [feedback-loops.md](feedback-loops.md). Add a `### Feedback loops` sub-block under `## Agent skills` in whichever of `CLAUDE.md` / `AGENTS.md` exists, pointing at the file. `implement-spec`, `tdd`, `diagnosing-bugs`, and `verify` read it.
 
 Commit the wiring on its own, before any feature work, so the first real commit already has the guardrail in front of it.
 

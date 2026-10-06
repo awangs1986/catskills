@@ -23,8 +23,8 @@ Read the file at the referenced path. The user will normally pass the path or th
 Tickets written by `to-tickets` carry a `Status:` line that moves through three values:
 
 - `ready-for-agent`: written, blockers may or may not be done. Check the `Blocked by` line.
-- `in-progress`: `implement` sets this when it starts, so a later session can see what was in flight.
-- `done`: `implement` sets this after committing, and appends the commit sha and its Checks run block under `## Comments`.
+- `in-progress`: `implement-spec` sets this when it starts, so a later session can see what was in flight.
+- `done`: `implement-spec` sets this after committing, and appends the commit sha and its Checks run block under `## Comments`.
 
 The **frontier** is every ticket that is `ready-for-agent` and whose `Blocked by` tickets are all `done`. `/vibe` reads these lines to say where you were.
 

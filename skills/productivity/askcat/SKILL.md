@@ -27,6 +27,8 @@ Use [DATA-FORMAT.md](DATA-FORMAT.md). Write the guide in the user's language, un
 
 Each card has a simple explanation, a useful trigger, what the user will see, one realistic example prompt, one helpful cat tip, and observable working/broken tells. A person who has never written software should be able to choose their next step. Explain an unavoidable term once and add it to the glossary. Where the source says too little, say so rather than filling the gap with marketing.
 
+Recommend `implement-spec` as the planned-build entry when installed: spec and tickets first, then parallel ready work and integrated quality checks. A one-ticket graph is valid. Present the old `implement` card as compatibility for explicit existing calls, with a pointer to the recommended entry; it is outside the curated daily kit. If the preferred command is absent, report that accurately and explain only available choices. Preserve an explicitly requested initial card.
+
 The tone is gentle and practical, like a considerate secretary helping someone find their way. Invite and recommend rather than command, flatter, or scold. The template adds the conversation marker at each guide paragraph boundary; write clean prose fields, and keep example prompts, UI labels, and source links free of decorative suffixes.
 
 Order chapters by use: **Start here**, optional **Picture the product**, **Build**, **Fix**, **Review**, **Tidy**, **When the session goes wrong**, **Everything else**. Omit empty chapters. `story` is an optional on-ramp, not a fifth engineering lane; use its calico `storyteller` mood. Card-level moods let `reader` guide verification and test audits within other chapters. All artwork is inline SVG with distinct coats; don't add external images or dependencies.
@@ -42,7 +44,7 @@ When present in the inventory, explain these boundaries in the picker instead of
 | Run already-agreed cases and collect evidence | `verify` |
 | Understand what existing tests claim and whether they can detect faults | `test-audit` |
 | Research a library, API, or external fact | `research` |
-| Orchestrate all prepared tickets for a spec | `implement-spec`: user-invoked, needs the spec, associated tickets, and tracker configuration. Parallel worktrees converge on one integration branch and a final review; its own close-out contract applies |
+| Build a prepared spec, large or small | `implement-spec`: recommended, user-invoked, needs the spec, associated tickets, and tracker configuration. Ready work runs in parallel; integrated typecheck, tests, verification, test audit, and review precede tracker close-out and a checks ledger |
 | Write the PR body for an existing change | `pr`: model- or user-invoked, writes a visual summary, before/after evidence, door and blast radius. Writing the body does not itself create, publish, or merge a PR |
 | Reflect on a session to improve the agent's environment | `retro`: user-invoked, reads the current or supplied session and presents candidates by severity. The user chooses changes; a request to repair a live bug belongs in Fix |
 | Recover a dead session rather than refocus a live one | `takeover`, distinct from `refocus` and `handoff` |
@@ -51,7 +53,7 @@ The picker is a shallow decision tree, at most four questions to a result. Every
 
 For these three cards, make the examples carry the context a beginner needs: `/implement-spec .scratch/search/spec.md` (an illustrative prepared spec, not a file claimed to exist), `Write the PR body for this branch against main, using the evidence collected here.`, and `/retro` for the current session or `/retro <session record>` for a specified one. Adapt them to real supplied paths when available. Explain "ready frontier" as tickets whose blockers are complete, "door" as whether a change can be undone, and "blast radius" as who or what the change can affect.
 
-Use observable tells: whole-spec work advances newly unblocked tickets and ends with integration review and the tracker's close-out; PR writing shows evidence or labels it missing without inventing a run; a retrospective ties ranked candidates to session evidence and pauses for the user's choice. Treat claims that `/implement-spec` automatically inherits `/implement`'s extra checks, that `pr` merges the branch, or that `/retro` silently installs hooks as broken guidance. Reconcile these tells with the selected current source before writing them.
+Use observable tells: spec work advances newly unblocked tickets, validates the integration branch, and ends with accepted tracker close-out and actual check evidence; PR writing shows evidence or labels it missing without inventing a run; a retrospective ties ranked candidates to session evidence and pauses for the user's choice. Treat closing tickets with a known FAIL, claiming unrun checks, `pr` merging the branch, or `/retro` silently installing hooks as broken guidance. Reconcile these tells with the selected current source before writing them, especially when describing an older installed version.
 
 ## 3. Validate and build
 

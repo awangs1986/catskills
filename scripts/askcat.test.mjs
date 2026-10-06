@@ -243,13 +243,13 @@ test("builder refuses an existing output unless replacement is explicitly reques
 const upstreamCards = [
   {
     name: "implement-spec", invoke: "you", beta: false,
-    oneLiner: "Build a prepared spec by coordinating tickets whose blockers are complete.",
+    oneLiner: "Use the recommended build entry to coordinate a prepared spec's ready tickets.",
     when: "You have a spec, associated tickets, and the configured issue tracker.",
-    see: "Parallel worktrees feed one integration branch, followed by integration review and tracker close-out.",
+    see: "Parallel worktrees feed one integration branch, followed by verification, test audit, review, and tracker close-out.",
     example: "/implement-spec .scratch/search/spec.md",
-    tip: "Use /implement when you want to drive one ticket at a time; each route has its own checks.",
-    working: "Newly unblocked tickets advance, review findings are fixed, and worktrees are cleaned up.",
-    broken: "It promises /implement's extra checks without establishing them from the selected source.",
+    tip: "A one-ticket graph is valid. Keep the coordinator running while workers use isolated contexts.",
+    working: "Newly unblocked tickets advance, integrated checks have evidence, and tracker close-out records the accepted result.",
+    broken: "It closes tickets or readies the PR with an unresolved FAIL or mutation survivor.",
     file: "skills/engineering/implement-spec/SKILL.md",
   },
   {

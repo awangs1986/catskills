@@ -63,4 +63,4 @@ And a line. The ranking round says which apples you'd hear about first; the budg
 
 ## Where it fits
 
-Upstream of [verify](verify.md), which walks the sheet's cases with evidence; each FAIL becomes a red test for [tdd](tdd.md), as it does today. Alongside, not inside, [tdd](tdd.md): gates are the agent's loop, cases are yours. Its counterpart on the gate side is [test-audit](test-audit.md). [vibe](vibe.md) routes "green but it doesn't do what I want" here; [ask-matt](ask-matt.md) is the router over the whole set.
+Upstream of [verify](verify.md), which walks the sheet's cases with evidence; each FAIL becomes a red test for [tdd](tdd.md). [implement-spec](implement-spec.md) includes the associated sheets when verifying its integrated result. Alongside, not inside, [tdd](tdd.md): gates are the agent's loop, cases are yours. Its counterpart on the gate side is [test-audit](test-audit.md). [vibe](vibe.md) routes "green but it doesn't do what I want" here; [ask-matt](ask-matt.md) maps the whole set.

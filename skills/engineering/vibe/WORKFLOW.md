@@ -24,10 +24,10 @@ flowchart LR
 
   lane -->|Build| size{Size?}
   size -->|S: one sentence, no open questions| s1["describe it<br/>→ agent uses tdd"] --> rev
-  size -->|M: one sitting| m1["/grill-with-docs"] --> m2["/implement<br/>tdd → verify → test-audit → code-review"] --> rev
+  size -->|M: one sitting| m1["/grill-with-docs"] --> l2
   size -->|L: many sittings| l1["/grill-with-docs"] --> l1b{"question needs<br/>running code?"}
   l1b -->|yes| proto["/handoff → /prototype → /handoff"] --> l2
-  l1b -->|no| l2["/to-spec"] --> l3["/to-tickets"] --> l4["per ticket:<br/>/clear → /implement"] --> l4
+  l1b -->|no| l2["/to-spec"] --> l3["/to-tickets"] --> l4["/implement-spec<br/>parallel ready tickets<br/>→ integrated quality checks"]
   l4 --> rev
 
   lane -->|Fix| cause{Know the cause?}
@@ -38,7 +38,7 @@ flowchart LR
 
   lane -->|Review| rev["/code-review main"] --> fix{Findings?}
   fix -->|small| fixs["fix in place"] --> commit["commit / PR"]
-  fix -->|large| fixl["/implement the findings"] --> commit
+  fix -->|large| fixl["findings → spec → tickets<br/>→ /implement-spec"] --> commit
   fix -->|none| commit
 
   lane -->|Tidy| tidy["/improve-codebase-architecture"] --> pick["pick one candidate<br/>→ grilled"] --> size
@@ -67,7 +67,7 @@ Then, in the same sitting:
 /setup-feedback-loops
 ```
 
-It audits what the repo already has (and whether it is silent: a test script that finds no tests, a typecheck with `strict` off), proposes the gaps in one table, wires them (`typecheck`, `lint`, `test`, `test:file`, `format:check`, `smoke`, `dev:log`, a browser for web apps, a pre-commit guardrail), and then **proves every loop goes red** on a deliberate fault before writing the commands to `docs/agents/feedback-loops.md`. Every lane below spends those loops: `tdd` runs the tests, `implement` runs the typecheck, `verify` boots the app, `diagnosing-bugs` reads the logs. A repo without them turns every skill into a guess. Re-run it when the stack changes.
+It audits what the repo already has (and whether it is silent: a test script that finds no tests, a typecheck with `strict` off), proposes the gaps in one table, wires them (`typecheck`, `lint`, `test`, `test:file`, `format:check`, `smoke`, `dev:log`, a browser for web apps, a pre-commit guardrail), and then **proves every loop goes red** on a deliberate fault before writing the commands to `docs/agents/feedback-loops.md`. Every lane below spends those loops: `tdd` runs the tests, `implement-spec` runs the typecheck, `verify` boots the app, `diagnosing-bugs` reads the logs. A repo without them turns every skill into a guess. Re-run it when the stack changes.
 
 Two optional setup steps, both hooks rather than skills, both worth the two minutes:
 
@@ -84,8 +84,8 @@ Trying the workflow for the first time, on a small project, new or existing. Thi
 | 2 | `/setup-feedback-loops` | You saw **every** loop go red on a deliberate fault before it was declared wired; `docs/agents/feedback-loops.md` has a duration beside each command | It declared a loop done on a green run; a "present" test script that runs zero tests was left alone |
 | 3 | `/vibe <a small feature>` | One route card: lane, size, next command, context rule. It stopped | It started grilling or coding; it said `/vibe` or another skill "isn't installed" (it is; type the command anyway) |
 | 4 | `/grill-with-docs` | Numbered rounds, a recommended answer per question, and `GLOSSARY.md` gaining terms as you go | A single wall of questions, or it started building before you confirmed |
-| `/implement` | Each `tdd` slice red then green; `verify` produced a screenshot or captured output per criterion; `test-audit` produced a **Claims** list you can read as business rules and a mutant table; a **Checks run** block at the end; the ticket's `Status:` is `done` | "Tests pass" with no evidence; a claims list full of variable names; `git diff` not clean after the mutation probe; the ticket still says `ready-for-agent` |
-| 6 | Mid-`implement`, say "you forgot we agreed X", then `/refocus` | A one-screen brief quoting the spec and your words from disk; drift named with a hunk; it waited for you | A summary from memory; it kept working |
+| 5 | `/to-spec` → `/to-tickets` → `/implement-spec <spec reference>` | The small spec has a ready ticket graph; `tdd` slices go red then green; integrated `verify` has evidence, `test-audit` has Claims and mutants, and the final Checks run record and tracker state agree | It tried to orchestrate without a spec or tickets; it closed work with a known FAIL; checks or evidence are missing |
+| 6 | Mid-`implement-spec`, say "you forgot we agreed X", then `/refocus` | A one-screen brief quoting the spec and your words from disk; drift named with a hunk; it waited for you | A summary from memory; it kept working |
 | 7 | Introduce a bug on purpose, then `/diagnosing-bugs` | It refused to theorise until one command went red; ranked hypotheses shown to you before testing | It guessed a cause from reading code |
 | 8 | Next day, `/vibe` with no argument | A where-you-were block first: branch, tickets with status, last commits, next ticket | It asked the lane question cold |
 | 9 | Close a window mid-ticket without a handoff, export or locate its record, open a fresh window, `/takeover <record>` | A short description of where you were (goal, what changed, where it stopped, next step), one confirmation question, nothing edited until you answer | A questionnaire; it started coding before you confirmed; it "found" edits that aren't in the repo and didn't say so |
@@ -98,8 +98,7 @@ Write down every place the agent did the "broken if" thing. That list is the fir
 
 ## Upstream v1.3.1 integration
 
-This handbook incorporates the latest promoted upstream routes while retaining the solo workflow. After `/to-tickets`, choose `/implement` per ticket or `/implement-spec` for whole-spec orchestration. They have different close-out contracts: the single-ticket fork workflow retains `verify`, `test-audit`, and its Checks run ledger; read `implement-spec` for its integration-wide review. `/pr` shapes a requested PR body. `/retro` is now a shipped user command for session reflection, not a beta fallback.
-
+`/implement-spec` is the recommended implementation entry point after `/to-spec` and `/to-tickets`, for a one-ticket graph as well as a large one. It runs ready tickets in parallel worktrees, integrates them on one branch, then runs the fork's quality loop: typecheck and tests → `verify` → `test-audit` → `code-review` → tracker close-out and a Checks run ledger. `/pr` shapes a requested PR body. `/retro` is a shipped user command for session reflection.
 | Already chosen work | Dispatcher behavior |
 | --- | --- |
 | Execute a prepared spec and its associated tickets | Check the configured tracker and readiness, then name `/implement-spec <spec reference>`. Skip sizing and a new planning interview. Its implementers use `tdd`, advance newly ready tickets, and close out through integration review and the tracker |
@@ -126,7 +125,7 @@ Twenty-eight skills. Sixteen you type, twelve the agent reaches for on its own (
 | `/to-tickets` | Cuts the spec into tracer-bullet tickets with blocking edges |
 | `/cattytest` | Everything is green and it still doesn't do what you asked. One scope question, then a grill from your side of the screen: what had to be true afterwards, how each gate can pass while that's missing, what a person does step by step, what evidence shows it. Ends in a test-cases sheet; `verify` walks it. Cases, not gates: `tdd` is untouched |
 | `/retro` | After a session worth learning from, propose navigation, checks, standards, or tooling improvements from its actual record |
-| `/implement` | Builds one ticket or spec: `tdd` inside, `verify` and `test-audit` when green, `code-review` at the end, commits, ends with a Checks run ledger |
+| `/implement-spec` | Recommended build entry: ready tickets in parallel worktrees, one integration branch, `tdd`, integrated `verify` and `test-audit`, final `code-review`, tracker close-out, and a Checks run ledger |
 | `/improve-codebase-architecture` | Surveys for shallow modules, HTML report, grills you through the one you pick |
 | `/refocus` | Long session, agent drifting: re-reads the spec and every decision from disk, checks the diff against them, reports drift, asks one round about anything ambiguous, writes the answers back to the spec |
 | `/handoff` | The outgoing session writes a portable file, when the work moves directory, harness, or forks a side task. The bridge out to a prototype and back |
@@ -141,9 +140,9 @@ Twenty-eight skills. Sixteen you type, twelve the agent reaches for on its own (
 | `grilling` | Inside `grill-with-docs` and `improve-codebase-architecture` |
 | `domain-modeling` | Inside `grill-with-docs`, whenever a term is fuzzy or a decision is hard to reverse |
 | `tdd` | Any time you ask for a behaviour or a fix: red, then green |
-| `verify` | End of every `implement`, after the suite is green: boots the app and walks the acceptance criteria with evidence. Or when you say "does it actually work" |
-| `test-audit` | After `verify` in every `implement`: renders the tests as business claims you can read, maps them to the criteria, probes with mutants. Or when you say "are these tests real" |
-| `code-review` | End of every `implement`, or when you say "review since main" |
+| `verify` | End of every `implement-spec`, after the suite is green: boots the app and walks the acceptance criteria with evidence. Or when you say "does it actually work" |
+| `test-audit` | After `verify` in every `implement-spec`: renders the tests as business claims you can read, maps them to the criteria, probes with mutants. Or when you say "are these tests real" |
+| `code-review` | End of every `implement-spec`, or when you say "review since main" |
 | `security-review` | Inside `code-review` whenever the diff touches a route, auth, a query, env, or a dependency. Or before anything goes on the internet |
 | `pr` | A PR body needs a small visual, before/after evidence, and a door/blast-radius assessment |
 | `research` | A library or API question that needs the real docs, not the agent's memory of them. Runs in the background and leaves a cited file |
@@ -158,7 +157,7 @@ Twenty-eight skills. Sixteen you type, twelve the agent reaches for on its own (
 | `ask-matt` | The full map, not the smaller solo kit | The work involves a team or a situation this kit deliberately leaves out |
 | `fresh-agent` | Periodic instruction maintenance outside the daily kit | AGENTS.md has grown bloated; prune stale guidance, consolidate rules, and preserve effective constraints and approvals |
 | `fresh-spec` | Periodic spec maintenance outside the daily kit | Refresh an existing spec from current code evidence while preserving unmet requirements |
-| `implement-spec` | Whole-spec orchestration is a situational alternative to driving one ticket at a time | The spec and blocking graph are prepared and the user wants parallel worktrees and one integration branch |
+| `implement` | Compatibility command outside the daily kit | The human explicitly names an old invocation; new planned builds use `/implement-spec` |
 | `wayfinder` | Dense multi-session planning for efforts too foggy for one head | You start a greenfield product, or you're splitting a grown project into packages (see *When the project gets big*) |
 | `triage` | Processes issues *other people* filed | You have users filing bugs |
 | `to-questionnaire` | Extracts answers from someone else's head | A stakeholder appears |
@@ -187,8 +186,8 @@ You have an idea. Once the intended experience is shared, the decision that matt
 | Ask yourself | Size | Ceremony |
 | --- | --- | --- |
 | Can I write the whole change as one sentence with no open questions? | **S** | None. Say it. |
-| Will it fit in one sitting and one context window, but I have questions to settle first? | **M** | Grill, then build, same window |
-| Neither: it spans sittings, or I'll forget the decisions by tomorrow | **L** | Grill, spec, tickets, one fresh window per ticket |
+| Will it fit in one sitting and one context window, but I have questions to settle first? | **M** | Grill, concise spec, minimal tickets, then `/implement-spec` |
+| Neither: it spans sittings, or I'll forget the decisions by tomorrow | **L** | Grill, spec, dependency graph, then `/implement-spec` with isolated parallel workers |
 
 Most vibe-coding sessions are S or M. Reach for L when you notice yourself re-explaining the same decision to the agent in a second session; that is the cost L exists to remove.
 
@@ -206,33 +205,32 @@ Type what you want. Because `tdd` is model-invoked, a well-behaved agent will wr
 
 > Add a `--json` flag to the export command that prints the same rows as JSON. Test first.
 
-### M: grill, then build in the same window
+### M: one sitting, with planning questions
 
-1. **`/grill-with-docs`** and describe the idea in two or three sentences. It comes back with a numbered round of questions, each with a recommended answer. Answer them (accepting the recommendation is a fine answer). Rounds continue until the frontier is empty. It will update `GLOSSARY.md` and offer ADRs as decisions crystallise; take the ADRs for anything you'd otherwise re-argue next month.
-2. **Stay in the same window.** The implementation wants the reasoning verbatim, not a summary of it.
-3. **`/implement`**. It confirms the seams it will test at, drives `tdd` slice by slice, runs typechecks and single test files as it goes, the full suite once at the end. Then **`verify`** boots the thing and walks each acceptance criterion as a user would, with a screenshot or captured output per row; a FAIL goes back into the `tdd` loop before anything else happens. Then **`test-audit`** renders every test as a one-line business claim, maps the claims to your criteria, and breaks the logic on purpose a dozen times to see which rules no test protects; survivors and uncovered rows go back into `tdd` too. Then `code-review`, then commit, then a **Checks run** block listing exactly what was checked.
+1. **`/grill-with-docs`** sharpens the idea in the same window, recording vocabulary and decisions.
+2. **`/to-spec`**, then **`/to-tickets`**. Keep the agreed discussion available. A small feature may need only one demoable ticket; prepare only the graph the feature needs.
+3. **`/implement-spec <spec reference>`**. The orchestrator gives each ready ticket a separate worktree, uses `tdd`, and merges accepted work on one integration branch. It runs the integrated quality loop described below before closing work. You read the evidence and Claims rather than dispatching each ticket yourself.
+4. If the implementation drifts from an agreement, **`/refocus`** in the orchestrator session before compacting. A disagreement about a business claim returns to the spec before another red test.
 
-**Read the claims list.** It is the one place in the whole workflow where a wrong business rule is visible to you before it ships: the test and the code can agree with each other and both be wrong, and no tool catches that. You can.
-4. Read the review's two axes (Standards, Spec). Fix in place.
-
-If the implementation runs long and the agent seems to have lost the plot (a decision from the grilling quietly reversed, scope growing), **`/refocus`**. It re-reads what you agreed and shows you the drift before you spend another hour on it.
-
-> /grill-with-docs
-> I want dark mode. System preference by default, a toggle in settings, persisted per user.
-
-### L: grill, spec, tickets, build per ticket
+### L: grill, spec, tickets, parallel implementation
 
 Steps 1 to 3 happen in **one unbroken window**. Don't `/clear` or `/compact` until the tickets are written.
 
-1. **`/grill-with-docs`** as above. If a question can't be settled by talking, take *The prototype detour* below and come back to the same window.
-2. **`/to-spec`**. No new questions. It proposes the **seams** it will test at (fewer is better, one is ideal) and asks you to confirm them, then writes `spec.md` to the tracker with `ready-for-agent`. Read the User Stories list; it's long on purpose, and a missing story now is a missing feature later.
-3. **`/to-tickets`**. It proposes vertical slices with blocking edges and asks about granularity. Each slice must be demoable on its own and fit in a fresh window. Approve, and it writes `issues/01-*.md`, `02-*.md`, … in dependency order.
-4. **Per ticket**: `/clear`, then `/implement .scratch/<feature>/issues/NN-<slug>.md` (or the GitHub issue number). Work the frontier: any ticket whose blockers are done. Each run ends with its own `code-review` and commit. If a single ticket runs long enough that the agent starts forgetting the ticket's own criteria, `/refocus` before you do anything else.
-5. When the last ticket lands, **`test-audit`** across the whole feature (per-ticket audits can't see a user story that fell between two tickets), then **`/code-review main`** across the whole branch once, because per-ticket reviews can't see cross-ticket smells (Duplicated Code across slices is the usual one).
+1. **`/grill-with-docs`**. If a question needs running code, take *The prototype detour* and return with the decision.
+2. **`/to-spec`**. Confirm the seams and read the User Stories; missing stories now become missing features later.
+3. **`/to-tickets`**. Approve demoable vertical slices and blocking edges. The local tracker gets one file per ticket; other trackers use their configured issue conventions.
+4. **`/implement-spec .scratch/<feature>/spec.md`** (or the parent spec issue). Independent ready tickets run in parallel, newly integrated blockers unlock more work, and all results converge on one integration branch. Preserve the orchestration session; worker contexts are isolated worktrees, not a reason to `/clear` the coordinator between tickets.
+5. Read the final evidence and **Checks run** record. Review, tracker close-out, and any PR readiness follow the quality loop and the project's existing approval requirements.
+
+### The integrated quality loop
+
+Inside `/implement-spec`: workers drive `tdd` at agreed seams and run fast checks. After integration, the orchestrator runs typecheck and the full suite, then `verify` against the spec, every ticket, and any `test-cases.md`; then `test-audit`; then `code-review` with conditional security review. FAILs, mutation survivors, uncovered criteria, and review findings go back through a red-test repair loop and the affected checks are repeated on the latest integration tip.
+
+**Read the Claims list.** Code and tests can agree on the same wrong business rule. Flag a disputed claim so the spec is corrected before repair. Unverifiable and by-hand cases remain visible to you. The tracker closes only accepted work, with the integration commit and checks recorded; a PR-backed tracker uses closing references and marks the draft ready. Publication and merge follow existing authorization.
 
 ### Halfway in: green, and not what you wanted
 
-The feature was "pick the apple off the tree". The code is clean, the gates are green, and the apple is on the tree. It happens because every test the agent writes for itself checks what the agent *understood*; when the understanding is the bug, they all pass. Don't ask the agent to "add more tests": it will add more of the same kind. **`/cattytest`** instead. One scope question (this feature or the whole product), then a grill from your side of the screen: what had to be true in the world afterwards, how each existing gate can be green while that's missing, what a person does step by step, with which real data, and what artefact shows the apple in the basket. It ends in a `test-cases.md`: numbered cases in your words, each with a runner (`verify`, you by hand, or automated). Say go and **`verify`** walks the sheet against what's built; expect a FAIL, that's the apple. Each FAIL goes back into `tdd` as a red test, the way it always has, and from there the feature is back on the M path. The sheet stays with the ticket; `verify` at the end of every later `implement` walks it again.
+The feature was "pick the apple off the tree". The code is clean, the gates are green, and the apple is on the tree. It happens because every test the agent writes for itself checks what the agent *understood*; when the understanding is the bug, they all pass. Don't ask the agent to "add more tests": it will add more of the same kind. **`/cattytest`** instead. One scope question (this feature or the whole product), then a grill from your side of the screen: what had to be true in the world afterwards, how each existing gate can be green while that's missing, what a person does step by step, with which real data, and what artefact shows the apple in the basket. It ends in a `test-cases.md`: numbered cases in your words, each with a runner (`verify`, you by hand, or automated). Say go and **`verify`** walks the sheet against what's built; expect a FAIL, that's the apple. Each FAIL goes back into `tdd` as a red test, the way it always has, and from there the feature is back on the M path. The sheet stays with the ticket; `verify` at the end of every later `implement-spec` walks it again.
 
 ### The prototype detour
 
@@ -280,7 +278,7 @@ Before anything merges, and at the end of every L build:
 
 - **Security**, when the diff touches a route, auth, a query, env, or a dependency: the five failures solo-built apps actually ship (secrets in the bundle, routes without per-record authorisation, unvalidated input, data access that bypasses RLS, unaudited dependencies). A `block` here is stated first, because nothing ships past it. Run it on its own, `security-review` against `main`, before the first time anything faces the internet.
 
-It never picks a single winner across the axes, on purpose. Read all of them. Small findings: fix in the same window. A pile of findings: paste them into `/implement`.
+It never picks a single winner across the axes, on purpose. Read all of them. Small findings: fix in the same window. A pile of findings: carry them into `/to-spec` and `/to-tickets`, then `/implement-spec`; reuse an existing spec and graph when they already cover the repairs.
 
 If you write a PR body, the promoted `pr` skill gives it a shape: a small visual summary, before/after evidence, and a one-way or two-way door call with the blast radius. It is included in the plugin and model- or user-invoked. Writing that body does not itself authorize publishing or merging.
 
@@ -296,7 +294,7 @@ Point it at a hot spot if you have one ("the sync module"); otherwise it reads `
 
 Pick one. It grills you through the deepened module's shape, updates `GLOSSARY.md` with any new term, and offers an ADR if you reject a candidate for a reason future-you needs to remember.
 
-What comes out is **an idea**. Size it and put it back on the BUILD lane: usually M (`/implement` right there, the grilling already happened) or L (`/to-spec` → `/to-tickets` when it's a wide refactor, which `to-tickets` sequences as expand → migrate → contract).
+What comes out is **an idea**. Size it and put it back on the BUILD lane: usually M or L through `/to-spec` → `/to-tickets` → `/implement-spec`. Reuse the grilling decisions; wide refactors need explicit expand → migrate → contract blocking edges.
 
 The other TIDY tool is the vocabulary itself. When `GLOSSARY.md` has a word doing two jobs, or the agent keeps using twenty words for a concept you'd name in one, ask for `domain-modeling` directly.
 
@@ -329,8 +327,8 @@ These rules cover nearly every session. The full decision tree is in `ask-matt`'
 | --- | --- |
 | Story → design decisions → spec → tickets | **Stay.** Keep the agreed scenes and corrections available; saved product drafts are the source if the work resumes later |
 | Grill → spec → tickets | **Stay.** One window, no compacting. The spec needs the reasoning verbatim |
-| Grill → implement (M) | **Stay.** Same reason |
-| Between tickets (L) | **`/clear`.** Each ticket is self-contained; the last one's context is disposable |
+| Tickets → `/implement-spec` (M or L) | Keep the spec pointer and graph; a fresh orchestrator session is optional once the planning artifacts are saved |
+| Between worker tickets | Keep the orchestrator running; workers use isolated contexts and worktrees, with no coordinator `/clear` per ticket |
 | Moving to another directory or harness, or forking a side task mid-phase | **`/handoff`.** It buys portability and nothing else; if nothing is travelling, you don't need it |
 | Long session, the agent forgot a decision, widened scope, or is working the wrong criterion | **`/refocus`.** It re-reads the spec, ticket, `GLOSSARY.md` and your mid-session decisions from disk, diffs them against the work, and reports dropped / drifted / contradicted items. Where the sources are ambiguous it asks one round of questions with recommended answers, and writes your answers back to the ticket. Same window. Run it *before* you compact |
 | Long session, relevant context, same place, and refocus said the window is nearly spent | **`/compact`** seeded with the refocus brief: `/compact continue from /tmp/refocus-<ts>.md`. Last resort, not first |
@@ -364,7 +362,7 @@ The logical split is a chain through skills you already have, plus two you bring
 
 1. **Where to cut.** `/improve-codebase-architecture`, told explicitly to look for *package boundaries* rather than modules to deepen, and `domain-modeling` to name each context. The evidence you want is co-change (files that always change together belong together; two areas that never change together but import each other have a seam between them), the size of the interface each cut would need (smaller is righter), and which `GLOSSARY.md` terms live in which directories. Ask for that analysis by name; the survey doesn't do it unprompted.
 2. **Deciding the whole thing.** This is dozens of decisions (what goes where, what's shared, what's the dependency direction, what happens to the tests) and no single window holds them. This is the moment to bring back **`/wayfinder`**: it charts the decisions as a map and resolves them one at a time, and hands off to `/to-spec` when the way is clear.
-3. **Executing.** `/to-spec` → `/to-tickets`. A split is a series of wide refactors, and `to-tickets` sequences those as **expand → migrate in batches → contract**, each batch its own ticket, CI green between batches. Then `/implement` per ticket as usual.
+3. **Executing.** `/to-spec` → `/to-tickets`. A split is a series of wide refactors, and `to-tickets` sequences those as **expand → migrate in batches → contract**, each batch its own ticket, CI green between batches. Then `/implement-spec` orchestrates the prepared graph, respecting the migration blocking edges.
 4. **Making the boundary real.** A boundary nobody enforces doesn't exist; the agent will deep-import across it the first time a ticket is running late. On TypeScript, `setup-ts-deep-modules` (in-progress bucket) installs dependency-cruiser rules: outside code imports a package's entry points only, never its subfolders, no cycles. Other stacks: the equivalent import linter, wired into the pre-commit hook.
 5. **Docs follow the shape.** Re-run `/setup-matt-pocock-skills` and pick multi-context: a root `GLOSSARY-MAP.md` pointing at one `GLOSSARY.md` (and one `docs/adr/`) per package. Every skill in the kit reads the map from then on.
 
@@ -372,13 +370,13 @@ Step 4 is the one people skip and the one that decides whether the split holds.
 
 ## Git in this workflow
 
-No skill runs your git for you; the rules are few enough to be conventions. Put the block at the end of this section in your project's `CLAUDE.md` so the agent follows them without being told each time.
+Implementation workers create commits and the orchestrator merges them onto its integration branch. The conventions below preserve the project's explicit approval boundaries. Put the block at the end of this section in your project's `CLAUDE.md` so the agent follows them without being told each time.
 
 | Rule | Why |
 | --- | --- |
-| **S builds commit on `main`. M and L builds get a branch** (`feat/<slug>`), created *before* `/grill-with-docs`, and every ticket of an L build lands on that same branch | `implement` commits to whatever branch you're on. Type it on `main` and that's where the work goes |
-| **The tree is clean before every `/implement`** and every `/diagnosing-bugs` | The "keeps coming out wrong" recovery is `git stash` back to the last good commit. That only works if there is one |
-| **One green slice, one commit.** `implement` already does this through `tdd`; when you're working without it, ask for it | Small commits are the undo buffer. An hour of uncommitted agent work has no undo |
+| **S builds follow the project's branch policy. Planned builds use one integration branch** (`feat/<slug>`) with separate worker branches | `/implement-spec` owns orchestration and keeps all accepted ticket results on the integration branch |
+| **The tree is clean before every `/implement-spec`** and every `/diagnosing-bugs` | The "keeps coming out wrong" recovery is `git stash` back to the last good commit. That only works if there is one |
+| **One green slice, one commit.** `implement-spec` already does this through `tdd`; when you're working without it, ask for it | Small commits are the undo buffer. An hour of uncommitted agent work has no undo |
 | **The agent never runs destructive git.** No `push --force`, `reset --hard`, `checkout .`, `clean`, `branch -D`. It asks; you run it | Enforced by the guardrails hook, not by trust |
 | **Merge when `/code-review main` is clean.** Solo, a fast-forward or squash merge is fine; open a PR when you want the diff as a record, and let the `pr` skill write the body | Review is the gate, not the PR |
 | **Prototype branches stay out of `main`** (`prototype/<name>`), referenced from the spec | `prototype` does this itself; don't merge them "to keep the code" |
@@ -389,10 +387,10 @@ The conventions block:
 ```markdown
 ## Git
 
-- S-sized changes commit on `main`. Anything that starts with `/grill-with-docs` gets a `feat/<slug>` branch first; all of that feature's tickets land on it.
+- Follow the project's branch policy for tiny changes. `/implement-spec` uses a `feat/<slug>` integration branch and isolated worker worktrees; all accepted ticket work lands on the integration branch.
 - Never run `git push --force`, `reset --hard`, `checkout .`, `restore .`, `clean`, or `branch -D`. Ask, and I'll run it.
 - Commit after every green test slice. Message: what changed and why; for a bug fix, the confirmed cause; for a ticket, its id.
-- Before starting `/implement` or `/diagnosing-bugs`, confirm `git status` is clean. If it isn't, ask me whether to commit or stash.
+- Before starting `/implement-spec` or `/diagnosing-bugs`, confirm `git status` is clean. If it isn't, ask me whether to commit or stash.
 - Prototype code goes on `prototype/<name>`, never merged.
 ```
 
@@ -400,7 +398,7 @@ If you get into a real mess anyway (the agent "tidied" the tree, or a rebase wen
 
 ## The loop that improves the loop
 
-Everything above closes on the *product*: a wrong claim goes back to the spec, a surviving mutant goes back to `tdd`, a review finding goes back to `implement`, a "no seam" goes to the architecture survey. One loop is still open: the one that closes on the *environment*. When `test-audit` flags the same tautological pattern for the third time, when `code-review` keeps citing a rule that a linter could enforce, when a session lost an hour finding a file, the lesson has nowhere standing to go.
+Everything above closes on the *product*: a wrong claim goes back to the spec, a surviving mutant goes back to `tdd`, a review finding goes back to `implement-spec`, a "no seam" goes to the architecture survey. One loop is still open: the one that closes on the *environment*. When `test-audit` flags the same tautological pattern for the third time, when `code-review` keeps citing a rule that a linter could enforce, when a session lost an hour finding a file, the lesson has nowhere standing to go.
 
 `retro` is that step. It is a promoted, user-invoked skill included in the plugin, and it reads the current session, or another record you supply, for exactly these: a check that should exist, a rule that belongs in `CODING_STANDARDS.md`, a navigation pointer for `CLAUDE.md`, an instruction that does nothing. It presents candidates by severity for you to choose before changes. Its one discipline worth knowing in advance: a **mechanical** repeat (a banned pattern, an import shape, a file location) calls for a deterministic check in the repo's existing guardrail, and only a genuine judgement call becomes prose for the reviewer. `/setup-feedback-loops` can help wire an agreed check; it is not a prerequisite for the retrospective.
 
@@ -423,13 +421,12 @@ docs/agents/feedback-loops.md       the check commands and their timings (writte
 .scratch/<feature>/issues/NN-*.md   published local tracker issues
 ```
 
-Commit `GLOSSARY.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` and `implement` read it). Keep `prototype/*` branches out of `main`.
+Commit `GLOSSARY.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` and `implement-spec` read it). Keep `prototype/*` branches out of `main`.
 
 ## Two sessions, end to end
 
-**A Tuesday feature (M).** "Notes should support tags." `/grill-with-docs`: round one asks whether tags are free text or a fixed set, per-note or per-user, and whether filtering is in scope (recommended: free text, per-user, filter yes). Round two asks about case sensitivity and a max count. `GLOSSARY.md` gains **Tag** and the rule that tags are case-insensitive; an ADR records why they're per-user, not global. `/implement`: it names two seams (the notes repository and the `/notes?tag=` route), you nod, it builds four red-green slices, `verify` boots the app and walks the four criteria with a screenshot each (the tag filter passes, the empty-tag wrong path returns a 400 as it should), `test-audit` lists six claims (you read them; number 4, "a note can have at most ten tags", is wrong, the limit you agreed was twenty, and both the test and the code had ten), one mutant survives on the case-insensitive compare, and the review flags one Data Clump (tag name + colour travelling together) and one missing user story (removing a tag). You fix all of it, it commits, and the Checks run block tells you what ran. Fifty minutes.
-
-**A Thursday bug (FIX, hard).** "Export is slow since last week." `/diagnosing-bugs` builds a timing harness against a fixture of 5,000 rows, baseline 12 seconds, bisects to the commit that added the tag filter, and shows you three hypotheses ranked with an N+1 on tags at the top. You confirm. It writes a regression test asserting one query per export at the repository seam, watches it fail, fixes it, 0.4 seconds, cleans the `[DEBUG-7c1e]` lines, and commits with the hypothesis in the message. The seam existed because Tuesday's `implement` tested at the repository. That is the workflow paying for itself.
+**A Tuesday feature (M).** "Notes should support tags." `/grill-with-docs` settles free text, per-user ownership, filtering, case sensitivity, and the agreed twenty-tag limit. `/to-spec` captures the stories and seams; `/to-tickets` prepares the smallest useful graph. `/implement-spec` runs ready tickets in separate worktrees, integrates the slices, and walks the criteria with `verify`. `test-audit` exposes a wrong ten-tag claim shared by tests and code, and a surviving mutant on the case-insensitive comparison. The red-test repair loop corrects both, the integration review catches a missing removal story, and the final Checks run record shows what ran before tracker close-out.
+**A Thursday bug (FIX, hard).** "Export is slow since last week." `/diagnosing-bugs` builds a timing harness against a fixture of 5,000 rows, baseline 12 seconds, bisects to the commit that added the tag filter, and shows you three hypotheses ranked with an N+1 on tags at the top. You confirm. It writes a regression test asserting one query per export at the repository seam, watches it fail, fixes it, 0.4 seconds, cleans the `[DEBUG-7c1e]` lines, and commits with the hypothesis in the message. The seam existed because Tuesday's `implement-spec` tested at the repository. That is the workflow paying for itself.
 
 ## Cheatsheet
 
@@ -440,15 +437,15 @@ Commit `GLOSSARY.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec`
 | Set up a new repo | `/setup-matt-pocock-skills`, then `/setup-feedback-loops` |
 | Describe the product I want, or hear what using this workspace would be like | `/tell-a-story`: choose 1 to tell, 2 to listen; agree the story before optional SPEC / BACKLOG drafts |
 | Build something small | Just say it (add "test first") |
-| Build something with open questions | `/grill-with-docs` → `/implement` |
+| Build something with open questions | `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement-spec` |
 | Orchestrate a prepared whole spec | `/implement-spec`: task graph, ready frontier, worktrees, integration review |
 | Write a PR body | `pr`: visual summary, evidence, and merge impact |
-| Build something big | `/grill-with-docs` → `/to-spec` → `/to-tickets` → per ticket `/clear` + `/implement` |
+| Build something big | `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement-spec` for the whole graph |
 | Fix a bug I understand | Say it (add "test first") |
 | Fix a bug I don't | `/diagnosing-bugs` |
-| See it actually work | `verify` (automatic at the end of `/implement`; say "verify it" any other time) |
+| See it actually work | `verify` (automatic at the end of `/implement-spec`; say "verify it" any other time) |
 | It's green and still not what I wanted; design the tests that check *that* | `/cattytest`, then `verify` on the sheet |
-| Know what the tests actually check, and whether they can fail | `test-audit` (automatic in `/implement`; run it on the whole feature before merge) |
+| Know what the tests actually check, and whether they can fail | `test-audit` (automatic in `/implement-spec`; run it on the whole feature before merge) |
 | Check the branch | `/code-review main` |
 | Check before it goes public | `security-review` against `main` |
 | Which library / how does this API work now | `research` |

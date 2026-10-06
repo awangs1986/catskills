@@ -32,7 +32,10 @@ These are behavioral acceptance scenarios, not a claim that a model has passed t
 | A user-invoked command is absent from the model's implicit list | Check accessible installation files or a manifest before calling it missing |
 | A beta command is mentioned | Verify installation and label it beta; do not silently treat it as shipped |
 | A route is chosen | One short, considerate explanation and a clean command card; no unauthorized invocation |
-| `/vibe implement this prepared spec .scratch/search/spec.md` with tracker and tickets ready | Build L execution, `/implement-spec .scratch/search/spec.md`, no size or lane interview. The human starts the skill; only its source-defined integration checks are promised |
+| `/vibe implement this prepared spec .scratch/search/spec.md` with tracker and tickets ready | Build execution, `/implement-spec .scratch/search/spec.md`, no size or lane interview. The human starts it; the integrated quality loop and tracker close-out follow its current source |
+| A small planned feature has one execution ticket | Recommend `/implement-spec` with the parent spec; no invented parallelism or demand for more tickets |
+| A feature has several independent ready tickets | Prefer `/implement-spec` as the default build route; keep the coordinator running while workers use isolated contexts and worktrees |
+| An explicit old `/implement #42` request | Read the compatibility source, retain `#42`, and honor its invocation policy; no silent substitution |
 | The same whole-spec request has no tracker configuration | The specific setup prerequisite is the next step; retain the spec reference for the return to execution, without restarting product alignment |
 | The spec exists but its tickets have not been prepared | Name ticket preparation as the missing step; do not claim a ready graph or begin orchestration |
 | `/vibe write the PR body for this branch against main` in a repo without setup files | Read `pr` and offer the body-writing route under the existing confirmation gate. No forced setup, no invented evidence, no publication or merge implied |
@@ -53,10 +56,11 @@ These are behavioral acceptance scenarios, not a claim that a model has passed t
 - Open the HTML from disk: it loads without outside assets, and examples remain copyable while narration uses the paragraph marker.
 - Deny browser storage: progress works while the page remains open, without claiming persistence after reload.
 - Include `implement-spec`, `pr`, and `retro`: each picker result reaches the matching card with its context-bearing prompt. The first and third are user-invoked; `pr` is model- or user-reachable; none is labelled beta.
-- Explain `implement-spec`: show the prepared spec, tickets, and tracker prerequisites, newly unblocked work, integration review, and tracker-dependent close-out. Do not promise the per-ticket fork's extra checks automatically.
+- Explain `implement-spec`: recommend it for prepared builds, including a one-ticket graph. Show tracker prerequisites, newly unblocked work, integrated verification and test audit, final review, and tracker close-out with actual evidence. Read the selected source before describing checks, especially for older installations.
 - Explain `pr` with missing before/after evidence: identify the missing evidence, keep the body-writing boundary visible, and never invent a test run or claim the PR was published.
 - Explain `retro` on a supplied record: preserve the record, link ranked candidates to observed session problems, and leave changes for the user's choice. Keep live bug repair distinct.
 - Install any subset of the three: only the available cards and picker leaves appear; no absent command enters the first-run sequence.
+- Include the older implementation command: show its compatibility card, recommend the prepared-spec route for new builds, and preserve an explicitly selected starting card. If the preferred entry is absent, report that rather than inventing an installation.
 
 ## Tell a Story: understanding an existing project
 

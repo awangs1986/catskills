@@ -7,7 +7,7 @@ argument-hint: "What you're trying to do, or nothing to be shown where you were 
 
 # Vibe
 
-You are the dispatcher for a solo developer's workflow. Put them on the right **lane**, **size** the work, and name the **exact next command to type**. You route; you don't build.
+You are the dispatcher for a solo developer's workflow. Put them on the right **lane**, **size** the work, and name the **exact next command to type**. You route; you don't build. Prefer `/implement-spec` for planned builds, after the spec and associated tickets are prepared. A one-ticket graph is enough; parallelism follows actual dependencies. Tiny, already clear behavior changes can use `tdd` directly.
 
 Read [WORKFLOW.md](WORKFLOW.md) and [ROUTES.md](ROUTES.md) first. The handbook gives the flow; the coverage table accounts for every promoted skill, including the ones deliberately outside the kit. This file is the procedure for choosing one next step.
 
@@ -25,7 +25,7 @@ Look before you ask, but inspect only what changes the route. Identify an explic
 - **Tracker-dependent planning or implementation:** inspect the configured tracker and domain pointers. If `docs/agents/issue-tracker.md` (or the project's configured equivalent) is absent, put `/setup-matt-pocock-skills` before publication or issue execution. Do not require it just to discuss the product.
 - **Feedback loops:** if `docs/agents/feedback-loops.md` is missing, the **Then** line recommends `/setup-feedback-loops` before building or fixing. Preserve a standalone skill's documented fallback instead of inventing a new prerequisite.
 - **No explicit route and no setup:** when tracker, feedback-loop record, and configured domain docs (`GLOSSARY.md` or legacy `CONTEXT.md`, including their maps) are all absent, use the first-run card below. If only tracker setup is missing for the chosen engineering route, recommend setup and stop.
-- **In-flight work:** inspect `.scratch/*/issues/` or the configured tracker for ready work. Preserve the graph scope for a whole-spec request; for other matching build requests, route to the next unblocked issue rather than starting another interview. Product drafts under `backlog/` are not ready issues.
+- **In-flight work:** inspect `.scratch/*/issues/` or the configured tracker for ready work. For a matching prepared feature, retain the parent spec and recorded integration progress and recommend `/implement-spec <spec reference>` to resume its graph. If a ready ticket has no associated spec, name the missing planning pointer rather than passing a ticket path as though it were a spec. Product drafts under `backlog/` are not ready issues.
 
 **Invoked with no argument and in-flight work found?** Before asking anything, give a brief **where-you-were** summary: current branch and whether it is clean, the feature and issues with status, the last three commit subjects, and the next unblocked issue. If a newer handoff or recovery record exists, offer `/takeover <path>` first. Then ask the lane question with "continue that" as the first option. Be welcoming rather than presenting the user with a cold inventory.
 
@@ -74,7 +74,7 @@ Some things the user says pick the route on their own, inside or across the four
 | "the agent has to read everything", "split this into projects", "it's too big" | Logical split first, physical only on the four conditions; `/wayfinder` comes back for the decisions | When the project gets big |
 | "the agent wiped my changes", "the tree's a mess", "I'm mid-rebase" | Conflict in progress → inspect the state and propose concrete recovery; the former command is retired. Otherwise the recovery paragraph: reflog, stash list, plan shown before anything runs | Git in this workflow |
 | A finished L build with every ticket closed | Review: `/code-review main` across the whole branch | Lane 3 |
-| "implement this prepared spec", "run all its ready tickets in parallel" | Build L execution: `/implement-spec <spec reference>`, once tracker and tickets are ready, without another sizing interview. User-invoked; the human starts the orchestrator | Upstream v1.3.1 integration |
+| "implement this prepared spec", "run all its ready tickets in parallel" | Build execution: `/implement-spec <spec reference>`, once tracker and tickets are ready, including a one-ticket graph, without another sizing interview. User-invoked; the human starts the orchestrator | Upstream v1.3.1 integration |
 | "write the PR body", "summarize this diff and its merge risk" | Standalone: PR body, `pr`: visual summary, before/after evidence, door and blast radius. Model- or user-invoked, subject to the existing route gate. Writing the body does not authorize publication or merge | Upstream v1.3.1 integration |
 | "review this session for repeated agent mistakes", "what check would have caught that", "retrospect on why the review missed it" | Standalone: retrospective, `/retro`: source-grounded improvement candidates, ordered by severity, for the user to choose. User-invoked; no automatic environment edits | The loop that improves the loop |
 | "I'm trying this workflow out", "first time", "walk me through it" | The first-run card, and stay to check each step | First run |
@@ -91,10 +91,10 @@ For Fix, the only question is "do you know the cause?" For Review, Tidy, and sta
 One short, natural paragraph explaining why this next step fits, followed by the compact card below. Follow the conversation style on that paragraph, not inside the copyable card. Localize the field labels if helpful; keep commands and arguments unchanged:
 
 ```
-Lane: <Build alignment | Build S|M|L [execution] | Fix quick|hard | Review | Tidy | Standalone: guide/session/cases/research/PR body/retrospective>
+Lane: <Build alignment | Build S|M|L | Build execution | Fix quick|hard | Review | Tidy | Standalone: guide/session/cases/research/PR body/retrospective>
 Next: <the exact command or sentence to type>
 Then: <the next steps within the requested scope, or the standalone result that completes it>
-Context: <stay | /clear between tickets | /handoff because … | /takeover <record> first>
+Context: <stay | keep the spec coordinator; isolated workers | /handoff because … | /takeover <record> first>
 ```
 
 Then stop, with one exception. If the first step is **model-invoked**, as established from the target's actual frontmatter, offer to begin in a considerate sentence. On the user's confirmation, invoke that one skill with the context already supplied. This includes directly requested primitives such as `grilling` or `codebase-design`, not only the familiar build and review steps.
@@ -104,7 +104,7 @@ If the target is **user-invoked**, name the exact command for the human and stop
 ## Rules
 
 - Don't start storytelling, grilling, speccing, or coding. A considerate explanation and a route card only, not the work itself.
-- Route only over the kit in WORKFLOW.md, plus the situational bring-backs in ROUTES.md (`wayfinder` for multi-session decisions, `implement-spec` for whole-spec orchestration). Beta references in the handbook require an actual installation check and a beta label; they are not silently part of the plugin. If the ask genuinely involves other people (issues someone else filed, a stakeholder's answer, a colleague picking up the work), it has left the kit: say so in one line and point them at `/ask-matt`.
+- Route only over the kit in WORKFLOW.md, plus the situational bring-backs in ROUTES.md (`wayfinder` for multi-session decisions). Honor an explicit old `/implement` request by reading its current source and retaining its arguments; its compatibility status is not a reason to silently substitute another workflow. New planned builds default to `/implement-spec`. Beta references in the handbook require an actual installation check and a beta label; they are not silently part of the plugin. If the ask genuinely involves other people (issues someone else filed, a stakeholder's answer, a colleague picking up the work), it has left the kit: say so in one line and point them at `/ask-matt`.
 - When you assert what another skill does, you have read its `SKILL.md` in this session. If you haven't, open it before claiming it.
 - Plain words, in the language the user writes in. Use the configured `GLOSSARY.md` or legacy `CONTEXT.md` vocabulary. Read the target's current instructions for its invocation and close-out contract; a cached summary never overrides them. Commands and skill names stay as they are.
 

@@ -10,7 +10,7 @@ Conversation follows the [shared style](../../.agents/conversation-style.md): wa
 
 ## When to reach for it
 
-Type `/test-audit`, or the agent reaches for it automatically when a task fits. `implement` calls it after `verify` and before `code-review`.
+Type `/test-audit`, or the agent reaches for it automatically when a task fits. `implement-spec` calls it after `verify` and before `code-review`.
 
 | Your situation | Reach for |
 | --- | --- |
@@ -22,7 +22,7 @@ Type `/test-audit`, or the agent reaches for it automatically when a task fits. 
 
 ## Prerequisites
 
-A fast single-file test command, which it reads from `docs/agents/feedback-loops.md`; the probe runs it once per mutant and time-boxes itself by the duration listed there. It needs the ticket's criteria or the spec's user stories to map claims against.
+A fast single-file test command, which it reads from `docs/agents/feedback-loops.md`; the probe runs it once per mutant and time-boxes itself by the duration listed there. It maps claims against every ticket in the supplied scope and the spec's user stories. The recommended implementation route supplies the integrated feature; a standalone audit can use a smaller scope.
 
 ## Two kinds of false green
 
@@ -39,7 +39,7 @@ The second is the one that surfaces weeks later, and it is why the claims are wr
 
 **Isn't this what `code-review` does?**
 
-`code-review` reads the diff for standards and for fidelity to the spec, and treats test files as more code. It doesn't run mutants, and it doesn't render the suite as rules for a human. The two are adjacent in the `implement` chain on purpose: this one first, so its red tests are written before review sees the branch.
+`code-review` reads the diff for standards and for fidelity to the spec, and treats test files as more code. It doesn't run mutants, and it doesn't render the suite as rules for a human. The two are adjacent in the `implement-spec` chain on purpose: this one first, so its red tests are written before review sees the branch.
 
 **The probe said everything was killed. Is it lying to look good?**
 
@@ -53,9 +53,9 @@ It shouldn't: the discipline is apply, run, revert, `git diff` clean, next mutan
 
 - You can read the claims list without opening a test file and say "number 3 is wrong" when it is.
 - At least occasionally a mutant survives on a rule you cared about, and the next `tdd` cycle kills it.
-- The **Checks run** block at the end of `implement` shows the claim count and survivor count, so you know what was checked rather than trusting that it was.
+- The **Checks run** block at the end of `implement-spec` shows the claim count and survivor count, so you know what was checked rather than trusting that it was.
 - The logic errors you find in production get rarer, and the ones you do find trace to a claim that was wrong rather than to a rule nobody tested.
 
 ## Where it fits
 
-A **chain step** inside [implement](implement.md) (`tdd` → `verify` → `test-audit` → `code-review` → commit), also run standalone across a whole feature before merge. It closes the loop `tdd` opens: [tdd](tdd.md) writes tests at agreed seams; this skill checks that what got written constrains the logic and says something the domain expert recognises. [ask-matt](ask-matt.md) is the router over the whole set.
+A **chain step** inside [implement-spec](implement-spec.md) (`tdd` → `verify` → `test-audit` → `code-review` → commit), also run standalone across a whole feature before merge. It closes the loop `tdd` opens: [tdd](tdd.md) writes tests at agreed seams; this skill checks that what got written constrains the logic and says something the domain expert recognises. [ask-matt](ask-matt.md) is the router over the whole set.

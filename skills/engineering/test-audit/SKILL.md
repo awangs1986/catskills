@@ -12,7 +12,7 @@ Three questions, three sections, one report. You **audit**; you don't fix. Every
 ## Read first
 
 - `docs/agents/feedback-loops.md` for the single-file test command and its duration. The mutation probe runs it many times; without a fast single-file loop, cap the probe hard.
-- The acceptance criteria of the ticket and the user stories of the spec this change implements (in context when `implement` calls you; otherwise from the argument, or ask).
+- The acceptance criteria of every ticket in scope and the user stories of the associated spec (`implement-spec` supplies the integration scope; otherwise use the argument, or ask).
 - `CONTEXT.md`, so the claims are written in the project's words.
 
 ## Scope
@@ -111,7 +111,7 @@ Next red tests, in order: <one line each, ready for tdd>
 
 Then stop. Whoever called you decides:
 
-- `implement` takes **Next red tests** back into its `tdd` loop before `code-review`. A wrong claim the user flags is a spec question first (`refocus` or the ticket's comments), then a red test.
+- `implement-spec` takes **Next red tests** back into its `tdd` loop before `code-review`. A wrong claim the user flags is a spec question first (`refocus` or the ticket's comments), then a red test.
 - Standalone, the user reads the claims; anything they mark wrong is the finding that matters most.
 
 ## Rules

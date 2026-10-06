@@ -129,7 +129,7 @@ When the user rejects or corrects any point, automatically start a focused corre
 
 Proceed with the next step under the accepted understanding or revised SPEC. If the user requested context reconstruction only, stop at that scope. Confirmation of the understanding or SPEC does not expand authorization for external actions.
 
-Hand the work back to the project's normal way of working rather than improvising a new one. Where this repo's skills are installed: an unfinished ticket goes to `/implement`, an unexplained failure to `diagnosing-bugs`, a bare behaviour change to `tdd`; if the next step is unclear, `/vibe` routes it. Anything in the **Missing** list that the user wants carried over is reimplemented through that same path, not pasted in from the record.
+Hand the work back to the project's normal way of working rather than improvising a new one. Where this repo's skills are installed: unfinished planned work goes to `/implement-spec` with the associated spec, graph, and recorded integration progress. If that preparation is missing, `/vibe` names the next planning step. An unexplained failure goes to `diagnosing-bugs`, a bare behaviour change to `tdd`. Anything in the **Missing** list that the user wants carried over is reimplemented through that same path, not pasted in from the record.
 
 Leave a durable trace where the project already keeps state, in one or two lines: the ticket's comments section, the spec's current-state note, or the convention in `docs/agents/`. Say what was taken over from where, what was verified, and what is still unverified, with the date. This is what makes the next takeover cheap. Do not add a separate handoff document to the project by default, and never commit the retrieval notes or the raw record.
 

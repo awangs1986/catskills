@@ -17,7 +17,7 @@ Type `/code-review`, or the agent reaches for it automatically when you ask to r
 | A diff exists and you want to know if it is built right *and* is the right thing | `code-review` |
 | You want bugs hunted in the diff: null paths, races, off-by-one | Claude Code's own built-in review, not this one (see the name clash below) |
 | Nothing is written yet and you want it written test-first | [tdd](./tdd.md) |
-| A whole spec needs building, review included | [implement](./implement.md), which calls this skill itself |
+| A whole spec needs building, review included | [implement-spec](./implement-spec.md), which calls this skill itself |
 | The whole codebase has drifted, not one diff | [improve-codebase-architecture](./improve-codebase-architecture.md) |
 | Something is broken and you do not know why | [diagnosing-bugs](./diagnosing-bugs.md) |
 
@@ -66,11 +66,11 @@ This is a known open bug. Several people have reproduced it, in more than one ha
 
 **Should I run it in the same [session](https://www.aihero.dev/ai-coding-dictionary/session) that wrote the code?**
 
-Prefer a fresh one. As one reader put it: "Same context reviewing itself isn't review, it's confirmation bias with a slash command." An agent that reviews in the authoring session has every assumption that shaped the code in its context. An independent reviewer would not have that context. This is also why people ask for [implement](./implement.md) without its built-in review step, because that step runs the review inside the session that just wrote the diff. The independent version is to invoke `/code-review` yourself from a clean session.
+Prefer a fresh one. As one reader put it: "Same context reviewing itself isn't review, it's confirmation bias with a slash command." An agent that reviews in the authoring session has every assumption that shaped the code in its context. An independent reviewer would not have that context. The recommended [implement-spec](./implement-spec.md) workflow calls this review after all tickets are integrated, with reviewer subagents separate from the workers. The independent version is to invoke `/code-review` yourself from a clean session.
 
 **After every ticket, or once at the end?**
 
-Both work, and the skill does not decide for you. Per-ticket keeps each diff small enough that the Spec axis has one clear spec to check against, which is the mode `implement` uses. Batching to the end of a branch catches interactions between tickets that the per-ticket passes each miss. If you are unsure, review per ticket and run one final pass against the branch point.
+Both work, and the skill does not decide for you. Per-ticket keeps each diff small enough that the Spec axis has one clear spec to check against, while `implement-spec` performs its final review over the whole integration branch. Batching to the end of a branch catches interactions between tickets that the per-ticket passes each miss. If you are unsure, review per ticket and run one final pass against the branch point.
 
 **Can I trust the findings?**
 
@@ -78,11 +78,11 @@ Not without checking. Sub-agent output is a hypothesis, not evidence. One team r
 
 **Why does it find new problems every single time I run it?**
 
-Each fix adds new code to review, and the judgement-call half of the Standards axis gives different results from run to run. One reader described the loop: "/code-review and /improve-code-architecture always find new stuff every time. I implement fixes, rerun these skills, and again and again." There is no convergence guarantee. Treat a pass as a list of leads. Act on the ones with a cited rule behind them, then stop. Do not run it in a loop until it comes back clean, because it never will.
+Each fix adds new code to review, and the judgement-call half of the Standards axis gives different results from run to run. One reader described the loop: "/code-review and /improve-code-architecture always find new stuff every time. I implement fixes, rerun these skills, and again and again." There is no convergence guarantee. Check every citation before acting. In a standalone review, treat the findings as leads rather than repeatedly chasing a report with no smells. In [implement-spec](./implement-spec.md), repair confirmed findings and recheck the latest integration tip; record evidence for rejecting unsupported findings. Judgement-call smells remain distinct from hard violations, and known unresolved failures still block close-out.
 
 **Does it review my uncommitted work?**
 
-No. It diffs `<fixed-point>...HEAD`. The three-dot form measures from the merge-base and excludes staged and working-tree changes. If `implement` has not made an interim commit, the review cannot see the work that is about to go into the next commit. Commit first, then review, then amend or add a fixup.
+No. It diffs `<fixed-point>...HEAD`. The three-dot form measures from the merge-base and excludes staged and working-tree changes. If `implement-spec` has not made an interim commit, the review cannot see the work that is about to go into the next commit. Commit first, then review, then amend or add a fixup.
 
 ## It's working if
 
@@ -98,9 +98,9 @@ This fork retains the Standards and Spec axes, the Fowler smell baseline, and a 
 
 ## Where it fits
 
-`code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → to-tickets → implement → code-review → retro`. It also stands alone on any branch or PR you point it at.
+`code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → to-tickets → implement-spec → code-review → retro`. It also stands alone on any branch or PR you point it at.
 
-- [implement](./implement.md) is the closest neighbour. It drives the build and calls this skill as its own closing review before committing. [implement-spec](./implement-spec.md) does the same once, over the whole integration branch.
+- [implement-spec](./implement-spec.md) is the closest neighbour. It calls this skill after integration, verification, and test audit, then fixes findings and reviews the latest integration tip before close-out.
 - [retro](./retro.md) comes after it and tunes it. When a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
 - [pr](./pr.md) writes the pull request body once the reviewed work goes up.
 - [to-spec](./to-spec.md) and [to-tickets](./to-tickets.md) produce the document the Spec axis checks against, so a vague spec makes that axis vague.

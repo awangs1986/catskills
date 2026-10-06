@@ -35,11 +35,13 @@ The selected current files also determine these three routes when installed. Eac
 
 | Your need | What the guide explains |
 | --- | --- |
-| Orchestrate a prepared spec | [implement-spec](../engineering/implement-spec.md) needs the spec, associated tickets, and tracker configuration. You invoke it; parallel worktrees converge on one integration branch, with its own final review and tracker close-out |
+| Build a prepared spec | [implement-spec](../engineering/implement-spec.md) is the recommended build entry, including a one-ticket graph. It needs the spec, tickets, and tracker; integrated verification, test audit, and review precede close-out |
 | Write the PR body | [pr](../engineering/pr.md) is model- or user-reachable. It writes a visual summary, before/after evidence, reversibility, and the scope of impact. Writing it does not itself create, publish, or merge the PR |
 | Learn from a coding session | [retro](../engineering/retro.md) is user-invoked. It reads the current or specified session and ranks environment-improvement candidates for you to choose; live bug repair has its own Fix route |
 
 The examples retain a supplied spec path or session record. Working and broken tells let you recognize completed integration work, evidence that was actually collected, and a retrospective that leaves changes for your choice. Archived commands are excluded; differing installed copies are reported with the source selected for the guide.
+
+An installed older implementation entry gets a compatibility card rather than the default build recommendation. If the preferred command is absent, the guide reports that accurately and describes only available choices. An explicitly chosen starting card remains yours to select.
 
 The guide's paragraphs use the same warm conversational voice as the chat. The renderer adds `喵！` at paragraph boundaries; headings, buttons, file paths, and copyable example prompts remain undecorated. Progress ticks live in that browser, not in the project or on a server. If browser storage is blocked, they still work for the open page but do not survive a reload.
 

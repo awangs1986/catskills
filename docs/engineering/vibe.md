@@ -20,7 +20,7 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 | You want a guide to the commands you have | [askcat](../productivity/askcat.md), without a setup detour |
 | You need proof cases, running evidence, or an audit of existing tests | [cattytest](./cattytest.md), [verify](./verify.md), or [test-audit](./test-audit.md), selected by what is missing rather than overlapping keywords |
 | A library or API fact needs checking | [research](./research.md), which is part of the solo kit |
-| An idea, and you don't want to think about process | Build lane, sized S, M or L: just say it, grill then implement, or grill → spec → tickets → implement per ticket |
+| An idea, and you don't want to think about process | Build lane, sized S, M or L: tiny clear behavior goes to `tdd`; planned work goes through grill → spec → tickets → `/implement-spec` |
 | Something broke, flaky, or slow | Fix lane, split on whether you already know the cause: `tdd` straight in, or the gated `diagnosing-bugs` loop |
 | A branch you want checked | `/code-review main`, and what to do with each axis of findings |
 | A prepared spec with tracked tickets, and you want parallel execution | [implement-spec](./implement-spec.md), after checking readiness, without another sizing interview; you start it |
@@ -52,14 +52,14 @@ The word to think with is **lane**. You are always in exactly one, and each has 
 
 | Lane | The one decision | Why it matters |
 | --- | --- | --- |
-| **Build** | Align the product first if needed, then size: S, M or L | Size decides how much ceremony you pay. S is a sentence; M is a grill and an implement in one window; L is grill, spec, tickets, and a fresh window per ticket |
+| **Build** | Align the product first if needed, then size: S, M or L | Size decides how much ceremony you pay. S is a concrete behavior; M and L prepare a proportional spec and ticket graph, then use `/implement-spec` |
 | **Fix** | Do you know the cause? | Yes goes straight to a failing test. No goes to a loop that refuses to theorise until one command goes red on the bug |
 | **Review** | None | Two axes, Standards and Spec, never merged into one score |
 | **Tidy** | Which candidate | The survey produces an idea; the idea goes back onto Build |
 
 The sizing question is asked in order and the first yes wins: can you write it as one sentence with no open questions (S); does it fit one sitting but you have questions first (M); neither (L). Most solo work is S or M, and the card recommends against L until you have caught yourself re-explaining a decision in a second session.
 
-An explicit implementation command or prepared whole-spec request already chooses the execution step. The card preserves your spec reference and checks the prerequisites rather than sizing it again. Whole-spec execution follows `implement-spec`'s own integration review and tracker close-out; the per-ticket `implement` route carries its separate verification, test audit, and checks ledger.
+An explicit implementation command or prepared whole-spec request already chooses the execution step. The card preserves your spec reference and checks the prerequisites rather than sizing it again. `implement-spec` is the default planned-build route, including a one-ticket graph. Workers run in isolated contexts while the coordinator stays active; integrated verification, test audit, review, and the checks ledger precede tracker close-out.
 
 PR writing produces the body, with evidence and merge impact; publishing or merging follows the task's existing authorization. A retrospective proposes improvements to the agent's environment from the session record. A recurring live failure still goes to Fix, with a retrospective afterward if you also want prevention, unless you choose another order.
 
@@ -75,7 +75,7 @@ Yes, and after a week you will. The card exists for the first few sessions, and 
 
 **It offered to start `tdd` for me. Is that safe?**
 
-It only fires model-invoked skills, and only after you say go. Every user-invoked step (`tell-a-story`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`) stays yours to type; no skill in this repo can fire those for you.
+It only fires model-invoked skills, and only after you say go. Every user-invoked step (`tell-a-story`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement-spec`, `improve-codebase-architecture`, `refocus`, `handoff`, `takeover`) stays yours to type; no skill in this repo can fire those for you.
 
 ## It's working if
 
@@ -89,4 +89,4 @@ It only fires model-invoked skills, and only after you say go. Every user-invoke
 
 ## Where it fits
 
-A **run-first dispatcher**: the thing you type when you don't yet know which chain step you're at. It offers [tell-a-story](./tell-a-story.md) when the product experience needs aligning, then hands off to the main chain ([grill-with-docs](grill-with-docs.md) → [to-spec](to-spec.md) → [to-tickets](to-tickets.md) → [implement](implement.md) → [code-review](code-review.md)) at whichever step the size calls for, to [diagnosing-bugs](diagnosing-bugs.md) for a hard bug, and to [improve-codebase-architecture](improve-codebase-architecture.md) for upkeep. [ask-matt](ask-matt.md) remains the router over the whole set, because it covers the situations this one deliberately leaves out.
+A **run-first dispatcher**: the thing you type when you don't yet know which chain step you're at. It offers [tell-a-story](./tell-a-story.md) when the product experience needs aligning, then hands off to the main chain ([grill-with-docs](grill-with-docs.md) → [to-spec](to-spec.md) → [to-tickets](to-tickets.md) → [implement-spec](implement-spec.md) → [code-review](code-review.md)) at whichever step the size calls for, to [diagnosing-bugs](diagnosing-bugs.md) for a hard bug, and to [improve-codebase-architecture](improve-codebase-architecture.md) for upkeep. [ask-matt](ask-matt.md) remains the router over the whole set, because it covers the situations this one deliberately leaves out.

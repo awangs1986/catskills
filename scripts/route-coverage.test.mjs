@@ -36,3 +36,26 @@ test("research is not described as excluded by the full router", () => {
   const router = readFileSync(join(repo, "skills/engineering/ask-matt/SKILL.md"), "utf8");
   assert.doesNotMatch(router, /deliberately leaves out[^.\n]*`research`/);
 });
+
+test("public build guidance prefers the spec route and keeps old calls as compatibility", () => {
+  const routes = readFileSync(join(repo, "skills/engineering/vibe/ROUTES.md"), "utf8");
+  assert.match(routes, /^\| `implement-spec` \| kit \|/m);
+  assert.match(routes, /^\| `implement` \| full-map \| Compatibility /m);
+  const paths = [
+    "README.md", "README.zh-CN.md", "skills/engineering/README.md",
+    "skills/engineering/vibe/SKILL.md", "skills/engineering/vibe/WORKFLOW.md",
+    "skills/engineering/ask-matt/SKILL.md", "skills/productivity/askcat/SKILL.md",
+    "docs/engineering/poster/build_poster.py", "docs/engineering/poster/build_poster_zh.py",
+    "docs/engineering/to-spec.md", "docs/engineering/to-tickets.md", "docs/engineering/vibe.md",
+    "docs/productivity/askcat.md",
+  ];
+  for (const path of paths) {
+    const content = readFileSync(join(repo, path), "utf8");
+    assert.match(content, /implement-spec/, path);
+    for (const line of content.split("\n")) {
+      if (!/\/implement(?![a-z0-9-])|`implement`|\[implement\]/.test(line)) continue;
+      const catalogEntry = /^- \*\*\[implement\]\([^)]*implement\/SKILL\.md\)/.test(line);
+      assert.ok(catalogEntry || /compatibility/i.test(line), `${path}: unexpected old build recommendation: ${line}`);
+    }
+  }
+});

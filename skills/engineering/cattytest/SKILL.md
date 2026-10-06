@@ -20,7 +20,7 @@ You design cases; you don't run them here and you don't write code. `verify` run
 Before anything else, one question, two options, wait:
 
 > **Q1 - Scope**: design cases for (a) the current feature or ticket, or (b) the whole product as it stands?
-> ➡️ Recommend (a) when there is an in-flight ticket or spec; the cases attach to it and `verify` walks them at the end of `implement`. Recommend (b) when there is no ticket, the user said "the whole thing", or a green build has already shipped something that didn't work. (b) takes more rounds and ends with a ranked sheet, not a flat one.
+> ➡️ Recommend (a) when there is an in-flight ticket or spec; the cases attach to it and `verify` walks them at the end of `implement-spec`. Recommend (b) when there is no ticket, the user said "the whole thing", or a green build has already shipped something that didn't work. (b) takes more rounds and ends with a ranked sheet, not a flat one.
 
 If the argument already says (a ticket id, "everything", a feature name), take it and say so.
 
@@ -89,7 +89,7 @@ Hand it back in one screen: the Apples lines, the case count, the ones marked *b
 
 Stop, and say what's next:
 
-- **Inside a feature**: append a one-line comment to the ticket pointing at the sheet. `verify` at the end of `implement` walks the sheet's `verify` cases in place of, or on top of, the bare criteria; each FAIL comes back as a red test for `tdd`, same as today.
+- **Inside a feature**: append a one-line comment to the ticket pointing at the sheet. `verify` at the end of `implement-spec` walks the sheet's `verify` cases in place of, or on top of, the bare criteria; each FAIL comes back as a red test for `tdd`, same as today.
 - **The user says go**: invoke the "verify" skill on the sheet now, against whatever is built. Expect failures; the point of the sheet is to find the apple still on the tree before the user does.
 - **By-hand cases**: list them with their evidence line so the user can run them in five minutes and paste the result under the case.
 - **Automated cases**: only the ones marked so, and only once the case has passed by hand or by `verify` at least once. Then they're a `tdd` job with the case as the spec; the case sheet stays the source, the test is its automation.

@@ -3,7 +3,7 @@
 # Renders ../vibe-workflow-poster.zh-CN.png from the same handbook, with the
 # same sections and commands as build_poster.py. Layout differences are fixes:
 # subtitles sit inside their panel instead of on its border, nodes grow to fit
-# their text, and the implement chain is computed from the box width.
+# their text, and the implement-spec chain is computed from the box width.
 #
 # Fonts: same directory as the English poster (see README.md in this folder).
 # The Chinese strings below are readable on purpose; scripts/check-skills.mjs
@@ -229,12 +229,15 @@ edge_label(1050, 1112, "L · 得花好几个晚上", LANES["build"]["dark"])
 
 # S column
 s_box = node(250, 1260, 330, 150, "build", label="直接说", note="“加 --json，先写测试”\nagent 自己会用 tdd")
-arrow([(250, s_box[3]), (250, 1920)])
+s_review = node(250, 1580, 330, 130, "review", cmd="code-review", cmd_size=28, note="小改动完成后\n合并前检查")
+arrow([(250, s_box[3]), (250, s_review[1])])
 # M column
 m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="分轮提问\n写 GLOSSARY.md 和 ADR")
-arrow([(660, m1_box[3]), (660, m1_box[3] + 30)])
-m2_box = node(660, 1430, 350, 130, "build", cmd="/implement", note="同一个窗口\n中间别 clear")
-arrow([(660, m2_box[3]), (660, 1920)])
+m2_box = node(660, 1470, 350, 130, "build", cmd="/to-spec → /to-tickets", cmd_size=22, note="简洁 spec 与任务图\n一个 ticket 也可以")
+arrow([(660, m1_box[3]), (660, m2_box[1])])
+m3_box = node(660, 1700, 350, 130, "build", cmd="/implement-spec", cmd_size=30, note="推荐的实现入口\n整合到一个集成分支")
+arrow([(660, m2_box[3]), (660, m3_box[1])])
+arrow([(660, m3_box[3]), (660, 1920)])
 # L column
 l1_box = node(1050, 1210, 360, 110, "build", cmd="/grill-with-docs", cmd_size=32, note="卡住了？先做个原型")
 arrow([(1050, l1_box[3]), (1050, l1_box[3] + 28)])
@@ -242,17 +245,17 @@ l2_box = node(1050, 1375, 360, 100, "build", cmd="/to-spec", note="只整理，�
 arrow([(1050, l2_box[3]), (1050, l2_box[3] + 28)])
 l3_box = node(1050, 1580, 360, 130, "build", cmd="/to-tickets", note="切片 + 阻塞关系\n（第1-3步：同一窗口）")
 arrow([(1050, l3_box[3]), (1050, l3_box[3] + 28)])
-l4_box = node(1050, 1780, 360, 100, "build", cmd="/clear → /implement", cmd_size=26, note="一张 ticket 一个窗口\n整份 spec 见下方卡片")
+l4_box = node(1050, 1780, 360, 100, "build", cmd="/implement-spec", cmd_size=30, note="就绪 tickets 并行执行\n协调会话保持运行")
 arrow([(1050, l4_box[3]), (1050, 1920)])
 
-# converge into implement internals box
-d.line([(250, 1920), (1050, 1920)], fill=INK, width=6)
+# converge planned builds into integrated quality checks
+d.line([(660, 1920), (1050, 1920)], fill=INK, width=6)
 arrow([(660, 1920), (660, 1955)])
 
 IX0, IY0, IX1, IY1 = 130, 1960, 1190, 2300
 rbox(IX0, IY0, IX1, IY1, (245, 249, 255), LANES["build"]["edge"], r=28, width=4)
-d.text((IX0 + 24, IY0 + 18), "/implement 里面自动发生（你只看结果）", font=F(30), fill=LANES["build"]["dark"])
-chain = [("tdd", "先红后绿\n一次一小片"), ("verify", "真跑起来\n截图为证"), ("test-audit", "测试有用？\n看 Claims"), ("code-review", "规范 + spec\n（含安全）"), ("commit", "提交并附上\nChecks 台账")]
+d.text((IX0 + 24, IY0 + 18), "/implement-spec：并行实现，集成后验收", font=F(30), fill=LANES["build"]["dark"])
+chain = [("tdd", "先红后绿\n及时快检"), ("verify", "真跑起来\n截图为证"), ("test-audit", "测试有用？\n看 Claims"), ("code-review", "规范 + spec\n（含安全）"), ("close-out", "tracker 收尾\nChecks 台账")]
 step = ((IX1 - IX0) - 80) / 5
 chain_cy = IY0 + 160
 for i, (c, n) in enumerate(chain):
@@ -260,7 +263,7 @@ for i, (c, n) in enumerate(chain):
     node(cx, chain_cy, step - 26, 120, "build", cmd=c, cmd_size=22, note=n, pad=24)
     if i < len(chain) - 1:
         arrow([(cx + (step - 26) / 2 + 2, chain_cy), (cx + step - (step - 26) / 2 - 2, chain_cy)], width=5, head=15)
-text(IX0 + 24, IY0 + 255, "每个 FAIL 和活下来的变异体都会打回 tdd，变成新的红测试。有 FAIL 没清，就不 review。", F(24, False), fill=GRAY, maxw=1010, spacing=1.4)
+text(IX0 + 24, IY0 + 255, "先在集成分支跑类型检查与完整测试，再走这些验收步骤。FAIL 和存活变异体回到红测试修复。", F(24, False), fill=GRAY, maxw=1010, spacing=1.4)
 
 # clipboard cat + bubble (bottom of build panel)
 paste_cat(cat_clip, 120, 2300)
@@ -311,7 +314,7 @@ text(SX[2], 2895, "额度用完、崩溃、关掉，或者换了工具。新会�
 # =================== BOTTOM: context rules + stuck ===================
 panel(80, 3200, 1010, 3660, "setup", "上下文规则（记住这七条就够了）")
 rules = [("故事 / 访谈 → spec → tickets", "", "同一个窗口，别 clear"),
-         ("ticket 之间", "/clear", "，开新窗口"),
+         ("worker tickets", "", "各自独立上下文，协调会话保持运行"),
          ("agent 跑偏了", "/refocus", "，compact 之前先跑它"),
          ("换目录 / 换工具 / 分叉", "/handoff", ""),
          ("旧会话没了", "/takeover", "，拿它的记录接上"),
@@ -401,8 +404,8 @@ img.paste(flow.crop((0, 0, W, UPSTREAM_TOP)), (0, 0))
 img.paste(flow.crop((0, UPSTREAM_TOP, W, flow.height)), (0, UPSTREAM_TOP + UPSTREAM_HEIGHT))
 d = ImageDraw.Draw(img)
 y = UPSTREAM_TOP
-panel(80, y + 25, 1920, y + 615, "setup", '三个新指令 · 实现、说明、复盘')
-command_cards = [('build', '拆完 /to-tickets 后', '/implement-spec', '按任务图并行实现就绪 ticket。\n各用独立 worktree，整合结果后\n审查整份 spec。', '产出：集成分支 + 整体审查', '你来敲，启动整份 spec 的实现'), ('review', '需要整理 PR 正文时', '/pr', '用图示说明变化，提供前后证据，写清合并的可逆性和影响范围。', '产出：便于审查的 PR 正文', '你可敲，agent 写 PR 正文时也会用'), ('tidy', '一次会话结束后', '/retro', '对照会话记录，提出检查、导航、规范和工具的改进建议。', '产出：候选建议，你选择后再改', '你来敲，再选择要采纳的建议')]
+panel(80, y + 25, 1920, y + 615, "setup", '推荐指令 · 实现、说明、复盘')
+command_cards = [('build', '拆完 /to-tickets 后', '/implement-spec', '独立 worktrees 并行实现就绪任务。\n集成后验证、审计、审查，\n再按 tracker 约定收尾。', '产出：集成结果 + 检查台账', '你来敲，启动整份 spec 的实现'), ('review', '需要整理 PR 正文时', '/pr', '用图示说明变化，提供前后证据，写清合并的可逆性和影响范围。', '产出：便于审查的 PR 正文', '你可敲，agent 写 PR 正文时也会用'), ('tidy', '一次会话结束后', '/retro', '对照会话记录，提出检查、导航、规范和工具的改进建议。', '产出：候选建议，你选择后再改', '你来敲，再选择要采纳的建议')]
 for x, (lane, when, command, description, result, invocation) in zip((110, 740, 1370), command_cards):
     c = LANES[lane]
     rbox(x, y + 90, x + 520, y + 505, c["fill"], c["edge"], r=24, width=4)
@@ -413,7 +416,7 @@ for x, (lane, when, command, description, result, invocation) in zip((110, 740, 
     text(x + 25, y + 452, invocation, F(23, False), fill=GRAY, maxw=470)
 arrow([(650, y + 205), (720, y + 205)], color=GRAY, width=5, head=18)
 arrow([(1280, y + 205), (1350, y + 205)], color=GRAY, width=5, head=18)
-text(120, y + 530, '拆完 tickets：每张单独 /implement，或整份 /implement-spec。需要 PR 正文就 /pr。复盘在 clear 前运行 /retro；换会话后提供原会话记录。', F(25, False), fill=INK, maxw=1760, spacing=1.4)
+text(120, y + 530, '拆完 tickets 优先用 /implement-spec，一个 ticket 也能用。worker 执行期间保留协调会话。PR 正文用 /pr；clear 前 /retro，换会话后提供原记录。', F(25, False), fill=INK, maxw=1760, spacing=1.4)
 
 # =================== UPSTREAM ATTRIBUTION ===================
 ATTRIBUTION_HEIGHT = 120

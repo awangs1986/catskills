@@ -1,10 +1,10 @@
 ---
 name: implement
-description: "Implement a piece of work based on a spec or set of tickets."
+description: "Compatibility entry for existing implementation calls; prefer /implement-spec for new planned builds."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the spec or tickets.
+This is a compatibility entry for existing calls. Recommend `/implement-spec` for new planned builds. When the human explicitly chooses this command, implement the work described by their spec or tickets using the procedure below.
 
 **Claim the ticket first.** On a local tracker set its `Status:` line to `in-progress`; on GitHub or GitLab, assign yourself and comment that work has started. This is what lets a later session (or `/vibe`) see what was in flight. Skip only when there is no ticket (a spec alone, or a conversation).
 

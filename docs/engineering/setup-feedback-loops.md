@@ -1,6 +1,6 @@
 ## What it does
 
-`setup-feedback-loops` wires the checks every other skill spends and nobody else installs: a typecheck, a linter, a test runner with a fast single-file invocation, a formatter in check mode, a smoke test, dev-server logs the agent can read, a headless browser for web apps, and a pre-commit guardrail. It audits what the repo already has, proposes the gaps in one table, wires them with the stack's conventional defaults, and writes the exact commands and their timings to `docs/agents/feedback-loops.md`, where `implement`, `tdd`, `diagnosing-bugs` and `verify` read them.
+`setup-feedback-loops` wires the checks every other skill spends and nobody else installs: a typecheck, a linter, a test runner with a fast single-file invocation, a formatter in check mode, a smoke test, dev-server logs the agent can read, a headless browser for web apps, and a pre-commit guardrail. It audits what the repo already has, proposes the gaps in one table, wires them with the stack's conventional defaults, and writes the exact commands and their timings to `docs/agents/feedback-loops.md`, where `implement-spec`, `tdd`, `diagnosing-bugs` and `verify` read them.
 
 It refuses to call a loop wired until it has seen it go red. Every check gets a deliberate fault introduced, the red output shown, the fault reverted, and the green shown again. A present-but-silent check (a test script that finds zero tests, a typecheck with `strict` off) is treated as worse than a missing one, because the agent trusts it.
 
@@ -15,7 +15,7 @@ You invoke this by typing `/setup-feedback-loops`; the agent won't reach for it 
 | Your situation | Do |
 | --- | --- |
 | A fresh repo, right after `/setup-matt-pocock-skills` | Run it before the first feature. The wiring commit lands ahead of any code |
-| An existing project where `tdd` keeps stalling on "no test runner" or `implement` never runs a typecheck | Run it; the audit table will say which loops are missing or silent |
+| An existing project where `tdd` keeps stalling on "no test runner" or `implement-spec` never runs a typecheck | Run it; the audit table will say which loops are missing or silent |
 | The stack changed (new framework, added a web front end to a CLI) | Run it again, naming the loop: `/setup-feedback-loops browser` |
 | You want to tune lint rules | Not this. Rules accrete through review; this installs defaults and moves on |
 
@@ -48,4 +48,4 @@ That is the audit working. The recommendation is still on, fixed in one commit b
 
 ## Where it fits
 
-A **run-once setup**, second in the sequence after [setup-matt-pocock-skills](setup-matt-pocock-skills.md) and before any Build or Fix work, re-run when the stack changes. [tdd](tdd.md), [implement](implement.md), [diagnosing-bugs](diagnosing-bugs.md) and [verify](verify.md) all read the file it writes. [ask-matt](ask-matt.md) is the router over the whole set.
+A **run-once setup**, second in the sequence after [setup-matt-pocock-skills](setup-matt-pocock-skills.md) and before any Build or Fix work, re-run when the stack changes. [tdd](tdd.md), [implement-spec](implement-spec.md), [diagnosing-bugs](diagnosing-bugs.md) and [verify](verify.md) all read the file it writes. [ask-matt](ask-matt.md) is the router over the whole set.

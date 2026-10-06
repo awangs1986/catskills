@@ -1,10 +1,12 @@
 ---
 name: implement-spec
-description: "Implement the result of /to-spec and /to-tickets in code."
+description: "Recommended spec-to-code workflow: orchestrate ready tickets in parallel, verify the integrated result, audit tests, and review before close-out."
 disable-model-invocation: true
 ---
 
-You have been provided a spec. This spec should have tickets associated with it, describing how to implement the spec.
+This is the recommended implementation entry point. You have been provided a spec with associated tickets describing how to implement it. A graph with one ticket is valid; independent tickets run in parallel when the graph permits.
+
+If the spec or execution tickets are missing, name the missing planning step for the human: `/to-spec`, then `/to-tickets` as needed. Preserve already agreed requirements rather than starting another interview. A bare, tiny behavior change can use `tdd` directly.
 
 The issue tracker should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
 
@@ -25,19 +27,38 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 3. Create the integration branch. If the issue tracker closes work through PRs, or the user asks for one, open a draft PR after the first merge in step 5 (a branch with no commits ahead of main can't open one), marked as closing the spec and tickets.
 
 4. Use **implementer subagents** to implement each ticket, each in its own worktree on its own branch. Each implementer subagent:
-   - confirms its worktree is based on the integration branch before starting, and resets onto it if not;
-   - invokes the "tdd" skill to build the ticket;
-   - merges the integration branch tip into its own branch before reporting done
+   - starts from the current integration branch tip, preserving existing work and the project's approval rules for destructive git operations;
+   - claims its ticket using the tracker's in-progress convention;
+   - invokes the "tdd" skill to build the ticket at agreed seams, runs typechecking and single-file tests regularly, and reads `docs/agents/feedback-loops.md` when present for commands and timings;
+   - merges the integration branch tip into its own branch before reporting done, with the commit and checks it actually ran. Formal ticket closure waits for final acceptance.
 
-5. Once an **implementer subagent** completes, merge its work to the integration branch with a **merger subagent**.
+5. Once an **implementer subagent** completes, merge its work to the integration branch with a **merger subagent**. Record the integration commit against the ticket. Only successfully integrated work unlocks its dependents; use that recorded progress to resume an interrupted run.
 
 6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
 
-7. Once all tickets are complete, invoke the "code-review" skill on the integration branch. Fix all issues raised by the code review in a single **implementer subagent**.
+7. Once all tickets are integrated, run the quality loop on the integration branch:
+   - Run the final typecheck and full test suite using the project's configured commands.
+   - Invoke the "verify" skill against the spec's user stories, every ticket's acceptance criteria, and any associated `test-cases.md`. Send each FAIL back through an implementer invoking "tdd" with a new red test. Keep unresolved FAILs open; report UNVERIFIABLE and by-hand cases to the user.
+   - Invoke the "test-audit" skill. Send its **Next red tests** (mutation survivors, uncovered criteria, or empty claims) through the same repair loop. Keep its **Claims** list visible and unchanged for the user; a disputed business rule needs requirements clarification before repair.
+   - Invoke the "code-review" skill on the integrated result. Its own instructions govern conditional security review. Check each finding against its cited source, fix confirmed findings in an implementer subagent, and merge the fixes. Record evidence when rejecting an unsupported finding; judgement-call smells are not hard violations.
+   - After a fix, rerun the affected checks and review the latest integration tip. Proceed only when no known FAIL, audit repair, or review finding remains unresolved. Preserve explicit approval requirements and report any acceptance decision the user still needs to make.
 
-8. If a draft PR exists, mark it ready for review. Otherwise, resolve each ticket the way the issue tracker closes work, and report the integration branch.
+8. Attach the final integration commit and **Checks run** record to the tickets, then resolve work using the issue tracker's convention. If the tracker closes through a PR, mark the draft ready with its closing references; otherwise close the accepted tickets and spec as configured and report the integration branch. Leave unmet criteria unticked and identify user-approved exclusions. Publication and merge follow existing task authorization.
 
-9. Clean up all **implementer subagent** worktrees.
+9. Clean up the worktrees created for this run once their work is safely integrated, preserving any uncommitted work and the project's cleanup approval requirements.
+
+End with a **Checks run** block for the final integration tip, listing actual commands, results, and evidence. Do not report planned checks as completed:
+
+```
+## Checks run
+- tickets: <integrated / total>; tracker close-out: <resolved / PR references / pending>
+- typecheck: <command> → <result>
+- tests: <command> → <n passed, n files>; single-file runs: <n>
+- verify: <n criteria> → <pass / fail / unverifiable>, evidence at <path>; test cases: <n walked, n passed, n by hand>
+- test-audit: <n claims>, <n criteria uncovered>, <n of m mutants survived>
+- code-review: Standards <n>, Spec <n>, Security <n or skipped>
+- integration: <branch> <sha>; PR: <URL or none>; worktrees: <cleaned / preserved with reason>
+```
 
 <!-- cat-skills:conversation:start -->
 ## Conversation style

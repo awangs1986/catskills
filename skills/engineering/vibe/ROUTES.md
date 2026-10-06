@@ -19,10 +19,10 @@ Every promoted skill has a place here. Read this alongside `WORKFLOW.md` when ch
 | `grill-with-docs` | kit | The product picture is shared and design decisions remain in a workspace |
 | `grilling` | kit | The interview primitive; normally used within an interview wrapper |
 | `handoff` | kit | The live session is handing work to another place or person |
-| `implement-spec` | bring-back | A prepared spec and its tracked tickets need parallel orchestration on one integration branch; check readiness and skip sizing |
+| `implement-spec` | kit | Recommended implementation route for a prepared spec and its tracked tickets, including a one-ticket graph; parallelize ready work, verify, audit, and review the integration branch |
 | `pr` | kit | Write a PR body with a visual summary, before/after evidence, and merge impact; standalone before setup, with publication governed by existing authorization |
 | `retro` | kit | Reflect on a session to propose environment improvements; standalone before setup, with the user choosing candidates. Repair requests stay in Fix |
-| `implement` | kit | An agreed spec or tracked issue is ready for implementation |
+| `implement` | full-map | Compatibility entry for an explicit old command or existing workflow; recommend implement-spec for new planned builds |
 | `improve-codebase-architecture` | kit | Survey codebase health or find a better seam after diagnosis |
 | `prototype` | kit | A design question needs something runnable or visible to settle it |
 | `refocus` | kit | The current session has drifted from its requirements |

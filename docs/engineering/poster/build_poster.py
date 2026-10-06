@@ -228,13 +228,17 @@ edge_label(1050, 1112, "L · several evenings", LANES["build"]["dark"])
 
 # S column
 s_box = node(250, 1260, 330, 150, "build", label="Just say it", note="“add --json to export,\ntest first”\nthe agent uses tdd itself")
-arrow([(250, s_box[3]), (250, 1920)])
+s_review = node(250, 1580, 330, 130, "review", cmd="code-review", cmd_size=28, note="review the tiny change\nbefore merge")
+arrow([(250, s_box[3]), (250, s_review[1])])
 # M column
 m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="asks in rounds; writes\nGLOSSARY.md and ADRs")
-m2_cy = place_below(m1_box, 350, 130, cmd="/implement", note="same window,\ndon't clear in between")
-m2_box = node(660, m2_cy, 350, 130, "build", cmd="/implement", note="same window,\ndon't clear in between")
+m2_cy = place_below(m1_box, 350, 130, cmd="/to-spec → /to-tickets", cmd_size=22, note="concise spec + graph\none ticket can be enough")
+m2_box = node(660, m2_cy, 350, 130, "build", cmd="/to-spec → /to-tickets", cmd_size=22, note="concise spec + graph\none ticket can be enough")
 arrow([(660, m1_box[3]), (660, m2_box[1])])
-arrow([(660, m2_box[3]), (660, 1920)])
+m3_cy = place_below(m2_box, 350, 130, cmd="/implement-spec", cmd_size=30, note="recommended build entry\none integration branch")
+m3_box = node(660, m3_cy, 350, 130, "build", cmd="/implement-spec", cmd_size=30, note="recommended build entry\none integration branch")
+arrow([(660, m2_box[3]), (660, m3_box[1])])
+arrow([(660, m3_box[3]), (660, 1920)])
 # L column
 l1_box = node(1050, 1220, 360, 110, "build", cmd="/grill-with-docs", cmd_size=32, note="stuck? try a prototype")
 l2_cy = place_below(l1_box, 360, 100, cmd="/to-spec", note="synthesis, no questions")
@@ -243,19 +247,19 @@ arrow([(1050, l1_box[3]), (1050, l2_box[1])])
 l3_cy = place_below(l2_box, 360, 130, cmd="/to-tickets", note="slices + blocking edges\n(steps 1 to 3: one window)")
 l3_box = node(1050, l3_cy, 360, 130, "build", cmd="/to-tickets", note="slices + blocking edges\n(steps 1 to 3: one window)")
 arrow([(1050, l2_box[3]), (1050, l3_box[1])])
-l4_cy = place_below(l3_box, 360, 100, cmd="/clear → /implement", cmd_size=26, note="a fresh window per ticket\n/implement-spec: below")
-l4_box = node(1050, l4_cy, 360, 100, "build", cmd="/clear → /implement", cmd_size=26, note="a fresh window per ticket\n/implement-spec: below")
+l4_cy = place_below(l3_box, 360, 100, cmd="/implement-spec", cmd_size=30, note="parallel ready tickets\nkeep the coordinator")
+l4_box = node(1050, l4_cy, 360, 100, "build", cmd="/implement-spec", cmd_size=30, note="parallel ready tickets\nkeep the coordinator")
 arrow([(1050, l3_box[3]), (1050, l4_box[1])])
 arrow([(1050, l4_box[3]), (1050, 1920)])
 
-# converge into implement internals box
-d.line([(250, 1920), (1050, 1920)], fill=INK, width=6)
+# converge planned builds into integrated quality checks
+d.line([(660, 1920), (1050, 1920)], fill=INK, width=6)
 arrow([(660, 1920), (660, 1955)])
 
 IX0, IY0, IX1, IY1 = 100, 1960, 1225, 2300
 rbox(IX0, IY0, IX1, IY1, (245, 249, 255), LANES["build"]["edge"], r=28, width=4)
-d.text((IX0 + 24, IY0 + 18), "What happens inside /implement (automatic; you only read the results)", font=F(30), fill=LANES["build"]["dark"])
-chain = [("tdd", "red, then green\none slice at a time"), ("verify", "really runs it\nscreenshot as proof"), ("test-audit", "do tests guard logic?\nyou get a Claims list"), ("code-review", "standards + spec\n(+ security)"), ("commit", "ends with a\nChecks run ledger")]
+d.text((IX0 + 24, IY0 + 18), "Inside /implement-spec: parallel work, integrated checks", font=F(30), fill=LANES["build"]["dark"])
+chain = [("tdd", "workers: red, green\nfast checks"), ("verify", "really runs it\nscreenshot as proof"), ("test-audit", "do tests guard logic?\nyou get a Claims list"), ("code-review", "standards + spec\n(+ security)"), ("close-out", "tracker + integration\nChecks run ledger")]
 step = ((IX1 - IX0) - 60) / 5
 chain_cy = IY0 + 120
 for i, (c, n) in enumerate(chain):
@@ -264,7 +268,7 @@ for i, (c, n) in enumerate(chain):
     text(cx, IY0 + 170, n, F(21, False), fill=GRAY, align="center", spacing=1.3)
     if i < len(chain) - 1:
         arrow([(cx + 92, chain_cy), (cx + 121, chain_cy)], width=5, head=15)
-text(IX0 + 24, IY0 + 255, "Every FAIL and surviving mutant goes back to tdd as a new red test. No review while a FAIL is open.", F(24, False), fill=GRAY, maxw=1090, spacing=1.4)
+text(IX0 + 24, IY0 + 255, "After integration: typecheck + full suite, then these gates. FAILs and survivors return to red-test repairs.", F(24, False), fill=GRAY, maxw=1090, spacing=1.4)
 
 # clipboard cat + bubble (bottom of build panel)
 paste_cat(cat_clip, 120, 2300)
@@ -317,7 +321,7 @@ text(SX[2], 2895, "Quota gone, crashed, closed, or another tool. The new session
 # =================== BOTTOM: context rules + stuck ===================
 panel(80, 3200, 1010, 3660, "setup", "Context rules (these seven are enough)")
 rules = [("story / grill → spec → tickets", "", "one window, don't clear"),
-         ("between tickets", "/clear", ", fresh window"),
+         ("worker tickets", "", "isolated contexts; coordinator stays"),
          ("agent drifted", "/refocus", ", before compact"),
          ("new dir / tool / fork", "/handoff", ""),
          ("old session gone", "/takeover", " its record"),
@@ -407,8 +411,8 @@ img.paste(flow.crop((0, 0, W, UPSTREAM_TOP)), (0, 0))
 img.paste(flow.crop((0, UPSTREAM_TOP, W, flow.height)), (0, UPSTREAM_TOP + UPSTREAM_HEIGHT))
 d = ImageDraw.Draw(img)
 y = UPSTREAM_TOP
-panel(80, y + 25, 1920, y + 615, "setup", 'New commands · Build, explain, reflect')
-command_cards = [('build', 'After /to-tickets', '/implement-spec', 'Run ready tickets in parallel worktrees, integrate the results, and review the whole spec.', 'One integration branch + review', 'You type it'), ('review', 'When a PR is needed', '/pr', 'Show the change with a visual, before/after evidence, reversibility and merge impact.', 'PR body, ready for review', 'You type it or the agent uses it'), ('tidy', 'After a session', '/retro', 'Read the session record and suggest better checks, navigation, standards and tooling.', 'Candidates; you choose changes', 'You type it; choose before edits')]
+panel(80, y + 25, 1920, y + 615, "setup", 'Recommended commands · Build, explain, reflect')
+command_cards = [('build', 'After /to-tickets', '/implement-spec', 'Parallel ready tickets, then integrated verification, test audit, review and tracker close-out.', 'Integrated result + checks ledger', 'You type it'), ('review', 'When a PR is needed', '/pr', 'Show the change with a visual, before/after evidence, reversibility and merge impact.', 'PR body, ready for review', 'You type it or the agent uses it'), ('tidy', 'After a session', '/retro', 'Read the session record and suggest better checks, navigation, standards and tooling.', 'Candidates; you choose changes', 'You type it; choose before edits')]
 for x, (lane, when, command, description, result, invocation) in zip((110, 740, 1370), command_cards):
     c = LANES[lane]
     rbox(x, y + 90, x + 520, y + 505, c["fill"], c["edge"], r=24, width=4)
@@ -419,7 +423,7 @@ for x, (lane, when, command, description, result, invocation) in zip((110, 740, 
     text(x + 25, y + 452, invocation, F(23, False), fill=GRAY, maxw=470)
 arrow([(650, y + 205), (720, y + 205)], color=GRAY, width=5, head=18)
 arrow([(1280, y + 205), (1350, y + 205)], color=GRAY, width=5, head=18)
-text(120, y + 530, 'After /to-tickets, pick /implement per ticket or /implement-spec for the whole graph. Request /pr for a PR body. Run /retro before clearing, or provide the previous session log.', F(25, False), fill=INK, maxw=1760, spacing=1.4)
+text(120, y + 530, 'Prefer /implement-spec after /to-tickets, even for one ticket. Keep the coordinator across workers. Use /pr for the body; /retro before clearing, or with a session record.', F(25, False), fill=INK, maxw=1760, spacing=1.4)
 
 # =================== UPSTREAM ATTRIBUTION ===================
 ATTRIBUTION_HEIGHT = 120
