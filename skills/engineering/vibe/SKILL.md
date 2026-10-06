@@ -19,11 +19,13 @@ Look before you ask, but inspect only what changes the route. Identify an explic
 - **Product alignment or a guide:** `/tell-a-story` and `/askcat` work before setup. Story alignment is **Build alignment**; the guide is **Standalone: guide**. Skip sizing. Recommend the command and stop, rather than telling the story or building the guide yourself.
 - **Conversation and session care:** `/wait-what`, `/handoff`, `/takeover`, and `/refocus` are standalone routes before setup checks. Preserve the supplied record or scope. A recovery request must not become a fresh build interview.
 - **Evidence and investigation:** `/cattytest`, `verify`, `test-audit`, `code-review`, and `research` do not acquire a tracker dependency merely by passing through this router. Read their scope and prerequisites; a missing criterion may need one clarification, not a tracker setup questionnaire.
+- **PR writing or a retrospective:** `pr` and `/retro` are standalone routes before setup and sizing. Preserve the supplied change or session record. A PR body request needs the change and honest evidence; a retrospective reads the current session unless another is specified. Neither requires tracker or feedback-loop setup to begin.
+- **Whole-spec execution:** for `/implement-spec` or the intent to orchestrate a prepared spec, retain the spec reference and inspect only the tracker and associated tickets needed to establish readiness. Skip lane and size questions. When a prerequisite is absent, name that specific next step; when ready, hand back `/implement-spec <spec reference>` for the human to start. Its own instructions govern integration checks and tracker-dependent close-out.
 - **An actual merge or rebase conflict affecting the requested work:** inspect the current state and name a concrete recovery plan within the authorized task. The former upstream `resolving-merge-conflicts` skill is retired; do not recommend it as an installed command.
 - **Tracker-dependent planning or implementation:** inspect the configured tracker and domain pointers. If `docs/agents/issue-tracker.md` (or the project's configured equivalent) is absent, put `/setup-matt-pocock-skills` before publication or issue execution. Do not require it just to discuss the product.
 - **Feedback loops:** if `docs/agents/feedback-loops.md` is missing, the **Then** line recommends `/setup-feedback-loops` before building or fixing. Preserve a standalone skill's documented fallback instead of inventing a new prerequisite.
 - **No explicit route and no setup:** when tracker, feedback-loop record, and configured domain docs (`GLOSSARY.md` or legacy `CONTEXT.md`, including their maps) are all absent, use the first-run card below. If only tracker setup is missing for the chosen engineering route, recommend setup and stop.
-- **In-flight work:** inspect `.scratch/*/issues/` or the configured tracker for ready work. If the user's build request matches it, route to the next unblocked issue rather than starting another interview. Product drafts under `backlog/` are not ready issues.
+- **In-flight work:** inspect `.scratch/*/issues/` or the configured tracker for ready work. Preserve the graph scope for a whole-spec request; for other matching build requests, route to the next unblocked issue rather than starting another interview. Product drafts under `backlog/` are not ready issues.
 
 **Invoked with no argument and in-flight work found?** Before asking anything, give a brief **where-you-were** summary: current branch and whether it is clean, the feature and issues with status, the last three commit subjects, and the next unblocked issue. If a newer handoff or recovery record exists, offer `/takeover <path>` first. Then ask the lane question with "continue that" as the first option. Be welcoming rather than presenting the user with a cold inventory.
 
@@ -47,6 +49,7 @@ Some things the user says pick the route on their own, inside or across the four
 - An explicit command wins over a broad phrase such as "show me" or "it is wrong".
 - Product experience still unclear → `tell-a-story`; experience agreed but proof cases missing → `cattytest`; cases already agreed and need walking → `verify`; existing tests need auditing → `test-audit`.
 - A library or API fact → `research`, which is in the kit. A large set of unresolved decisions → `wayfinder`, including a new product, not only a project split.
+- A request to fix a recurring live failure → Fix. A request to examine the session and prevent future agent mistakes → `/retro`. For a request covering both, put the repair first and the retrospective in **Then**, unless the user explicitly chooses another order.
 - If two intentions are genuinely indistinguishable, ask one gentle contrast question with a recommendation; do not launch several flows.
 
 
@@ -71,15 +74,15 @@ Some things the user says pick the route on their own, inside or across the four
 | "the agent has to read everything", "split this into projects", "it's too big" | Logical split first, physical only on the four conditions; `/wayfinder` comes back for the decisions | When the project gets big |
 | "the agent wiped my changes", "the tree's a mess", "I'm mid-rebase" | Conflict in progress → inspect the state and propose concrete recovery; the former command is retired. Otherwise the recovery paragraph: reflog, stash list, plan shown before anything runs | Git in this workflow |
 | A finished L build with every ticket closed | Review: `/code-review main` across the whole branch | Lane 3 |
-| "implement the whole spec", "run all ready tickets in parallel" | `/implement-spec`: read the spec and graph, then orchestrate the ready frontier on one integration branch. User-invoked; the human starts it | Upstream v1.3.1 integration |
-| "write the PR body", "show the change and merge risk" | `pr`: visual summary, before/after evidence, door and blast radius. Model-invoked, subject to the existing route gate | Upstream v1.3.1 integration |
-| "it keeps making the same mistake", "we fixed this last week too", "why didn't the review catch that" | `/retro` (promoted, user-invoked): the lesson becomes a check via `/setup-feedback-loops` or a standing rule | The loop that improves the loop |
+| "implement this prepared spec", "run all its ready tickets in parallel" | Build L execution: `/implement-spec <spec reference>`, once tracker and tickets are ready, without another sizing interview. User-invoked; the human starts the orchestrator | Upstream v1.3.1 integration |
+| "write the PR body", "summarize this diff and its merge risk" | Standalone: PR body, `pr`: visual summary, before/after evidence, door and blast radius. Model- or user-invoked, subject to the existing route gate. Writing the body does not authorize publication or merge | Upstream v1.3.1 integration |
+| "review this session for repeated agent mistakes", "what check would have caught that", "retrospect on why the review missed it" | Standalone: retrospective, `/retro`: source-grounded improvement candidates, ordered by severity, for the user to choose. User-invoked; no automatic environment edits | The loop that improves the loop |
 | "I'm trying this workflow out", "first time", "walk me through it" | The first-run card, and stay to check each step | First run |
 | "I don't follow what you just said" | `/wait-what`, mid-conversation, inside whatever skill is running | Context rules |
 
 ## 3. Size (Build lane only)
 
-For the product-alignment route, leave size undecided until the story is agreed. For other Build requests, ask the three sizing questions from WORKFLOW.md in order; the first yes wins. Recommend an answer: most solo asks are **S** or **M**, and the cost of picking L too early is a spec nobody needed. Pick **L** when the user has already re-explained a decision to you once, or names more than one sitting.
+For the product-alignment route, leave size undecided until the story is agreed. An explicit implementation command or prepared whole-spec route already identifies the execution step: skip sizing. For remaining Build requests, ask the three sizing questions from WORKFLOW.md in order; the first yes wins. Recommend an answer: most solo asks are **S** or **M**, and the cost of picking L too early is a spec nobody needed. Pick **L** when the user has already re-explained a decision to you once, or names more than one sitting.
 
 For Fix, the only question is "do you know the cause?" For Review, Tidy, and standalone routes there is no sizing.
 
@@ -88,9 +91,9 @@ For Fix, the only question is "do you know the cause?" For Review, Tidy, and sta
 One short, natural paragraph explaining why this next step fits, followed by the compact card below. Follow the conversation style on that paragraph, not inside the copyable card. Localize the field labels if helpful; keep commands and arguments unchanged:
 
 ```
-Lane: <Build alignment | Build S|M|L | Fix quick|hard | Review | Tidy | Standalone: guide/session/cases/research>
+Lane: <Build alignment | Build S|M|L [execution] | Fix quick|hard | Review | Tidy | Standalone: guide/session/cases/research/PR body/retrospective>
 Next: <the exact command or sentence to type>
-Then: <the two or three steps after it, one line each>
+Then: <the next steps within the requested scope, or the standalone result that completes it>
 Context: <stay | /clear between tickets | /handoff because … | /takeover <record> first>
 ```
 

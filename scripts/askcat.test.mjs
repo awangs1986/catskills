@@ -238,24 +238,114 @@ test("builder refuses an existing output unless replacement is explicitly reques
   }
 });
 
-for (const name of ["implement-spec", "pr", "retro"]) {
+// Representative guide copy reviewed against the current SKILL.md contracts.
+// These fixtures exercise rendering and validation, not a model's routing judgment.
+const upstreamCards = [
+  {
+    name: "implement-spec", invoke: "you", beta: false,
+    oneLiner: "Build a prepared spec by coordinating tickets whose blockers are complete.",
+    when: "You have a spec, associated tickets, and the configured issue tracker.",
+    see: "Parallel worktrees feed one integration branch, followed by integration review and tracker close-out.",
+    example: "/implement-spec .scratch/search/spec.md",
+    tip: "Use /implement when you want to drive one ticket at a time; each route has its own checks.",
+    working: "Newly unblocked tickets advance, review findings are fixed, and worktrees are cleaned up.",
+    broken: "It promises /implement's extra checks without establishing them from the selected source.",
+    file: "skills/engineering/implement-spec/SKILL.md",
+  },
+  {
+    name: "pr", invoke: "agent", beta: false,
+    oneLiner: "Write a short PR body that shows what changed and what merging could affect.",
+    when: "An existing change needs a clear description for its reviewer.",
+    see: "A visual summary, before/after evidence, reversibility, and the scope of impact.",
+    example: "Write the PR body for this branch against main, using the evidence collected here.",
+    tip: "Writing the body does not itself publish or merge the PR; keep existing task authorization.",
+    working: "The body uses collected evidence or identifies what evidence is missing.",
+    broken: "It invents a test run or claims the PR was published just because the body was written.",
+    file: "skills/engineering/pr/SKILL.md",
+  },
+  {
+    name: "retro", invoke: "you", beta: false,
+    oneLiner: "Learn from a session and suggest improvements to the agent's working environment.",
+    when: "You want prevention lessons from the current session or a supplied record.",
+    see: "Candidates ranked by severity, grounded in session evidence, for you to choose.",
+    example: "/retro session-export.json",
+    tip: "Use /retro alone for the current session. A live bug repair still belongs in Fix.",
+    working: "Mechanical mistakes suggest deterministic checks; judgment calls suggest reviewer guidance.",
+    broken: "It silently installs hooks or changes application code before you choose a candidate.",
+    file: "skills/engineering/retro/SKILL.md",
+  },
+];
+
+function upstreamFixture() {
+  const { data, inventory } = fixture();
+  data.chapters[0].skills.push(...structuredClone(upstreamCards));
+  inventory.skills.push(...upstreamCards.map(({ name, invoke, beta }) => ({ name, invoke, beta })));
+  const research = data.picker.questions[0].options.pop();
+  data.picker.questions[0].options.push({ label: "Prepared work and session learning", next: "q2" });
+  data.picker.questions.push({
+    id: "q2", text: "What is ready to do?",
+    options: [research, ...upstreamCards.map((card) => ({ label: card.when, skill: card.name, prompt: card.example }))],
+  });
+  return { data, inventory };
+}
+
+for (const card of upstreamCards) {
+  const { name } = card;
   test(`the current upstream route ${name} is selectable and cannot disappear from the picker`, () => {
-    const { data, inventory } = fixture();
-    const source = readFileSync(join(repo, "skills/engineering", name, "SKILL.md"), "utf8");
+    const { data, inventory } = upstreamFixture();
+    const source = readFileSync(join(repo, card.file), "utf8");
     const invoke = /disable-model-invocation:\s*true/.test(source) ? "you" : "agent";
-    const prototype = data.chapters[0].skills[0];
-    const card = { ...prototype, name, invoke, beta: false, example: invoke === "you" ? `/${name}` : `Please help with ${name}.` };
-    data.chapters[0].skills.push(card);
-    inventory.skills.push({ name, invoke, beta: false });
-    const research = data.picker.questions[0].options.pop();
-    data.picker.questions[0].options.push({ label: "More workflows", next: "q2" });
-    data.picker.questions.push({ id: "q2", text: "Which workflow?", options: [research, { label: name, skill: name, prompt: card.example }] });
+    assert.equal(invoke, card.invoke, `${name} fixture must agree with current source invocation`);
     const { document, window } = mount(data, inventory);
-    [...document.querySelectorAll("#pk button")].find((b) => b.textContent === "More workflows").dispatchEvent(new window.Event("click"));
-    [...document.querySelectorAll("#pk button")].find((b) => b.textContent === name).dispatchEvent(new window.Event("click"));
-    assert.ok(document.querySelector(".picker .result").textContent.includes(name));
+    const rendered = document.querySelector(`#skill-${name}`);
+    assert.equal(rendered.querySelector(".pill").textContent, invoke === "you" ? data.labels.youType : data.labels.agentUses);
+    assert.equal(rendered.querySelector(".pill.beta"), null);
+    assert.equal(rendered.querySelector(".ex").textContent, card.example);
+    assert.equal(rendered.querySelector(".one").textContent, `${card.oneLiner} ${MARKER}`);
+    assert.ok(rendered.querySelector("dl").textContent.includes(card.when));
+    assert.ok(rendered.querySelector("dl").textContent.includes(card.see));
+    assert.ok(rendered.querySelector(".tip").textContent.includes(card.tip));
+    assert.equal(rendered.querySelector(".tells .ok").textContent, `${card.working} ${MARKER}`);
+    assert.equal(rendered.querySelector(".tells .bad").textContent, `${card.broken} ${MARKER}`);
+    assert.equal(rendered.querySelector(".foot a").getAttribute("href"), card.file);
+    [...document.querySelectorAll("#pk button")].find((b) => b.textContent === "Prepared work and session learning").dispatchEvent(new window.Event("click"));
+    [...document.querySelectorAll("#pk button")].find((b) => b.textContent === card.when).dispatchEvent(new window.Event("click"));
+    assert.equal(document.querySelector(".picker .result a").getAttribute("href"), `#skill-${name}`);
+    assert.equal(document.querySelector(".picker .result .ex").textContent, card.example);
+    assert.equal(document.querySelector(".picker .result p").textContent, `${card.oneLiner} ${MARKER}`);
     assert.ok(document.querySelector(".attribution").textContent.includes("MATT POCOCK"));
-    data.picker.questions[1].options = [research, research];
+    data.picker.questions[1].options = data.picker.questions[1].options.filter((option) => option.skill !== name);
     assert.ok(validateGuide(data, inventory).some((error) => error.includes(`important installed route: ${name}`)));
+  });
+}
+
+for (let mask = 1; mask < 8; mask++) {
+  const available = upstreamCards.filter((_, index) => mask & (1 << index));
+  test(`a partial install of ${available.map((card) => card.name).join(", ")} has only available routes`, () => {
+    const { data, inventory } = upstreamFixture();
+    const names = new Set(["vibe", ...available.map((card) => card.name)]);
+    data.chapters[0].skills = data.chapters[0].skills.filter((card) => names.has(card.name));
+    inventory.skills = inventory.skills.filter((entry) => names.has(entry.name));
+    data.picker = {
+      start: "partial", questions: [{
+        id: "partial", text: "Which installed workflow would help?",
+        options: data.chapters[0].skills.map((card) => ({ label: card.name, skill: card.name, prompt: card.example })),
+      }],
+    };
+    assert.deepEqual(validateGuide(data, inventory), []);
+    const { document, window } = mount(data, inventory);
+    assert.equal(document.querySelectorAll(".card").length, names.size);
+    assert.equal(document.querySelectorAll("#pk button[data-i]").length, names.size);
+    for (const card of available) {
+      [...document.querySelectorAll("#pk button")].find((b) => b.textContent === card.name).dispatchEvent(new window.Event("click"));
+      assert.equal(document.querySelector(".picker .result .ex").textContent, card.example);
+      document.querySelector("#pk [data-restart]").dispatchEvent(new window.Event("click"));
+    }
+    for (const card of upstreamCards.filter((card) => !names.has(card.name))) {
+      assert.equal(document.querySelector(`#skill-${card.name}`), null);
+      data.firstRun.push({ type: `/${card.name}`, watch: "This command is not installed." });
+      assert.ok(validateGuide(data, inventory).some((error) => error.includes(`unavailable command: ${card.name}`)));
+      data.firstRun.pop();
+    }
   });
 }

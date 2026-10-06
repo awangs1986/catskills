@@ -42,12 +42,16 @@ When present in the inventory, explain these boundaries in the picker instead of
 | Run already-agreed cases and collect evidence | `verify` |
 | Understand what existing tests claim and whether they can detect faults | `test-audit` |
 | Research a library, API, or external fact | `research` |
-| Orchestrate all prepared tickets for a spec | `implement-spec`: task graph and integration branch, user-invoked; distinct from driving `/implement` per ticket |
-| Write the PR body | `pr`: visual summary, before/after evidence, door and blast radius |
-| Reflect on a session to improve the environment | `retro`: promoted and user-invoked, proposes candidates rather than automatically editing |
+| Orchestrate all prepared tickets for a spec | `implement-spec`: user-invoked, needs the spec, associated tickets, and tracker configuration. Parallel worktrees converge on one integration branch and a final review; its own close-out contract applies |
+| Write the PR body for an existing change | `pr`: model- or user-invoked, writes a visual summary, before/after evidence, door and blast radius. Writing the body does not itself create, publish, or merge a PR |
+| Reflect on a session to improve the agent's environment | `retro`: user-invoked, reads the current or supplied session and presents candidates by severity. The user chooses changes; a request to repair a live bug belongs in Fix |
 | Recover a dead session rather than refocus a live one | `takeover`, distinct from `refocus` and `handoff` |
 
 The picker is a shallow decision tree, at most four questions to a result. Every leaf must name a card in this inventory, respect its invocation mode, and supply a usable prompt. Never invent an uninstalled fallback. A partial install gets a smaller honest picker. The first-run sequence follows the current handbook, filtered to the available commands; describe missing prerequisites as missing, not as installed steps.
+
+For these three cards, make the examples carry the context a beginner needs: `/implement-spec .scratch/search/spec.md` (an illustrative prepared spec, not a file claimed to exist), `Write the PR body for this branch against main, using the evidence collected here.`, and `/retro` for the current session or `/retro <session record>` for a specified one. Adapt them to real supplied paths when available. Explain "ready frontier" as tickets whose blockers are complete, "door" as whether a change can be undone, and "blast radius" as who or what the change can affect.
+
+Use observable tells: whole-spec work advances newly unblocked tickets and ends with integration review and the tracker's close-out; PR writing shows evidence or labels it missing without inventing a run; a retrospective ties ranked candidates to session evidence and pauses for the user's choice. Treat claims that `/implement-spec` automatically inherits `/implement`'s extra checks, that `pr` merges the branch, or that `/retro` silently installs hooks as broken guidance. Reconcile these tells with the selected current source before writing them.
 
 ## 3. Validate and build
 
@@ -61,7 +65,7 @@ The picker is a shallow decision tree, at most four questions to a result. Every
    It checks inventory/card equality, invocation and beta flags, unique anchors, labels, source-link safety, important picker routes, unreachable questions and cycles, and the depth limit. It inserts JSON safely, including escaping `<` so a source string cannot terminate the script element. It refuses to overwrite an existing output; use `--force` only after the user approves that replacement.
 3. If Node.js is unavailable, perform the same checks yourself and replace only the **standalone** `/*ASKCAT_DATA*/` line with `window.ASKCAT = <serialized JSON>;`. Escape `<` as `\u003c` and the Unicode line/paragraph separators as `\u2028` / `\u2029`. Do not use raw interpolation or a blanket replacement of every marker mention. State which validation was manual rather than claiming the helper ran.
 4. Resolve each source link from the output file's location, not from the current working directory; URL-encode spaces. Use a real repository URL only when known. Confirm local targets exist. Ask before changing an existing output file, regardless of which build path you use.
-5. Open the result and check a search, a picker path, and a progress tick when a browser is available. Check `tell-a-story`'s card and picker result specifically when installed. The guide must open from disk with no runtime network requests. If browser checking is unavailable, say so.
+5. Open the result and check a search, a picker path, and a progress tick when a browser is available. Check `tell-a-story`'s card and picker result specifically when installed. For installed `implement-spec`, `pr`, and `retro`, also walk each picker path and check its example, invocation label, prerequisites, and working/broken tells against the selected source. The guide must open from disk with no runtime network requests. If browser checking is unavailable, say so.
 6. If an initial skill name was supplied, link to `#skill-<name>` only if it is in the inventory. Otherwise explain that it was not found and offer the full tour. Use the host's file viewer when available, otherwise give the path.
 
 ## 4. Hand it back

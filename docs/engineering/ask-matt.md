@@ -24,7 +24,7 @@ You invoke this by typing `/ask-matt`; the agent won't reach for it on its own.
 
 The router names skills; it does not install them. Everything it points at has to be installed for the recommendation to be actionable, and it only knows the promoted skills in this repo.
 
-The tracker-dependent routes (triage, `to-spec`, `to-tickets`, `implement`) assume [setup-matt-pocock-skills](./setup-matt-pocock-skills.md) has already configured an issue tracker in the repo. The router recommends them even before that has happened.
+The tracker-dependent routes (triage, `to-spec`, `to-tickets`, `implement`, `implement-spec`) assume [setup-matt-pocock-skills](./setup-matt-pocock-skills.md) has already configured an issue tracker in the repo. PR-body writing and session retrospectives can stand alone before that setup.
 
 ## Flows, not skills
 
@@ -35,6 +35,12 @@ The skill's leading word is **flow**, a path *through* the skills rather than a 
 - **Codebase health**, upkeep rather than feature work. [improve-codebase-architecture](./improve-codebase-architecture.md) surveys the code for deepening opportunities, and each one it finds re-enters the main flow as an idea.
 - **Standalones**, which sit off every flow and which you use on their own: the prototype, the questionnaire, the research run.
 - **A vocabulary layer underneath**, the two references the other skills pull in when the words rather than the process are the problem.
+
+| Prepared work or session | Route boundary |
+| --- | --- |
+| A spec and its associated tickets are ready | [implement-spec](./implement-spec.md) orchestrates the graph on one integration branch with its own integration checks and close-out |
+| A change needs a PR body | [pr](./pr.md) writes the visual summary, evidence, and merge impact; publication and merge follow existing task authorization |
+| The current or a supplied session deserves reflection | [retro](./retro.md) ranks environment-improvement candidates for you to choose. Repair a live failure through the bug flow first unless you choose another order |
 
 ## The phase boundary
 

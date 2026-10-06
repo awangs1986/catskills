@@ -31,6 +31,16 @@ Chapters follow the workflow: start here, picture the product when that route is
 
 The picker separates five easy-to-confuse requests: align the product experience, design acceptance cases, run those cases, audit the existing tests, and research an external fact. It never recommends an unavailable command. A partial installation produces a smaller guide rather than invented cards.
 
+The selected current files also determine these three routes when installed. Each must have a card and a reachable picker result, with a usable example and the right invocation label:
+
+| Your need | What the guide explains |
+| --- | --- |
+| Orchestrate a prepared spec | [implement-spec](../engineering/implement-spec.md) needs the spec, associated tickets, and tracker configuration. You invoke it; parallel worktrees converge on one integration branch, with its own final review and tracker close-out |
+| Write the PR body | [pr](../engineering/pr.md) is model- or user-reachable. It writes a visual summary, before/after evidence, reversibility, and the scope of impact. Writing it does not itself create, publish, or merge the PR |
+| Learn from a coding session | [retro](../engineering/retro.md) is user-invoked. It reads the current or specified session and ranks environment-improvement candidates for you to choose; live bug repair has its own Fix route |
+
+The examples retain a supplied spec path or session record. Working and broken tells let you recognize completed integration work, evidence that was actually collected, and a retrospective that leaves changes for your choice. Archived commands are excluded; differing installed copies are reported with the source selected for the guide.
+
 The guide's paragraphs use the same warm conversational voice as the chat. The renderer adds `喵！` at paragraph boundaries; headings, buttons, file paths, and copyable example prompts remain undecorated. Progress ticks live in that browser, not in the project or on a server. If browser storage is blocked, they still work for the open page but do not survive a reload.
 
 ## Common questions
@@ -62,10 +72,7 @@ Yes. The guide is a snapshot of the files read for that run. Rebuilding refreshe
 - The story picker reaches the calico storyteller, and proof cases are not confused with test audits.
 - Examples remain clean to copy while the explanations sound warm rather than like a system log.
 - Search, picker, deep links, and progress ticks work offline, without loading outside assets.
-
-## Current upstream routes
-
-The guide reads the current selected skill sources. When installed, promoted [implement-spec](../engineering/implement-spec.md), [pr](../engineering/pr.md), and [retro](../engineering/retro.md) must have cards and reachable picker results. An archived command is excluded. Differing installed copies are reported, and the guide identifies which source it describes rather than claiming the repository copy is automatically installed.
+- Installed whole-spec, PR-body, and retrospective routes have copyable examples and clearly explain their different outputs and boundaries.
 
 ## Where it fits
 

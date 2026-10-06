@@ -100,6 +100,13 @@ Write down every place the agent did the "broken if" thing. That list is the fir
 
 This handbook incorporates the latest promoted upstream routes while retaining the solo workflow. After `/to-tickets`, choose `/implement` per ticket or `/implement-spec` for whole-spec orchestration. They have different close-out contracts: the single-ticket fork workflow retains `verify`, `test-audit`, and its Checks run ledger; read `implement-spec` for its integration-wide review. `/pr` shapes a requested PR body. `/retro` is now a shipped user command for session reflection, not a beta fallback.
 
+| Already chosen work | Dispatcher behavior |
+| --- | --- |
+| Execute a prepared spec and its associated tickets | Check the configured tracker and readiness, then name `/implement-spec <spec reference>`. Skip sizing and a new planning interview. Its implementers use `tdd`, advance newly ready tickets, and close out through integration review and the tracker |
+| Write a PR body for a change | Route to `pr` before setup. The output is a visual summary, evidence, and merge impact; publication and merging follow existing authorization. Keep the dispatcher's offer/confirmation gate |
+| Reflect on a current or specified session | Name `/retro` before setup, preserving the record. It presents environment-improvement candidates for the user to choose |
+| Repair a recurring live failure | Use Fix first; put `/retro` afterward when the user also wants prevention, or follow the user's explicit order |
+
 New domain docs are `GLOSSARY.md` / `GLOSSARY-MAP.md`. Existing `CONTEXT.md` / `CONTEXT-MAP.md` sources remain valid until a requested migration; read the configured source and avoid creating competing copies.
 
 ## The kit
@@ -171,7 +178,7 @@ A similar phrase can mean a different job. The dispatcher and Askcat's picker us
 | Facts about a library or API | `research`, which is part of the kit |
 | A route through decisions too large for one session | `/wayfinder`, for greenfield work as well as a project split |
 
-An explicit command takes precedence. If the intention is still ambiguous, one considerate clarification is better than launching several flows. A guide, story, clarification, or session-recovery request is handled before setup checks. Setup is a prerequisite for the work that needs its files, not a toll booth in front of every conversation. User-invoked skills remain yours to type.
+An explicit command takes precedence. If the intention is still ambiguous, one considerate clarification is better than launching several flows. A guide, story, clarification, PR body, retrospective, or session-recovery request is handled before setup checks. Setup is a prerequisite for the work that needs its files, not a toll booth in front of every conversation. User-invoked skills remain yours to type.
 
 ## Lane 1: BUILD
 
@@ -275,7 +282,7 @@ Before anything merges, and at the end of every L build:
 
 It never picks a single winner across the axes, on purpose. Read all of them. Small findings: fix in the same window. A pile of findings: paste them into `/implement`.
 
-If you open a PR, the promoted `pr` skill gives the body a shape: a small visual summary, before/after evidence, and a one-way or two-way door call. It is included in the plugin and model-invoked.
+If you write a PR body, the promoted `pr` skill gives it a shape: a small visual summary, before/after evidence, and a one-way or two-way door call with the blast radius. It is included in the plugin and model- or user-invoked. Writing that body does not itself authorize publishing or merging.
 
 ## Lane 4: TIDY
 
@@ -395,7 +402,7 @@ If you get into a real mess anyway (the agent "tidied" the tree, or a rebase wen
 
 Everything above closes on the *product*: a wrong claim goes back to the spec, a surviving mutant goes back to `tdd`, a review finding goes back to `implement`, a "no seam" goes to the architecture survey. One loop is still open: the one that closes on the *environment*. When `test-audit` flags the same tautological pattern for the third time, when `code-review` keeps citing a rule that a linter could enforce, when a session lost an hour finding a file, the lesson has nowhere standing to go.
 
-`retro` is that step. It is a promoted, user-invoked skill included in the plugin, and it reads a session for exactly these: a check that should exist, a rule that belongs in `CODING_STANDARDS.md`, a navigation pointer for `CLAUDE.md`, an instruction that does nothing. Its one discipline worth knowing in advance: a **mechanical** repeat (a banned pattern, an import shape, a file location) becomes a deterministic check, wired through `/setup-feedback-loops`, and only a genuine judgement call becomes prose for the reviewer.
+`retro` is that step. It is a promoted, user-invoked skill included in the plugin, and it reads the current session, or another record you supply, for exactly these: a check that should exist, a rule that belongs in `CODING_STANDARDS.md`, a navigation pointer for `CLAUDE.md`, an instruction that does nothing. It presents candidates by severity for you to choose before changes. Its one discipline worth knowing in advance: a **mechanical** repeat (a banned pattern, an import shape, a file location) calls for a deterministic check in the repo's existing guardrail, and only a genuine judgement call becomes prose for the reviewer. `/setup-feedback-loops` can help wire an agreed check; it is not a prerequisite for the retrospective.
 
 Run it after a rough session, or whenever the same finding shows up twice. It closes the last loop: the workflow that just ran becomes the reason the next run is better.
 
@@ -449,7 +456,7 @@ Commit `GLOSSARY.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec`
 | Simplify AGENTS.md after months of accumulated instructions | `/fresh-agent`: edited instructions with stale guidance removed and duplicates merged, preserving explicit approvals |
 | Refresh an outdated spec against current code | `/fresh-spec`: supported updates, source evidence, and remaining requirement gaps |
 | Get the agent back on track after a long session | `/refocus` |
-| Same mistake keeps happening across sessions | `/retro`: turn it into a check or a standing rule |
+| Learn from repeated agent mistakes in a session | `/retro`: propose a check or standing rule for you to choose; use Fix to repair a live failure |
 | Split a project that's grown too big | Logical split first: see *When the project gets big*; bring back `/wayfinder` for the decisions |
 | It's come back wrong three times | Stop. Write "input / expected / actual", then route (see *When it keeps coming out wrong*) |
 | A question only running code can answer | The prototype detour: `/handoff` → `prototype` in a fresh session → the decision comes back |

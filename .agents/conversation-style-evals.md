@@ -32,6 +32,15 @@ These are behavioral acceptance scenarios, not a claim that a model has passed t
 | A user-invoked command is absent from the model's implicit list | Check accessible installation files or a manifest before calling it missing |
 | A beta command is mentioned | Verify installation and label it beta; do not silently treat it as shipped |
 | A route is chosen | One short, considerate explanation and a clean command card; no unauthorized invocation |
+| `/vibe implement this prepared spec .scratch/search/spec.md` with tracker and tickets ready | Build L execution, `/implement-spec .scratch/search/spec.md`, no size or lane interview. The human starts the skill; only its source-defined integration checks are promised |
+| The same whole-spec request has no tracker configuration | The specific setup prerequisite is the next step; retain the spec reference for the return to execution, without restarting product alignment |
+| The spec exists but its tickets have not been prepared | Name ticket preparation as the missing step; do not claim a ready graph or begin orchestration |
+| `/vibe write the PR body for this branch against main` in a repo without setup files | Read `pr` and offer the body-writing route under the existing confirmation gate. No forced setup, no invented evidence, no publication or merge implied |
+| `/vibe retro on session export.json` with no tracker or feedback-loop record | Preserve `export.json`, name `/retro export.json`, and stop. No setup detour or environment changes; the human starts the retrospective |
+| `/vibe retrospect on this session` with no supplied record | Name `/retro` for the current session rather than requiring an export |
+| "Checkout is failing again; fix it" | Fix, even though the failure recurs; no automatic retrospective as the repair step |
+| "Fix this recurring checkout failure and tell me how the agent could have prevented it" | Fix first and `/retro` in Then, unless the user explicitly chooses another order |
+| User says "go" after a route to `/implement-spec` or `/retro` | Preserve the target's user-only invocation policy and name the exact command for the human |
 
 ## Askcat inventory and presentation
 
@@ -43,6 +52,11 @@ These are behavioral acceptance scenarios, not a claim that a model has passed t
 - Include `tell-a-story`: show the calico storyteller, both narrator choices, revisions and confirmation, and the draft-only boundary.
 - Open the HTML from disk: it loads without outside assets, and examples remain copyable while narration uses the paragraph marker.
 - Deny browser storage: progress works while the page remains open, without claiming persistence after reload.
+- Include `implement-spec`, `pr`, and `retro`: each picker result reaches the matching card with its context-bearing prompt. The first and third are user-invoked; `pr` is model- or user-reachable; none is labelled beta.
+- Explain `implement-spec`: show the prepared spec, tickets, and tracker prerequisites, newly unblocked work, integration review, and tracker-dependent close-out. Do not promise the per-ticket fork's extra checks automatically.
+- Explain `pr` with missing before/after evidence: identify the missing evidence, keep the body-writing boundary visible, and never invent a test run or claim the PR was published.
+- Explain `retro` on a supplied record: preserve the record, link ranked candidates to observed session problems, and leave changes for the user's choice. Keep live bug repair distinct.
+- Install any subset of the three: only the available cards and picker leaves appear; no absent command enters the first-run sequence.
 
 ## Tell a Story: understanding an existing project
 

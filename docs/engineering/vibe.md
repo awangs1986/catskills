@@ -1,6 +1,6 @@
 ## What it does
 
-`vibe` is a dispatcher for one developer working alone. You tell it what you are trying to do (or nothing, and it asks), and it hands back a **route card**: which of four lanes you are on (Build, Fix, Review, Tidy), how big the work is, the exact next command to type, the two or three steps after that, and what to do with your [context](https://www.aihero.dev/ai-coding-dictionary/context) between them.
+`vibe` is a dispatcher for one developer working alone. You tell it what you are trying to do (or nothing, and it asks), and it hands back a **route card**: which of four lanes you are on (Build, Fix, Review, Tidy), or which standalone you need, how big the work is when sizing applies, the exact next command to type, the next steps within your request, and what to do with your [context](https://www.aihero.dev/ai-coding-dictionary/context) between them. A standalone result can complete the request without adding more work.
 
 It gives a short, considerate explanation and a route card, then stops. It does not tell the product story, grill, write a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or start coding; where a lane's first step is a model-invoked skill (`tdd`, `diagnosing-bugs`, `code-review`) it offers to fire that one on a "go", and otherwise you type what the card names.
 
@@ -23,6 +23,9 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 | An idea, and you don't want to think about process | Build lane, sized S, M or L: just say it, grill then implement, or grill → spec → tickets → implement per ticket |
 | Something broke, flaky, or slow | Fix lane, split on whether you already know the cause: `tdd` straight in, or the gated `diagnosing-bugs` loop |
 | A branch you want checked | `/code-review main`, and what to do with each axis of findings |
+| A prepared spec with tracked tickets, and you want parallel execution | [implement-spec](./implement-spec.md), after checking readiness, without another sizing interview; you start it |
+| You need the PR body for a change | [pr](./pr.md), a standalone writing step before setup, with the router's existing offer/confirmation gate |
+| You want to learn from the current or a recorded session | [retro](./retro.md), a standalone retrospective before setup; you start it and choose which proposed changes to make |
 | The codebase feels harder to change than it should | `/improve-codebase-architecture`, and how the idea it produces goes back onto Build |
 | You've asked for the same change three times and it's still wrong | Not a fifth attempt. Discard, clear, write one input / expected / actual example; whether you can write it picks the lane |
 | The session drifted, is about to move, or died on you | One of the three seam moves: [refocus](refocus.md) to stay, [handoff](../productivity/handoff.md) to leave on purpose, [takeover](../productivity/takeover.md) in the new window when the old one is gone |
@@ -33,7 +36,7 @@ You invoke this by typing `/vibe`; the agent won't reach for it on its own.
 
 ## Prerequisites
 
-Building and publishing work assume [setup-matt-pocock-skills](setup-matt-pocock-skills.md) has configured the tracker. Stories, the Askcat guide, clarifications, and session care are routed before setup checks. Evidence and research skills retain their own prerequisites instead of acquiring a tracker dependency from the router. An explicit command wins over a generic setup suggestion.
+Tracker-dependent planning and implementation assume [setup-matt-pocock-skills](setup-matt-pocock-skills.md) has configured the tracker. Stories, the Askcat guide, clarifications, PR bodies, retrospectives, and session care are routed before setup checks. Evidence and research skills retain their own prerequisites instead of acquiring a tracker dependency from the router. An explicit command wins over a generic setup suggestion.
 
 For other requests, a repo with no tracker, feedback-loop record, or glossary gets the first-run card. A missing tracker in an otherwise configured repo routes to setup. Local markdown is the solo default; GitHub works the same way with issues in place of files.
 
@@ -56,6 +59,10 @@ The word to think with is **lane**. You are always in exactly one, and each has 
 
 The sizing question is asked in order and the first yes wins: can you write it as one sentence with no open questions (S); does it fit one sitting but you have questions first (M); neither (L). Most solo work is S or M, and the card recommends against L until you have caught yourself re-explaining a decision in a second session.
 
+An explicit implementation command or prepared whole-spec request already chooses the execution step. The card preserves your spec reference and checks the prerequisites rather than sizing it again. Whole-spec execution follows `implement-spec`'s own integration review and tracker close-out; the per-ticket `implement` route carries its separate verification, test audit, and checks ledger.
+
+PR writing produces the body, with evidence and merge impact; publishing or merging follows the task's existing authorization. A retrospective proposes improvements to the agent's environment from the session record. A recurring live failure still goes to Fix, with a retrospective afterward if you also want prevention, unless you choose another order.
+
 ## Common questions
 
 **How is this different from `ask-matt`?**
@@ -77,10 +84,8 @@ It only fires model-invoked skills, and only after you say go. Every user-invoke
 - Sizing lands on S or M most of the time, and you can say why the occasional L earned its spec.
 - After an L build you notice you are no longer re-explaining decisions between sessions: they are in the configured `GLOSSARY.md` (or legacy `CONTEXT.md`), an ADR, or the spec.
 - A hard bug's fix commit names the hypothesis that turned out right, because the Fix lane went through the loop rather than around it.
-
-## Current upstream routes
-
-The current upstream routes include [implement-spec](./implement-spec.md) for whole-spec orchestration, [pr](./pr.md) for PR bodies, and promoted [retro](./retro.md) for session reflection. The kit now has twenty-eight skills; `implement-spec` is a situational bring-back. The source files determine the current behavior, and legacy `CONTEXT.md` sources remain supported alongside `GLOSSARY.md`.
+- A prepared spec reaches whole-spec execution without another planning or sizing interview.
+- A PR-body or retrospective request avoids forced setup, and a live repair request remains in Fix.
 
 ## Where it fits
 

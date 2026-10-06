@@ -31,9 +31,9 @@ The route most work travels. You have an idea and want it built.
 
    The whole-spec alternative, **`/implement-spec`**, runs implementers across the ticket frontier and one review over the integration branch; its own instructions define its checks.
 
-   When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change, before/after evidence that it works, and a one-way or two-way door call. It's model-invoked, so the agent reaches for it whenever it writes a PR.
+   When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change, before/after evidence that it works, and a one-way or two-way door call with the blast radius. It is model- or user-invoked. Its output is the body; publishing or merging follows the existing authorization for the task. This writing step can stand alone before tracker setup.
 
-4. **`/retro`** closes the loop. After a build, and especially one that went sideways, it looks back over the session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks, the coding standards `/code-review` enforces, steering files, tooling. Mechanical mistakes become deterministic checks; judgement calls become coding standards. The next build then starts from a better environment.
+4. **`/retro`** closes the loop. After a build, and especially one that went sideways, it looks back over the current or specified session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks, the coding standards `/code-review` enforces, steering files, tooling. It is user-invoked and presents candidates by severity for the user to choose before changes. Mechanical mistakes call for deterministic checks; judgement calls belong in coding standards. It works before tracker setup. A request to repair a live failure goes to the bug flow below; if the user also wants prevention, follow with the retrospective.
 
 ### Context hygiene
 
