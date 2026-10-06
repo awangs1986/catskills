@@ -68,11 +68,11 @@ Four more jobs cover maintenance and session care:
 
 ## The workflow at a glance
 
-Four lanes, one setup step, three moves for when a session goes sideways, and optional instruction and spec maintenance tools. You are always in exactly one lane. `/vibe` reads this map for you; the full text is in [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md).
+Four lanes, one setup step, three moves for when a session goes sideways, and optional instruction and spec maintenance tools. The poster also shows three current commands beside the main flow: `/implement-spec` for the whole ticket graph, `/pr` for the PR body, and `/retro` for session improvements. You are always in exactly one lane. `/vibe` reads this map for you; the full text is in [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md).
 
 <p align="center">
   <a href="./docs/engineering/vibe-workflow-poster.png">
-    <img src="./docs/engineering/vibe-workflow-poster.png" alt="The Vibe Coding Workflow poster: seven cats with distinct coats guide Tell a Story product alignment, setup, four lanes, the implement loop, session recovery, and fresh-agent / fresh-spec maintenance" width="900">
+    <img src="./docs/engineering/vibe-workflow-poster.png" alt="The Vibe Coding Workflow poster: seven cats guide product alignment, four lanes, implement-spec, pr, retro, session recovery, and fresh-agent / fresh-spec maintenance" width="900">
   </a>
 </p>
 
@@ -86,7 +86,7 @@ Once that picture is shared, size the build:
 
 - **S**, one clear sentence: just say it and add "test first". The agent uses `tdd` on its own.
 - **M**, one sitting with open questions: `/grill-with-docs` → `/implement`, same window.
-- **L**, several evenings: `/grill-with-docs` → `/to-spec` → `/to-tickets` → a fresh window and `/implement` per ticket. A question that needs running code to settle takes the `prototype` detour and folds the answer back into the grill.
+- **L**, several evenings: `/grill-with-docs` → `/to-spec` → `/to-tickets`, then a fresh window and `/implement` per ticket, or `/implement-spec` for the whole graph. A question that needs running code to settle takes the `prototype` detour and folds the answer back into the grill.
 
 **Lane 2, Fix: it broke.** Know the cause? Say it, test first. Don't, or it's flaky or slow? `/diagnosing-bugs`. No command that goes red on the bug, no theorising: that rule is the whole skill.
 

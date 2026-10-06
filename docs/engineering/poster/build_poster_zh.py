@@ -242,7 +242,7 @@ l2_box = node(1050, 1375, 360, 100, "build", cmd="/to-spec", note="只整理，�
 arrow([(1050, l2_box[3]), (1050, l2_box[3] + 28)])
 l3_box = node(1050, 1580, 360, 130, "build", cmd="/to-tickets", note="切片 + 阻塞关系\n（第1-3步：同一窗口）")
 arrow([(1050, l3_box[3]), (1050, l3_box[3] + 28)])
-l4_box = node(1050, 1780, 360, 100, "build", cmd="/clear → /implement", cmd_size=26, note="一张 ticket 一个窗口")
+l4_box = node(1050, 1780, 360, 100, "build", cmd="/clear → /implement", cmd_size=26, note="一张 ticket 一个窗口\n整份 spec 见下方卡片")
 arrow([(1050, l4_box[3]), (1050, 1920)])
 
 # converge into implement internals box
@@ -392,18 +392,28 @@ text(120, y + 198, '清理过时内容，合并重复规则，整理结构。\n�
 text(1040, y + 198, '依据当前代码更新过时描述，附来源证据。\n保留未实现需求，列出差异和不确定项。', F(25, False), maxw=820, spacing=1.5)
 text(120, y + 300, '两个命令都能手动调用，也可由 agent 在匹配任务中使用。属于完整工具集，不改变四条车道。', F(23, False), fill=GRAY, maxw=1760)
 
-# =================== CURRENT UPSTREAM ROUTES ===================
-UPSTREAM_TOP, UPSTREAM_HEIGHT = MAINTENANCE_TOP + MAINTENANCE_HEIGHT, 350
+# =================== BUILD AND CLOSE-OUT COMMANDS ===================
+# Put the current commands directly after the lanes, before session recovery.
+UPSTREAM_TOP, UPSTREAM_HEIGHT = 2600 + STORY_HEIGHT, 650
 flow = img
 img = Image.new("RGB", (W, flow.height + UPSTREAM_HEIGHT), BG)
 img.paste(flow.crop((0, 0, W, UPSTREAM_TOP)), (0, 0))
 img.paste(flow.crop((0, UPSTREAM_TOP, W, flow.height)), (0, UPSTREAM_TOP + UPSTREAM_HEIGHT))
 d = ImageDraw.Draw(img)
 y = UPSTREAM_TOP
-panel(80, y + 25, 1920, y + 290, "setup", '上游 v1.3.1 · 三个正式入口')
-for x, command, description in [(120, "/implement-spec", '整份 spec 按任务图实现，\n独立 worktree，集成分支。'), (745, "pr", 'PR 正文：图示、前后证据，\n可逆性和影响范围。'), (1370, "/retro", '复盘会话，提出环境改进。\n用户选择，再推进改动。')]:
-    text(x, y + 85, command, MONO(34), fill=LANES["build"]["dark"])
-    text(x, y + 155, description, F(25, False), maxw=520, spacing=1.45)
+panel(80, y + 25, 1920, y + 615, "setup", '三个新指令 · 实现、说明、复盘')
+command_cards = [('build', '拆完 /to-tickets 后', '/implement-spec', '按任务图并行实现就绪 ticket。\n各用独立 worktree，整合结果后\n审查整份 spec。', '产出：集成分支 + 整体审查', '你来敲，启动整份 spec 的实现'), ('review', '需要整理 PR 正文时', '/pr', '用图示说明变化，提供前后证据，写清合并的可逆性和影响范围。', '产出：便于审查的 PR 正文', '你可敲，agent 写 PR 正文时也会用'), ('tidy', '一次会话结束后', '/retro', '对照会话记录，提出检查、导航、规范和工具的改进建议。', '产出：候选建议，你选择后再改', '你来敲，再选择要采纳的建议')]
+for x, (lane, when, command, description, result, invocation) in zip((110, 740, 1370), command_cards):
+    c = LANES[lane]
+    rbox(x, y + 90, x + 520, y + 505, c["fill"], c["edge"], r=24, width=4)
+    text(x + 25, y + 110, when, F(25), fill=c["dark"], maxw=470)
+    text(x + 25, y + 170, command, MONO(42), fill=c["dark"])
+    text(x + 25, y + 240, description, F(27, False), maxw=470, spacing=1.4)
+    text(x + 25, y + 395, result, F(24), fill=c["dark"], maxw=470)
+    text(x + 25, y + 452, invocation, F(23, False), fill=GRAY, maxw=470)
+arrow([(650, y + 205), (720, y + 205)], color=GRAY, width=5, head=18)
+arrow([(1280, y + 205), (1350, y + 205)], color=GRAY, width=5, head=18)
+text(120, y + 530, '拆完 tickets：每张单独 /implement，或整份 /implement-spec。需要 PR 正文就 /pr。复盘在 clear 前运行 /retro；换会话后提供原会话记录。', F(25, False), fill=INK, maxw=1760, spacing=1.4)
 
 # =================== UPSTREAM ATTRIBUTION ===================
 ATTRIBUTION_HEIGHT = 120

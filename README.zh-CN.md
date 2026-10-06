@@ -68,11 +68,11 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 ## 工作流一览
 
-四条车道，一次初始化，外加会话出状况时的三招，以及按需使用的指令与规格维护工具。你在任何时候都只走一条道。`/vibe` 帮你看地图；完整文字版在 [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md)。
+四条车道，一次初始化，外加会话出状况时的三招，以及按需使用的指令与规格维护工具。海报也把三个新入口放在主流程旁：`/implement-spec` 实现整份任务图，`/pr` 整理 PR 正文，`/retro` 提出会话改进。你在任何时候都只走一条道。`/vibe` 帮你看地图；完整文字版在 [`skills/engineering/vibe/WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md)。
 
 <p align="center">
   <a href="./docs/engineering/vibe-workflow-poster.zh-CN.png">
-    <img src="./docs/engineering/vibe-workflow-poster.zh-CN.png" alt="Vibe Coding 工作流海报中文版：七只不同花色的猫带你走过 Tell a Story 产品对齐、初始化、四条车道、implement 闭环、会话兜底以及 fresh-agent / fresh-spec 维护工具" width="900">
+    <img src="./docs/engineering/vibe-workflow-poster.zh-CN.png" alt="Vibe Coding 工作流海报中文版：七只猫带你走过产品对齐、四条车道、implement-spec、pr、retro、会话兜底以及 fresh-agent / fresh-spec 维护工具" width="900">
   </a>
 </p>
 
@@ -86,7 +86,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 - **S**，一句话说得清：直接说，再加一句"先写测试"。agent 自己会用 `tdd`。
 - **M**，一次能干完，但还有些问题没想明白：`/grill-with-docs` → `/implement`，别换窗口。
-- **L**，得花好几个晚上：`/grill-with-docs` → `/to-spec` → `/to-tickets` → 每张 ticket 开个新窗口 `/implement`。有些问题不跑代码回答不了，那就绕去 `prototype` 跑一下，把答案带回访谈里。
+- **L**，得花好几个晚上：`/grill-with-docs` → `/to-spec` → `/to-tickets`，然后每张 ticket 开个新窗口 `/implement`，或用 `/implement-spec` 实现整份任务图。有些问题不跑代码回答不了，那就绕去 `prototype` 跑一下，把答案带回访谈里。
 
 **车道 2，Fix：坏了。** 知道为啥坏？直接说，先写测试。不知道，或者时好时坏，或者变慢了？`/diagnosing-bugs`。规矩只有一条：拿出能让这个 bug 变红的命令之前，不许瞎猜。这个 skill 就这条规矩。
 
