@@ -28,7 +28,7 @@ window.ASKCAT = {
   "title": "…",                           // page title, not narration
   "subtitle": "…",                        // short narrative introduction
   "generated": "2026-09-27",              // use the actual generation date
-  "source": "awangs1986/popcodeskills",   // actual kit/source identity, stable for progress storage
+  "source": "awangs1986/catskills",   // actual kit/source identity, stable for progress storage
   "cat": { "name": "…", "moods": { "storyteller": "…" } }, // optional localized mood descriptions
 
   "labels": {
@@ -117,7 +117,7 @@ To regenerate the embedded subset, install `fonttools` and `brotli` in a tempora
 - `chapters[].id`, all `skills[].name`, and `picker.questions[].id` are unique slugs.
 - Each inventory entry appears once, with matching invocation and beta flags. Hidden user-invoked commands are not automatically missing.
 - Every picker option has exactly one target: `next` or `skill`. Targets exist, all questions are reachable, there are no cycles, and no path exceeds four questions.
-- If present in the inventory, `tell-a-story`, `cattytest`, `verify`, `test-audit`, and `research` must have reachable picker results. These are different intentions, not interchangeable answers to "it is wrong".
+- If present in the inventory, `tell-a-story`, `cattytest`, `verify`, `test-audit`, `research`, `implement-spec`, `pr`, and `retro` must have reachable picker results. These are different intentions, not interchangeable answers to "it is wrong".
 - User-invoked example and picker prompts begin with that skill's command. Examples and first-run commands are never decorated with the conversation marker.
 - All label keys shown above are required. Source links are safe relative paths, or HTTP(S)/file URLs; URL-encode spaces and check local targets against the output directory.
 - Keep the data under 150 KB. The final HTML contains the data, styles, illustrations, and renderer, not links to scratch JSON files.

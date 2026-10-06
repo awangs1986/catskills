@@ -63,6 +63,10 @@ Yes. The guide is a snapshot of the files read for that run. Rebuilding refreshe
 - Examples remain clean to copy while the explanations sound warm rather than like a system log.
 - Search, picker, deep links, and progress ticks work offline, without loading outside assets.
 
+## Current upstream routes
+
+The guide reads the current selected skill sources. When installed, promoted [implement-spec](../engineering/implement-spec.md), [pr](../engineering/pr.md), and [retro](../engineering/retro.md) must have cards and reachable picker results. An archived command is excluded. Differing installed copies are reported, and the guide identifies which source it describes rather than claiming the repository copy is automatically installed.
+
 ## Where it fits
 
 A **standalone onboarding guide** over the available kit. [vibe](../engineering/vibe.md) gives the next command, [ask-matt](../engineering/ask-matt.md) maps the broader flows, and [tell-a-story](../engineering/tell-a-story.md) aligns the product itself. Regenerate this guide when the installed files change; it explains those skills without invoking them.

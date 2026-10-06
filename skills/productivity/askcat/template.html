@@ -384,6 +384,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
   function render(){
     var h = '';
+    h += '<div class="attribution" style="padding:16px;text-align:center;font-weight:800;background:#fff1c2;border-radius:16px;margin-bottom:16px">BASED ON <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">MATT POCOCK’S SKILLS</a></div>';
     h += '<header class="hero"><div><h1>'+esc(D.title)+'</h1><p class="sub">'+prose(D.subtitle)+'</p>';
     h += '<div class="bubble left">'+prose(D.intro&&D.intro.bubble)+'</div>';
     h += '<p class="meta scope" style="margin-top:10px">'+esc(D.scope==='repository'?L.repositoryScope:L.installedScope)+'</p>';

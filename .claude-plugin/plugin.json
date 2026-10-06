@@ -4,10 +4,10 @@
   "description": "Cat Skills: a complete vibe-coding workflow for one developer and one agent, built on Matt Pocock's skills. The /vibe dispatcher, grilling, spec/ticket flows, TDD, verify, test audit, code and security review, session takeover, and a cat that explains it all.",
   "author": {
     "name": "awangs1986",
-    "url": "https://github.com/awangs1986/popcodeskills"
+    "url": "https://github.com/awangs1986/catskills"
   },
-  "homepage": "https://github.com/awangs1986/popcodeskills",
-  "repository": "https://github.com/awangs1986/popcodeskills",
+  "homepage": "https://github.com/awangs1986/catskills",
+  "repository": "https://github.com/awangs1986/catskills",
   "license": "MIT",
   "keywords": [
     "engineering",
@@ -45,7 +45,6 @@
     "./skills/engineering/codebase-design",
     "./skills/engineering/code-review",
     "./skills/engineering/security-review",
-    "./skills/engineering/resolving-merge-conflicts",
     "./skills/engineering/wizard",
     "./skills/productivity/askcat",
     "./skills/productivity/grill-me",
@@ -55,6 +54,9 @@
     "./skills/productivity/teach",
     "./skills/productivity/to-questionnaire",
     "./skills/productivity/wait-what",
-    "./skills/productivity/writing-for-agents"
+    "./skills/productivity/writing-for-agents",
+    "./skills/engineering/implement-spec",
+    "./skills/engineering/pr",
+    "./skills/engineering/retro"
   ]
 }

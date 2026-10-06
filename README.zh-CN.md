@@ -1,3 +1,5 @@
+<p align="center"><strong>BASED ON <a href="https://github.com/mattpocock/skills">MATT POCOCK'S SKILLS</a></strong><br>基于 Matt Pocock 的 skills。已同步上游 v1.3.1 至 <a href="https://github.com/mattpocock/skills/commit/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d">4588b32</a>，猫咪 Skills 在此基础上增加个人工作流和猫咪导览。</p>
+
 <p align="center">
   <img src="./docs/engineering/poster/cats/cat_teacher.png" alt="戴圆眼镜、拿教鞭的橘白猫，猫咪 Skills 的老师" width="220">
 </p>
@@ -27,7 +29,7 @@
 
 猫咪 Skills 把这套 skill 挑了一遍，又补了几块，专门给**一个人 vibe coding**用：你说想要啥，agent 去做，工作流负责盯着两件事，agent 做的东西是你想要的，做完之后代码库还没烂。
 
-vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的；代码库在你发现之前已经烂成一锅粥。Matt 的 skill 两种都能治，问题是一共二十五个，你得自己知道这会儿该敲哪个。猫咪 Skills 补的就是一个人单干时最缺的几块：
+vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的；代码库在你发现之前已经烂成一锅粥。Matt 的 skill 两种都能治，问题是一共二十七个，你得自己知道这会儿该敲哪个。猫咪 Skills 补的就是一个人单干时最缺的几块：
 
 - **`/vibe`**：一条命令解决"我现在该干啥"。它看一眼你的仓库，告诉你走哪条道，下一步敲哪条命令。你不用背整张地图。
 - **`/tell-a-story`**：讲一个真人怎样使用产品的故事，或者通过一个连贯的人物故事，重新认识陌生或运行多年的项目到底有什么用。先对齐理解，需要时再整理成产品 SPEC 或待办 BACKLOG。不用先学会写专业需求。
@@ -36,25 +38,26 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 - **会话兜底**：`refocus`、`handoff`、`takeover`。聊偏了、要换地方、会话直接没了，都有招。
 - **`/askcat`**：一只猫在一个 HTML 页面上，把你装的每个 skill 用大白话讲一遍，说的是你的话。
 
-原来的 skill 都在，用法没变。猫咪 Skills 就是一条穿过它们的路，外加这条路上缺的那几个 skill。
+继承的 skill 跟随当前上游工具集，已退役命令保留在不发布的归档中。猫咪 Skills 就是一条穿过它们的路，外加这条路上缺的那几个 skill。
 
 ## 猫咪 Skills 做什么
 
-一个人写代码，那些反复出现的累活有九件，每件配一个 skill。
+一个人写代码，那些反复出现的累活有十件，每件配一个 skill。
 
 | 事情 | 以前哪里出错 | 你敲什么 | agent 做什么 |
 | --- | --- | --- | --- |
 | **把产品想明白** | 知道想要什么体验，却不会写需求；agent 只好猜产品该长什么样 | `/tell-a-story` | 你讲用户故事，或者 agent 讲一个人遇到问题、借助项目采取行动、处境发生变化的故事；一起修改、确认，再选产品 SPEC、待办 BACKLOG、两者都要，或者只保留故事 |
-| **把需求聊清楚** | 你讲一遍，agent 点头说懂了，做出来是另一个东西 | `/grill-with-docs` | 一轮一轮追问，问到每个岔路都有了答案；约定的词记进 `CONTEXT.md`，不好改的决定写成 ADR |
+| **把需求聊清楚** | 你讲一遍，agent 点头说懂了，做出来是另一个东西 | `/grill-with-docs` | 一轮一轮追问，问到每个岔路都有了答案；约定的词记进 `GLOSSARY.md`，不好改的决定写成 ADR |
 | **拆成小块** | 一个巨型 prompt 带出一个巨型 diff，根本没法审 | `/to-spec` 然后 `/to-tickets` | 先把聊过的内容整理成 spec，一个新问题都不问；再切成一串 tracer-bullet tickets，每张写清楚卡在哪张后面 |
 | **写下来再动手** | spec 只活在聊天记录里，窗口一关就没 | `/implement` | 领一张 ticket，用 `tdd` 先红后绿，一次只做一小片；提交之前把下面的检查全跑完 |
+| **一次实现整张任务图** | 多个 ticket 已就绪，手动逐个推进很慢 | `/implement-spec` | 在独立 worktree 中调度 agent 实现就绪任务，把结果整合到一个分支 |
 | **测你真正想要的东西** | 全绿了，但做的根本不是你要的：agent 的测试只能证明它"听懂了"，证明不了你"要的是这个" | `/cattytest` | 站在你这边问：做完之后啥必须成立、现有检查为啥全绿了还能漏掉它、一个真人会一步步干啥、啥证据能证明苹果在篮子里；最后交出一张 `verify` 照着走的测试表 |
 | **证明真能跑** | "测试全过"，应用起都起不来 | 自动跑：`verify` | 把东西真跑起来，像用户一样把验收标准走一遍，每条结论都附截图或抓到的输出 |
 | **找 bug，修 bug** | agent 靠猜，糊住表面，顺手弄坏别处 | 直接说，或者 `/diagnosing-bugs` | 知道原因的 bug，先写个失败的测试再修。吃不准的 bug，走六步，一步一过关：复现变红 → 缩小范围 → 列假设 → 加日志 → 修 → 回归测试 |
 | **看代码质量** | 永远失败不了的测试、没鉴权的路由、打进包里的密钥 | 自动跑：`test-audit`、`code-review`、`security-review` | 每个测试翻译成一句你看得懂的业务话，再故意改坏代码，看测试能不能发现；从规范和 spec 两个角度并排审 diff；专查个人项目上线时最常见的五种安全漏洞 |
 | **看架构** | 改一处要碰七个文件，你都习惯了 | `/improve-codebase-architecture` | 把代码库扫一遍，找出浅模块，给你一份 HTML 报告；你挑一个，它追着你问到底，这个就是你下一件要做的事 |
 
-除了这九件，还有四件维护和会话管理的事：
+除了这十件，还有四件维护和会话管理的事：
 
 | 事情 | 你敲什么 | agent 做什么 |
 | --- | --- | --- |
@@ -97,6 +100,12 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 **第一次来？** 空仓库里敲 `/vibe`。它给你一张 First run 卡片，九步带你把闭环走一遍，每步都跟你对一下。
 
+## 上游更新
+
+2026-10-06 已同步 Matt Pocock 的 `v1.3.1`，对应提交 `4588b32`。继承的工具集现在使用 `GLOSSARY.md` / `GLOSSARY-MAP.md`，仍支持现有项目配置的 `CONTEXT.md` 来源。`implement-spec`、`pr`、`retro` 已转为正式 skill，并加入插件。上游已移除 `resolving-merge-conflicts`，其源码保留在不发布的归档中。[同步记录](./.agents/upstream-sync.md)说明范围和保留的分支行为。
+
+整份 spec 的路线是 `/to-tickets` 后选择 `/implement-spec`；`/implement` 仍负责单个 ticket，并保留本分支的运行验证和测试审计。有值得总结的会话，结束后用 `/retro`；需要 PR 时，由 `/pr` 整理正文。`/vibe` 已指向这些新版入口，`/askcat` 根据当前实际文件生成导览，不沿用记忆里的旧清单。
+
 ## 快速开始
 
 ### 1. 拿到 skill
@@ -105,8 +114,8 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 <summary><strong>直接 clone，哪个 agent 都行(Claude Code、Codex、Pi)</strong></summary>
 
 ```bash
-git clone https://github.com/awangs1986/popcodeskills.git
-cd popcodeskills
+git clone https://github.com/awangs1986/catskills.git
+cd catskills
 scripts/link-skills.sh
 ```
 
@@ -118,7 +127,7 @@ scripts/link-skills.sh
 <summary><strong>Codex 这些 agent 可以用 skills.sh 装</strong></summary>
 
 ```bash
-npx skills@latest add awangs1986/popcodeskills
+npx skills@latest add awangs1986/catskills
 ```
 
 挑你要的 skill，再挑装到哪个 agent 上。**`setup-matt-pocock-skills` 和 `vibe` 一定要装。** 文件直接放进你的项目，就是普通文件；想更新跑 `npx skills update`。
@@ -131,7 +140,7 @@ npx skills@latest add awangs1986/popcodeskills
 这个 fork 没进官方市场。先把它加成一个市场，再装：
 
 ```
-/plugin marketplace add awangs1986/popcodeskills
+/plugin marketplace add awangs1986/catskills
 /plugin install cat-skills@awangs1986
 ```
 
@@ -190,13 +199,13 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 这个分支新增了什么
 
-上游二十五个 skill，这里三十七个。下面这些上游都没有，每个都有完整的 `SKILL.md`、文档页和 changeset。
+上游二十七个 skill，这里三十九个。下面这些上游都没有，每个都有完整的 `SKILL.md`、文档页和 changeset。
 
 | Skill | 为什么原来缺它 |
 | --- | --- |
 | [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | 精简长期维护后变臃肿的 AGENTS.md：清理有证据表明已过时的内容、合并重复规则、整理结构，保留有效约束和审批要求。 |
 | [`fresh-spec`](./skills/engineering/fresh-spec/SKILL.md) | 对照当前代码更新过时 spec，提供来源证据，保留未实现需求并标明尚未解决的差异。 |
-| [`vibe`](./skills/engineering/vibe/SKILL.md) | 上游有个 `ask-matt`，二十五个 skill 全覆盖的路由器。一个人用不了那么多，这里换成一张小地图：每个岔路都有默认走法，再加一张 First run 卡片，和一段"隔两周回来，上次做到哪" |
+| [`vibe`](./skills/engineering/vibe/SKILL.md) | 上游有个 `ask-matt`，二十七个 skill 全覆盖的路由器。一个人用不了那么多，这里换成一张小地图：每个岔路都有默认走法，再加一张 First run 卡片，和一段"隔两周回来，上次做到哪" |
 | [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | 不会写专业需求，也能讲一个人怎么使用产品的故事。双向讲故事先对齐体验，再把确认过的场景转成产品 SPEC 或待办 BACKLOG，不急着选技术栈 |
 | [`setup-feedback-loops`](./skills/engineering/setup-feedback-loops/SKILL.md) | `tdd` 要跑测试，`verify` 要起应用，`diagnosing-bugs` 要读日志。原来没人管这些东西接没接好，更没人证明它们真会报警 |
 | [`verify`](./skills/engineering/verify/SKILL.md) | 测试全绿，应用不一定能用。总得有人把它跑起来，拿着证据一条条对验收标准 |
@@ -218,7 +227,7 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 致谢与许可
 
-上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 fork 出来。这里三十七个 skill 里有二十五个是他的，用法原意都没动，只在单人流程和不挑 agent 这两处需要的地方改了改；仓库的规矩(`CLAUDE.md`、文档页、changeset 流程)也是他的。猫、`/vibe` 工作流、手册、海报，还有*这个分支新增了什么*里那十二个 skill，是这个仓库自己加的。
+上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，最初从 v1.2.3 fork 出来，现已同步上游 v1.3.1（4588b32）。这里三十九个 skill 里有二十七个是他的，用法原意都没动，只在单人流程和不挑 agent 这两处需要的地方改了改；仓库的规矩(`CLAUDE.md`、文档页、changeset 流程)也是他的。猫、`/vibe` 工作流、手册、海报，还有*这个分支新增了什么*里那十二个 skill，是这个仓库自己加的。
 
 MIT 许可，跟上游一样。原来的版权声明还在 [`LICENSE`](./LICENSE) 里。 Askcat 内嵌的两字形语气词字体来自 Noto Sans SC，保留 [SIL OFL 1.1 许可](./skills/productivity/askcat/assets/OFL.txt)，生成的 HTML 里也附有该许可。
 
@@ -234,11 +243,13 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 **用户调用**
 
+- **[retro](./skills/engineering/retro/SKILL.md)**：复盘一次编码会话，提出 agent 工作环境的改进建议：导航、自动检查、规范、工具和指令质量。
+- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**：在一个集成分支上实现整份 spec：按 ticket 的阻塞关系调度就绪任务，让多个 agent 在独立 worktree 中实现，最后审查集成结果。
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**：拿不准用哪个 skill、走哪条流程，就问它。管着仓库里所有能敲的 skill 的路由器。
 - **[vibe](./skills/engineering/vibe/SKILL.md)**：一个人的调度：看你走四条道里的哪条(build、fix、review、tidy)，活有多大，下一条敲啥。整张地图里专给一个人挑出来的那部分。
 - **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**：你讲想要的使用体验，或 agent 用连贯的人物故事讲清陌生项目的用途；多轮修改、确认后，转成产品 SPEC 或待办 BACKLOG。不写代码，不自动发布 issue。
 - **[refocus](./skills/engineering/refocus/SKILL.md)**：长会话跑偏了，把它拉回来：spec、ticket、每个决定对照原始材料重读一遍，看做出来的东西对不对得上，偏了就报出来，材料里没写清的问一轮再接着干。
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**：边访谈边建领域模型：术语当场磨，`CONTEXT.md` 和 ADR 当场记。
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**：边访谈边建领域模型：术语当场磨，`GLOSSARY.md` 和 ADR 当场记。
 - **[triage](./skills/engineering/triage/SKILL.md)**：issue 按分诊角色的状态机往下走。
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**：扫一遍代码库，找值得加深的模块，出一份看得懂的 HTML 报告，你挑一个，它追着你问到底。
 - **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**：给工程 skill 安家：issue 存哪、分诊标签、领域文档咋放。用别的工程 skill 之前，每个仓库跑一次。
@@ -251,19 +262,19 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 **模型调用**
 
+- **[pr](./skills/engineering/pr/SKILL.md)**：整理简洁的 PR 正文：用图示说明变化，提供前后证据，并说明合并的可逆性和影响范围。
 - **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**：精简长期维护后变臃肿的 AGENTS.md：清理有证据表明已过时的内容、合并重复规则、整理结构，保留有效约束和审批要求。
 - **[fresh-spec](./skills/engineering/fresh-spec/SKILL.md)**：对照当前代码更新过时 spec，提供来源证据，保留未实现需求并标明尚未解决的差异。
 - **[prototype](./skills/engineering/prototype/SKILL.md)**：拿一次性的原型回答设计问题：状态逻辑问题给一个能点的 HTML 单文件，UI 问题给同一路由下几个长得完全不一样的版本随便切。
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**：专治难缠 bug 和性能倒退，固定六步：先造一条碰到这个 bug 就变红的命令 → 缩小范围 → 列假设 → 加日志 → 修 → 回归测试。
 - **[research](./skills/engineering/research/SKILL.md)**：碰到要查真凭实据的问题(库、API)，对照一手来源查，后台跑，结论写成带引用的 Markdown 存仓库里。
 - **[tdd](./skills/engineering/tdd/SKILL.md)**：红绿重构的测试驱动：做功能、修 bug，一次只切一小片。
-- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**：主动打磨领域模型：术语拿词汇表较真，边界情况往死里试，`CONTEXT.md` 和 ADR 当场更新。
+- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**：主动打磨领域模型：术语拿词汇表较真，边界情况往死里试，`GLOSSARY.md` 和 ADR 当场更新。
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**：设计深模块的共用做法和说法：接口小，里面藏的活多，放在干净的接缝上，对着接口就能测。
 - **[verify](./skills/engineering/verify/SKILL.md)**：把东西跑起来，像用户一样把验收标准和用户故事走一遍，每条顺手走个错路，每条结论配截图或抓到的输出。只看不动手；`implement` 测试全绿之后叫它。
 - **[security-review](./skills/engineering/security-review/SKILL.md)**：专查个人项目最容易带上线的五种安全问题：打进包里的密钥、没按记录做鉴权的路由、没验过的输入、绕过 RLS 的数据访问、没审计过的依赖。`code-review` 里按条件触发的第三个检查。
 - **[test-audit](./skills/engineering/test-audit/SKILL.md)**：这次改动的测试，是真在保护业务逻辑，还是只会绿？每条测试翻译成懂业务的人看得懂的大白话，挨个对到验收标准上，再故意改坏几处逻辑看测试叫不叫。`implement` 跑完 `verify` 就叫它。
 - **[code-review](./skills/engineering/code-review/SKILL.md)**：从某个固定点开始的 diff，从规范和 spec 两个角度审：**规范**(守没守仓库的编码规矩，顺带按 Fowler 坏味道过一遍？)和 **spec**(跟源头 issue/spec 说的是不是一回事？)。两个检查并排跑，互不干扰。
-- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**：git merge 或 rebase 冲突别慌，一块一块来：两边的意图都追到一手来源再定咋合，合完把流程走完(绝不 `--abort`)。
 - **[wizard](./skills/engineering/wizard/SKILL.md)**：生成一个 bash 交互向导，陪人走完必须人动手的事：开基础设施、配凭据和 CI 密钥、在没见过的第三方控制台里点点点、跑一次性迁移和切换。
 
 ### 效率（Productivity）
@@ -278,7 +289,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 - **[takeover](./skills/productivity/takeover/SKILL.md)**：会话太长、卡住、没了都行，新会话拿着 ID、导出、URL 或 handoff 文件接上：先看记录，再整出精简上下文，用十句话以内把项目说明白，对完再动手。旧会话那边啥都不用干。
 - **[teach](./skills/productivity/teach/SKILL.md)**：连着几个会话教你点新东西，拿当前目录记进度。
 - **[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)**：有些决定你自己拍不了板：整理成 Markdown 问卷发给能拍板的人，异步填或者开会一起填。它问你的是"这问卷咋发"(发给谁、要拿回啥)，不问问题本身。
-- **[wait-what](./skills/productivity/wait-what/SKILL.md)**：哪句没听懂，当场敲它。agent 补上你缺的那块上下文，用大白话、你的话、你 `CONTEXT.md` 里的词重讲一遍。
+- **[wait-what](./skills/productivity/wait-what/SKILL.md)**：哪句没听懂，当场敲它。agent 补上你缺的那块上下文，用大白话、你的话、你 `GLOSSARY.md` 里的词重讲一遍。
 
 **模型调用**
 

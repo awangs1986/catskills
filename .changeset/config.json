@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "awangs1986/popcodeskills"
+      "repo": "awangs1986/catskills"
     }
   ],
   "commit": false,

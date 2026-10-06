@@ -10,7 +10,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 
 - **Issue tracker**: where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels**: the strings used for the five canonical triage roles
-- **Domain docs**: where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
+- **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -22,7 +22,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 
 - `git remote -v` and `.git/config`: is this a GitHub repo? Which one?
 - `AGENTS.md` and `CLAUDE.md` at the repo root: does either exist? Is there already an `## Agent skills` section in either?
-- `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
+- `GLOSSARY.md` and `GLOSSARY-MAP.md` at the repo root, and legacy `CONTEXT.md` / `CONTEXT-MAP.md` if present
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/`: does this skill's prior output already exist?
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
@@ -58,9 +58,11 @@ If it is installed, ask exactly one question:
 
 The defaults are the five canonical roles, each label string equal to its name: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. On **yes**, write them as-is. Only if the user says no, usually because their tracker already uses other names (e.g. `bug:triage` for `needs-triage`), collect the overrides so `triage` applies existing labels instead of creating duplicates.
 
-**Section C: Domain docs.** Default to **single-context** (one `CONTEXT.md` + `docs/adr/` at the repo root). This fits almost every repo; write it without asking.
+When an existing project uses legacy `CONTEXT.md` names, preserve that source unless the confirmed setup includes migration. In the generated Agent skills block, state that all skill references to `CONTEXT.md` / `CONTEXT-MAP.md` resolve to the configured glossary paths, including `GLOSSARY.md` / `GLOSSARY-MAP.md`.
 
-Offer **multi-context** (a root `CONTEXT-MAP.md` pointing to per-context `CONTEXT.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
+**Section C: Domain docs.** Default to **single-context** (one `GLOSSARY.md` + `docs/adr/` at the repo root). This fits almost every repo; write it without asking.
+
+Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSSARY.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
 
 ### 3. Confirm and edit
 
@@ -110,7 +112,7 @@ The block:
 
 ### Language
 
-The skills are written in English. Reply, ask questions, and report in the language the user writes in. Documents the skills write (specs, tickets, `CONTEXT.md`, ADRs, review findings) follow the language the project's docs already use; if there are none yet, the user's language. Skill names, commands, code identifiers, and file paths stay as they are.
+The skills are written in English. Reply, ask questions, and report in the language the user writes in. Documents the skills write (specs, tickets, `GLOSSARY.md`, ADRs, review findings) follow the language the project's docs already use; if there are none yet, the user's language. Skill names, commands, code identifiers, and file paths stay as they are.
 ```
 
 The `### Language` and `### Conversation style` sub-blocks are fixed text; write both as is, including the literal conversation marker. Update an existing generated block in place, without duplicating it or changing surrounding user instructions. It is what lets every skill answer a Chinese user in Chinese and a German user in German without each skill saying so.

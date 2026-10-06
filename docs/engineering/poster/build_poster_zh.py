@@ -231,7 +231,7 @@ edge_label(1050, 1112, "L · 得花好几个晚上", LANES["build"]["dark"])
 s_box = node(250, 1260, 330, 150, "build", label="直接说", note="“加 --json，先写测试”\nagent 自己会用 tdd")
 arrow([(250, s_box[3]), (250, 1920)])
 # M column
-m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="分轮提问\n写 CONTEXT.md 和 ADR")
+m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="分轮提问\n写 GLOSSARY.md 和 ADR")
 arrow([(660, m1_box[3]), (660, m1_box[3] + 30)])
 m2_box = node(660, 1430, 350, 130, "build", cmd="/implement", note="同一个窗口\n中间别 clear")
 arrow([(660, m2_box[3]), (660, 1920)])
@@ -304,7 +304,7 @@ SX = [520, 1000, 1480]
 node(SX[0], 2800, 420, 120, "focus", cmd="/refocus", label="还开着，跑偏了，不换地方")
 node(SX[1], 2800, 420, 120, "focus", cmd="/handoff", label="还开着，工作要搬走")
 node(SX[2], 2800, 420, 120, "focus", cmd="/takeover", label="会话没了 / 太长了不敢信")
-text(SX[0], 2895, "对照磁盘上的 spec、ticket、CONTEXT.md 和你说过的决定，检查做出来的东西（丢了 / 偏了 / 矛盾了），问一轮，答案写回 ticket。然后再 compact。", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
+text(SX[0], 2895, "对照磁盘上的 spec、ticket、领域词汇表 和你说过的决定，检查做出来的东西（丢了 / 偏了 / 矛盾了），问一轮，答案写回 ticket。然后再 compact。", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 text(SX[1], 2895, "离开的会话写个小文件放临时目录：换目录、换工具、分叉支线任务、绕道做原型。没有东西要带走？那就不需要它。", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 text(SX[2], 2895, "额度用完、崩溃、关掉，或者换了工具。新会话自己读记录（ID / 导出 / URL / handoff），十句话以内复述项目，问一次。你确认之前它是只读的。", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 
@@ -336,7 +336,7 @@ text(1090, 3405, "写不出来 → 不是 bug，是需求没对上 → /refocus 
 # =================== FOOTER ===================
 d.line([(80, 3720), (1920, 3720)], fill=(210, 200, 185), width=3)
 text(80, 3745, "第一次来？空仓库里敲 /vibe：一张 First run 卡片带你九步走完整个闭环，每步都跟你确认。", F(27), fill=INK, maxw=1840)
-text(80, 3788, "完整手册：skills/engineering/vibe/WORKFLOW.md   ·   26 个精选 skill，15 个你来敲，11 个 agent 自己用   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3788, "完整手册：skills/engineering/vibe/WORKFLOW.md   ·   28 个精选 skill，16 个你来敲，12 个 agent 自己用   ·   github.com/awangs1986/catskills", F(24, False), fill=GRAY, maxw=1840)
 text(80, 3828, "口诀：先对齐，再写 spec；先变红，再变绿；跑起来；看 Claims；合并前先 review；每周扫一次；跑偏了 refocus，没了 takeover。", F(26), fill=LANES["build"]["dark"], maxw=1840)
 
 # =================== PRODUCT STORY ON-RAMP ===================
@@ -391,6 +391,29 @@ text(1040, y + 142, '代码变了，spec 还停在过去？', F(28), maxw=820)
 text(120, y + 198, '清理过时内容，合并重复规则，整理结构。\n保留有效约束和明确审批要求。', F(25, False), maxw=820, spacing=1.5)
 text(1040, y + 198, '依据当前代码更新过时描述，附来源证据。\n保留未实现需求，列出差异和不确定项。', F(25, False), maxw=820, spacing=1.5)
 text(120, y + 300, '两个命令都能手动调用，也可由 agent 在匹配任务中使用。属于完整工具集，不改变四条车道。', F(23, False), fill=GRAY, maxw=1760)
+
+# =================== CURRENT UPSTREAM ROUTES ===================
+UPSTREAM_TOP, UPSTREAM_HEIGHT = MAINTENANCE_TOP + MAINTENANCE_HEIGHT, 350
+flow = img
+img = Image.new("RGB", (W, flow.height + UPSTREAM_HEIGHT), BG)
+img.paste(flow.crop((0, 0, W, UPSTREAM_TOP)), (0, 0))
+img.paste(flow.crop((0, UPSTREAM_TOP, W, flow.height)), (0, UPSTREAM_TOP + UPSTREAM_HEIGHT))
+d = ImageDraw.Draw(img)
+y = UPSTREAM_TOP
+panel(80, y + 25, 1920, y + 290, "setup", '上游 v1.3.1 · 三个正式入口')
+for x, command, description in [(120, "/implement-spec", '整份 spec 按任务图实现，\n独立 worktree，集成分支。'), (745, "pr", 'PR 正文：图示、前后证据，\n可逆性和影响范围。'), (1370, "/retro", '复盘会话，提出环境改进。\n用户选择，再推进改动。')]:
+    text(x, y + 85, command, MONO(34), fill=LANES["build"]["dark"])
+    text(x, y + 155, description, F(25, False), maxw=520, spacing=1.45)
+
+# =================== UPSTREAM ATTRIBUTION ===================
+ATTRIBUTION_HEIGHT = 120
+flow = img
+img = Image.new("RGB", (W, flow.height + ATTRIBUTION_HEIGHT), BG)
+img.paste(flow, (0, ATTRIBUTION_HEIGHT))
+d = ImageDraw.Draw(img)
+d.rectangle((0, 0, W, 115), fill=LANES["focus"]["fill"])
+text(W / 2, 10, "BASED ON MATT POCOCK'S SKILLS", F(42), align="center", fill=LANES["build"]["dark"])
+text(W / 2, 70, 'mattpocock/skills · v1.3.1 · 4588b32', F(27, False), align="center", fill=GRAY)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.zh-CN.png"), optimize=True)
 print("saved")

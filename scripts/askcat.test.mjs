@@ -237,3 +237,25 @@ test("builder refuses an existing output unless replacement is explicitly reques
     rmSync(folder, { recursive: true, force: true });
   }
 });
+
+for (const name of ["implement-spec", "pr", "retro"]) {
+  test(`the current upstream route ${name} is selectable and cannot disappear from the picker`, () => {
+    const { data, inventory } = fixture();
+    const source = readFileSync(join(repo, "skills/engineering", name, "SKILL.md"), "utf8");
+    const invoke = /disable-model-invocation:\s*true/.test(source) ? "you" : "agent";
+    const prototype = data.chapters[0].skills[0];
+    const card = { ...prototype, name, invoke, beta: false, example: invoke === "you" ? `/${name}` : `Please help with ${name}.` };
+    data.chapters[0].skills.push(card);
+    inventory.skills.push({ name, invoke, beta: false });
+    const research = data.picker.questions[0].options.pop();
+    data.picker.questions[0].options.push({ label: "More workflows", next: "q2" });
+    data.picker.questions.push({ id: "q2", text: "Which workflow?", options: [research, { label: name, skill: name, prompt: card.example }] });
+    const { document, window } = mount(data, inventory);
+    [...document.querySelectorAll("#pk button")].find((b) => b.textContent === "More workflows").dispatchEvent(new window.Event("click"));
+    [...document.querySelectorAll("#pk button")].find((b) => b.textContent === name).dispatchEvent(new window.Event("click"));
+    assert.ok(document.querySelector(".picker .result").textContent.includes(name));
+    assert.ok(document.querySelector(".attribution").textContent.includes("MATT POCOCK"));
+    data.picker.questions[1].options = [research, research];
+    assert.ok(validateGuide(data, inventory).some((error) => error.includes(`important installed route: ${name}`)));
+  });
+}

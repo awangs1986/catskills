@@ -1,3 +1,7 @@
+# Archived reference
+
+Upstream retired this skill in v1.3.1. This page preserves its previous documentation; it is not an installation or routing recommendation. The archived source is excluded from the plugin and local installation links.
+
 ## What it does
 
 `resolving-merge-conflicts` works through an in-progress git merge or rebase, hunk by hunk, then runs the project's own checks and finishes the operation with a commit.
@@ -5,7 +9,7 @@
 It refuses to treat a conflict as a text problem. Before touching a hunk it traces each side back to its **[primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source)** (the commit message, the PR, the original issue), so it is choosing between two intents rather than between two blocks of text, and it preserves both wherever they are compatible. Where they genuinely are not, it picks the side matching the merge's stated goal and names the trade-off. It invents no new behaviour to paper over a clash, and `--abort` is not an option it has: the merge is always carried to a finished commit.
 
 <!-- cat-skills:conversation-doc:start -->
-Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+Conversation follows the [shared style](../../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
 <!-- cat-skills:conversation-doc:end -->
 
 ## When to reach for it
@@ -17,7 +21,7 @@ Reach for it when git has already stopped on conflicts it could not resolve itse
 | Your situation | Skill |
 | --- | --- |
 | Mid-merge or mid-rebase, conflict markers in the tree | This one |
-| Merge finished, something now misbehaves for reasons you can't see | [diagnosing-bugs](diagnosing-bugs.md) |
+| Merge finished, something now misbehaves for reasons you can't see | [diagnosing-bugs](../../../docs/engineering/diagnosing-bugs.md) |
 | Planning how to slice work so branches collide less | Neither: see the parallel-work question below |
 
 ## Primary sources over `ours` and `theirs`
@@ -52,4 +56,4 @@ Aborting throws away the resolution work and returns you to the same conflict, u
 
 ## Where it fits
 
-A reach-for-it-anytime standalone with no dependencies on any other skill: it starts when git stalls and ends when the tree is clean and committed. Its only real neighbour is [diagnosing-bugs](diagnosing-bugs.md), which takes over at the point where a merge resolved cleanly but the merged code misbehaves: a diagnosis problem, not a conflict one. It sits off the main idea-to-ship flow entirely, so [ask-matt](ask-matt.md) is the map for what runs before and after it.
+A reach-for-it-anytime standalone with no dependencies on any other skill: it starts when git stalls and ends when the tree is clean and committed. Its only real neighbour is [diagnosing-bugs](../../../docs/engineering/diagnosing-bugs.md), which takes over at the point where a merge resolved cleanly but the merged code misbehaves: a diagnosis problem, not a conflict one. It sits off the main idea-to-ship flow entirely, so [ask-matt](../../../docs/engineering/ask-matt.md) is the map for what runs before and after it.

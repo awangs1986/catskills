@@ -5,7 +5,7 @@
   "description": "Cat Skills: a solo vibe-coding workflow built on Matt Pocock's agent skills",
   "repository": {
     "type": "git",
-    "url": "https://github.com/awangs1986/popcodeskills"
+    "url": "https://github.com/awangs1986/catskills"
   },
   "license": "MIT",
   "scripts": {

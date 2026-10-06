@@ -11,8 +11,8 @@ The route that works the same in Claude Code, Codex and Pi, and the one `README.
 <canonical-block name="clone-and-link">
 
 ```bash
-git clone https://github.com/awangs1986/popcodeskills.git
-cd popcodeskills
+git clone https://github.com/awangs1986/catskills.git
+cd catskills
 scripts/link-skills.sh
 ```
 
@@ -27,7 +27,7 @@ This symlinks every skill into `~/.claude/skills`, `~/.agents/skills` and `~/.pi
 <canonical-block name="skills-sh-whole-set">
 
 ```bash
-npx skills@latest add awangs1986/popcodeskills
+npx skills@latest add awangs1986/catskills
 ```
 
 Pick the skills you want and which agents to install them on. **Make sure `setup-matt-pocock-skills` and `vibe` are among them.** The files land in your project as ordinary files you own; pull updates when you want them with `npx skills update`.
@@ -39,7 +39,7 @@ Pick the skills you want and which agents to install them on. **Make sure `setup
 <canonical-block name="skills-sh-one-skill">
 
 ```bash
-npx skills@latest add awangs1986/popcodeskills --skill=<name>
+npx skills@latest add awangs1986/catskills --skill=<name>
 ```
 
 ```bash
@@ -57,7 +57,7 @@ npx skills@latest update <name>
 <canonical-block name="claude-code">
 
 ```
-/plugin marketplace add awangs1986/popcodeskills
+/plugin marketplace add awangs1986/catskills
 /plugin install cat-skills@awangs1986
 ```
 

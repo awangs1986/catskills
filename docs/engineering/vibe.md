@@ -4,7 +4,7 @@
 
 It gives a short, considerate explanation and a route card, then stops. It does not tell the product story, grill, write a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or start coding; where a lane's first step is a model-invoked skill (`tdd`, `diagnosing-bugs`, `code-review`) it offers to fire that one on a "go", and otherwise you type what the card names.
 
-It is a curated subset, not the full map. The kit is twenty-six skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](ask-matt.md).
+It is a curated subset, not the full map. The kit is twenty-eight skills chosen for solo work; `wayfinder`, `triage`, `to-questionnaire` and the rest are named as deliberately out, each with the moment to bring it back. The full map stays [ask-matt](ask-matt.md).
 
 <!-- cat-skills:conversation-doc:start -->
 Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
@@ -64,7 +64,7 @@ The sizing question is asked in order and the first yes wins: can you write it a
 
 **Can I skip it and just type the skills?**
 
-Yes, and after a week you will. The card exists for the first few sessions, and for the moments where you have a bug and can't tell whether it is a `tdd` bug or a `diagnosing-bugs` bug. The cheatsheet at the bottom of the skill's `WORKFLOW.md` is the same information as a table, and [the poster](https://github.com/awangs1986/popcodeskills/blob/main/docs/engineering/vibe-workflow-poster.png) is the same information as one picture.
+Yes, and after a week you will. The card exists for the first few sessions, and for the moments where you have a bug and can't tell whether it is a `tdd` bug or a `diagnosing-bugs` bug. The cheatsheet at the bottom of the skill's `WORKFLOW.md` is the same information as a table, and [the poster](./vibe-workflow-poster.png) is the same information as one picture.
 
 **It offered to start `tdd` for me. Is that safe?**
 
@@ -75,8 +75,12 @@ It only fires model-invoked skills, and only after you say go. Every user-invoke
 - A warm, brief explanation leads to one next command, then the router stops instead of starting the work.
 - When the product picture is missing, the next step is a story rather than a premature size or a setup questionnaire.
 - Sizing lands on S or M most of the time, and you can say why the occasional L earned its spec.
-- After an L build you notice you are no longer re-explaining decisions between sessions: they are in `CONTEXT.md`, an ADR, or the spec.
+- After an L build you notice you are no longer re-explaining decisions between sessions: they are in the configured `GLOSSARY.md` (or legacy `CONTEXT.md`), an ADR, or the spec.
 - A hard bug's fix commit names the hypothesis that turned out right, because the Fix lane went through the loop rather than around it.
+
+## Current upstream routes
+
+The current upstream routes include [implement-spec](./implement-spec.md) for whole-spec orchestration, [pr](./pr.md) for PR bodies, and promoted [retro](./retro.md) for session reflection. The kit now has twenty-eight skills; `implement-spec` is a situational bring-back. The source files determine the current behavior, and legacy `CONTEXT.md` sources remain supported alongside `GLOSSARY.md`.
 
 ## Where it fits
 

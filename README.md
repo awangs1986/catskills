@@ -1,3 +1,5 @@
+<p align="center"><strong>BASED ON <a href="https://github.com/mattpocock/skills">MATT POCOCK'S SKILLS</a></strong><br>Upstream v1.3.1, synchronized through <a href="https://github.com/mattpocock/skills/commit/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d">4588b32</a>. Cat Skills adds the solo workflow and cat guide.</p>
+
 <p align="center">
   <img src="./docs/engineering/poster/cats/cat_teacher.png" alt="A ginger-and-white tabby with glasses and a pointer, the Cat Skills teacher" width="220">
 </p>
@@ -27,7 +29,7 @@
 
 Cat Skills takes that set and curates and extends it for **solo vibe coding**: you describe what you want, the agent builds it, and the workflow makes sure the agent built the right thing and the codebase is still worth having afterwards.
 
-Vibe coding has two failure modes. The agent builds the wrong thing because it never understood you, and the codebase turns to mud before you notice. Matt's skills fix both, but there are twenty-five of them and you have to know which one to type. Cat Skills adds the missing pieces for one person working alone:
+Vibe coding has two failure modes. The agent builds the wrong thing because it never understood you, and the codebase turns to mud before you notice. Matt's skills fix both, but there are twenty-seven of them and you have to know which one to type. Cat Skills adds the missing pieces for one person working alone:
 
 - **`/vibe`**: one command that looks at your repo, puts you on the right lane, and names the exact next thing to type. You never have to remember the map.
 - **`/tell-a-story`**: describe a person using your product, or rediscover what an unfamiliar or long-running project is for through a connected human story. Agree on the understanding first; a product SPEC or proposed BACKLOG is optional. No requirements-writing expertise needed.
@@ -36,17 +38,18 @@ Vibe coding has two failure modes. The agent builds the wrong thing because it n
 - **Session care**: `refocus`, `handoff`, and `takeover` for when the conversation drifts, moves, or dies.
 - **`/askcat`**: a cat that explains every installed skill on one HTML page, in plain words, in your language.
 
-All the original skills are still here, unchanged in spirit. Cat Skills is a path through them, plus the skills that path needed and did not have.
+The inherited skills follow the current upstream collection; retired commands are kept outside the shipped set. Cat Skills is a path through them, plus the skills that path needed and did not have.
 
 ## What Cat Skills does
 
-The workflow covers the nine jobs a solo developer keeps doing by hand, and gives each one a skill.
+The workflow covers the ten jobs a solo developer keeps doing by hand, and gives each one a skill.
 
 | Job | What used to go wrong | What you type | What the agent does |
 | --- | --- | --- | --- |
 | **Picture the product** | You know the experience you want but not how to write requirements; the agent guesses the product | `/tell-a-story` | You tell a user story, or the agent explains the project through a person's problem, actions, and changed situation; revise it together, confirm it, then choose a product SPEC, proposed BACKLOG, both, or just the story |
-| **Talk through the requirement** | You explain once, the agent nods, builds something else | `/grill-with-docs` | Interviews you in rounds until no branch of the design is open; writes the shared vocabulary to `CONTEXT.md` and hard decisions to ADRs |
+| **Talk through the requirement** | You explain once, the agent nods, builds something else | `/grill-with-docs` | Interviews you in rounds until no branch of the design is open; writes the shared vocabulary to `GLOSSARY.md` and hard decisions to ADRs |
 | **Split it into pieces** | One giant prompt, one giant diff, nothing you can review | `/to-spec` then `/to-tickets` | Synthesises the conversation into a spec with no new questions, then cuts it into tracer-bullet tickets with blocking edges |
+| **Build a whole task graph** | Driving every ticket by hand becomes slow when several are ready | `/implement-spec` | Schedules implementer agents on ready tickets in isolated worktrees and integrates their results on one branch |
 | **Write it down and build it** | The spec lives in the chat and evaporates with it | `/implement` | Claims a ticket, drives `tdd` red-then-green one slice at a time, then runs the checks below before it commits |
 | **Design the tests that matter to you** | Everything is green and it still doesn't do what you asked; the agent's tests check what it understood, not what you wanted | `/cattytest` | Interviews you from the user's side: what had to be true afterwards, how each existing gate can pass while that's missing, what a person does step by step, what evidence shows the apple is in the basket; writes a test-cases sheet `verify` walks |
 | **Prove it works** | "All tests pass" and the app does not boot | automatic: `verify` | Runs the built thing, walks each acceptance criterion as a user would, screenshot or captured output per verdict |
@@ -97,6 +100,12 @@ Once that picture is shared, size the build:
 
 **First time here?** Type `/vibe` in an empty repo. It hands back a First run card that walks the whole loop once in nine steps and checks each one with you.
 
+## Upstream refresh
+
+Synced from Matt Pocock's `v1.3.1` through commit `4588b32` on 2026-10-06. The inherited collection now uses `GLOSSARY.md` / `GLOSSARY-MAP.md`; existing configured `CONTEXT.md` sources remain supported. `implement-spec`, `pr`, and `retro` are promoted and available in the plugin. Upstream retired `resolving-merge-conflicts`; its source is archived outside the shipped set. [The sync record](./.agents/upstream-sync.md) lists the preserved fork behavior and scope.
+
+For the full-spec route, choose `/implement-spec` after `/to-tickets`; `/implement` remains the one-ticket path with this fork's verification and test audit. `/retro` reviews the session after a build worth learning from. `/pr` writes the PR body when one is needed. `/vibe` routes to these current commands, and `/askcat` reads the current inventory rather than a remembered catalog.
+
 ## Quick start
 
 ### 1. Get the skills
@@ -105,8 +114,8 @@ Once that picture is shared, size the build:
 <summary><strong>Any agent, from a clone (Claude Code, Codex, Pi)</strong></summary>
 
 ```bash
-git clone https://github.com/awangs1986/popcodeskills.git
-cd popcodeskills
+git clone https://github.com/awangs1986/catskills.git
+cd catskills
 scripts/link-skills.sh
 ```
 
@@ -118,7 +127,7 @@ This symlinks every skill into `~/.claude/skills`, `~/.agents/skills` and `~/.pi
 <summary><strong>Codex and other agents, with the skills.sh installer</strong></summary>
 
 ```bash
-npx skills@latest add awangs1986/popcodeskills
+npx skills@latest add awangs1986/catskills
 ```
 
 Pick the skills you want and which agents to install them on. **Make sure `setup-matt-pocock-skills` and `vibe` are among them.** The files land in your project as ordinary files you own; pull updates when you want them with `npx skills update`.
@@ -131,7 +140,7 @@ Pick the skills you want and which agents to install them on. **Make sure `setup
 This fork is not in the official marketplace. Add it as a marketplace once, then install:
 
 ```
-/plugin marketplace add awangs1986/popcodeskills
+/plugin marketplace add awangs1986/catskills
 /plugin install cat-skills@awangs1986
 ```
 
@@ -190,13 +199,13 @@ Seven cats, seven coats, each responsible for a part of the loop. The new calico
 
 ## What this fork adds
 
-Upstream ships twenty-five skills; this repo ships thirty-seven. Everything below is new relative to upstream. Each one is a full skill with its own `SKILL.md`, docs page, and changeset.
+Upstream ships twenty-seven skills; this repo ships thirty-nine. Everything below is new relative to upstream. Each one is a full skill with its own `SKILL.md`, docs page, and changeset.
 
 | Skill | Why it was missing |
 | --- | --- |
 | [`fresh-agent`](./skills/engineering/fresh-agent/SKILL.md) | Streamline bloated AGENTS.md files: remove proven stale guidance, merge repeated rules, and reorganize instructions while preserving effective constraints and approvals. |
 | [`fresh-spec`](./skills/engineering/fresh-spec/SKILL.md) | Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences. |
-| [`vibe`](./skills/engineering/vibe/SKILL.md) | Upstream has `ask-matt`, a router over all twenty-five upstream skills. A solo developer needs a smaller map with a default at every fork, plus a First run card and a "where was I" block for coming back after two weeks |
+| [`vibe`](./skills/engineering/vibe/SKILL.md) | Upstream has `ask-matt`, a router over all twenty-seven upstream skills. A solo developer needs a smaller map with a default at every fork, plus a First run card and a "where was I" block for coming back after two weeks |
 | [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | A person can describe using a product before they can write its requirements. Two-way storytelling aligns the experience, then turns the confirmed scenes into a product SPEC or proposed BACKLOG without choosing a stack |
 | [`setup-feedback-loops`](./skills/engineering/setup-feedback-loops/SKILL.md) | `tdd` runs tests, `verify` boots the app, `diagnosing-bugs` reads logs. Nothing wired those up or proved they could fail |
 | [`verify`](./skills/engineering/verify/SKILL.md) | A green suite is not a working app. Someone has to run it and walk the acceptance criteria with evidence |
@@ -218,7 +227,7 @@ Also changed across the whole repo:
 
 ## Credits and license
 
-Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), forked at v1.2.3. Twenty-five of the thirty-seven skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the twelve skills listed under *What this fork adds* were made for this repo.
+Upstream is [mattpocock/skills](https://github.com/mattpocock/skills) by [Matt Pocock](https://www.aihero.dev), originally forked at v1.2.3 and synchronized with upstream v1.3.1 (4588b32). Twenty-seven of the thirty-nine skills here are his, kept in spirit and adapted only where the solo workflow or host neutrality needed it; the repo's conventions (`CLAUDE.md`, the docs pages, the changeset flow) are his too. The cats, the `/vibe` workflow, the handbook, the poster, and the twelve skills listed under *What this fork adds* were made for this repo.
 
 MIT licensed, same as upstream. The original copyright notice is kept in [`LICENSE`](./LICENSE). Askcat's embedded two-glyph marker font is derived from Noto Sans SC and retains its [SIL OFL 1.1 license](./skills/productivity/askcat/assets/OFL.txt), also included in generated HTML.
 
@@ -232,11 +241,13 @@ Skills I use daily for code work.
 
 **User-invoked**
 
+- **[retro](./skills/engineering/retro/SKILL.md)**: Review a coding session and propose improvements to the agent environment: navigation, checks, standards, tooling, and instruction quality.
+- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**: Implement a whole spec on one integration branch, scheduling ready tickets as a task graph across implementer worktrees and reviewing the integrated result.
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[vibe](./skills/engineering/vibe/SKILL.md)**: Solo developer's dispatcher: puts you on one of four lanes (build, fix, review, tidy), sizes the work, and names the exact next command. A curated subset of the map for one person working alone.
 - **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**: Align the product through a user-told or source-grounded human story that makes an unfamiliar project's purpose clear, revise it together, then turn the confirmed experience into a product SPEC or proposed BACKLOG. No coding or issue publication.
 - **[refocus](./skills/engineering/refocus/SKILL.md)**: Re-anchor a long session on its requirements: re-read the spec, ticket, and every decision from its primary source, check what has actually been built against them, report the drift, and ask one round of questions about anything the sources leave ambiguous before continuing.
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `GLOSSARY.md` and ADRs inline.
 - **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the other engineering skills.
@@ -249,19 +260,19 @@ Skills I use daily for code work.
 
 **Model-invoked**
 
+- **[pr](./skills/engineering/pr/SKILL.md)**: Write a concise PR body with a visual summary, before/after evidence, and the reversibility and scope of the merge.
 - **[fresh-agent](./skills/engineering/fresh-agent/SKILL.md)**: Streamline bloated AGENTS.md files: remove proven stale guidance, merge repeated rules, and reorganize instructions while preserving effective constraints and approvals.
 - **[fresh-spec](./skills/engineering/fresh-spec/SKILL.md)**: Refresh an existing spec from current code evidence, retaining unmet requirements and flagging unresolved differences.
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: Build a throwaway prototype to answer a design question, either a single shareable HTML file for state/logic questions, or several radically different UI variations toggleable from one route.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test.
 - **[research](./skills/engineering/research/SKILL.md)**: Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
-- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model: challenge terms against the glossary, stress-test with edge-case scenarios, and update `CONTEXT.md` and ADRs inline.
+- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model: challenge terms against the glossary, stress-test with edge-case scenarios, and update `GLOSSARY.md` and ADRs inline.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
 - **[verify](./skills/engineering/verify/SKILL.md)**: Run the built thing and walk its acceptance criteria and user stories as a user would, one wrong path each, with a screenshot or captured output per verdict. Observes, never fixes; `implement` calls it after the suite is green.
 - **[security-review](./skills/engineering/security-review/SKILL.md)**: Check a diff for the five security failures solo-built apps actually ship: secrets in the bundle, routes without per-record authorisation, unvalidated input, data access that bypasses RLS, unaudited dependencies. A conditional third sub-agent of `code-review`.
 - **[test-audit](./skills/engineering/test-audit/SKILL.md)**: Do the tests behind a change protect the business logic or only pass? Translates each test into a plain-language claim the domain expert can judge, maps claims to the acceptance criteria, and runs a targeted mutation probe. `implement` calls it after `verify`.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents so neither pollutes the other.
-- **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)**: Work through an in-progress git merge or rebase conflict hunk by hunk, resolving by intent traced to each side's primary source, then finish the operation (never `--abort`).
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
 
 ### Productivity
@@ -276,7 +287,7 @@ General workflow tools, not code-specific.
 - **[takeover](./skills/productivity/takeover/SKILL.md)**: Resume a long or stalled conversation in a fresh session from an ID, export, URL, or handoff file: the new session indexes the records, rebuilds concise context, describes the project in up to ten sentences, and confirms before continuing. Needs nothing from the old session.
 - **[teach](./skills/productivity/teach/SKILL.md)**: Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)**: Turn a decision you can't answer alone into a Markdown questionnaire for the one person who can, filled in async, or together over a meeting. It grills you about the send (who it's for, what you need back), not the subject.
-- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain words, in your language, using your `CONTEXT.md` vocabulary.
+- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain words, in your language, using your `GLOSSARY.md` vocabulary.
 
 **Model-invoked**
 

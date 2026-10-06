@@ -19,7 +19,7 @@ This is a guide, not an execution flow. You may inspect files and run this skill
 4. **Respect the buckets.** Include the promoted set available in the chosen scope. Include `in-progress` only when actually installed, clearly marked beta. Skip `misc` and `deprecated` in this introductory guide; say they are outside the tour rather than silently promising "every file in the checkout". A plugin manifest describes that plugin, not every other separately installed skill.
 5. **Read each chosen `SKILL.md`.** Read the frontmatter and the behavior, output, prerequisites, and boundaries. Determine `invoke: you` from `disable-model-invocation: true` and the matching Codex policy; otherwise `invoke: agent`. Read its docs page when available. A claim not established by the source remains a stated uncertainty.
 6. **Record the inventory independently of the cards.** Follow [DATA-FORMAT.md](DATA-FORMAT.md): one entry per unique name, with invocation mode and beta flag, plus a private path ledger showing which files you read. Compute counts from that inventory; never reuse a remembered skill count.
-7. **Read the current map.** Read the installed `vibe` handbook and route coverage file when available, and `ask-matt` for the broader map. These are supporting material to inspect, not skills to invoke. The target `SKILL.md` wins if a summary is stale.
+7. **Read the current map.** Read the installed `vibe` handbook and route coverage file when available, and `ask-matt` for the broader map. These are supporting material to inspect, not skills to invoke. The target `SKILL.md` wins if a summary is stale. Read the selected installed version, not a remembered release: current promoted `implement-spec`, `pr`, and `retro` are not beta. Exclude archived `resolving-merge-conflicts`; do not turn a legacy standalone copy into a shipped command. Report differing copies and the selected source.
 
 ## 2. Write the guide
 
@@ -37,11 +37,14 @@ When present in the inventory, explain these boundaries in the picker instead of
 
 | User's need | Route |
 | --- | --- |
-| Describe an intended product experience, or hear one from the source | `tell-a-story`: 1 user tells, 2 agent tells; revise, confirm, then optional product SPEC / BACKLOG drafts |
+| Understand an unfamiliar project through a human story, or describe an intended experience | `tell-a-story`: 1 user tells, 2 agent tells; revise, confirm, then optional product SPEC / BACKLOG drafts |
 | Design cases that prove the agreed outcome | `cattytest` |
 | Run already-agreed cases and collect evidence | `verify` |
 | Understand what existing tests claim and whether they can detect faults | `test-audit` |
 | Research a library, API, or external fact | `research` |
+| Orchestrate all prepared tickets for a spec | `implement-spec`: task graph and integration branch, user-invoked; distinct from driving `/implement` per ticket |
+| Write the PR body | `pr`: visual summary, before/after evidence, door and blast radius |
+| Reflect on a session to improve the environment | `retro`: promoted and user-invoked, proposes candidates rather than automatically editing |
 | Recover a dead session rather than refocus a live one | `takeover`, distinct from `refocus` and `handoff` |
 
 The picker is a shallow decision tree, at most four questions to a result. Every leaf must name a card in this inventory, respect its invocation mode, and supply a usable prompt. Never invent an uninstalled fallback. A partial install gets a smaller honest picker. The first-run sequence follows the current handbook, filtered to the available commands; describe missing prerequisites as missing, not as installed steps.

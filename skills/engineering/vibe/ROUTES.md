@@ -19,12 +19,14 @@ Every promoted skill has a place here. Read this alongside `WORKFLOW.md` when ch
 | `grill-with-docs` | kit | The product picture is shared and design decisions remain in a workspace |
 | `grilling` | kit | The interview primitive; normally used within an interview wrapper |
 | `handoff` | kit | The live session is handing work to another place or person |
+| `implement-spec` | bring-back | The user wants an entire prepared spec orchestrated across ready tickets on one integration branch |
+| `pr` | kit | A reviewed change needs a PR body with a visual summary, before/after evidence, and merge impact |
+| `retro` | kit | A completed or difficult session deserves source-grounded improvements to the agent environment |
 | `implement` | kit | An agreed spec or tracked issue is ready for implementation |
 | `improve-codebase-architecture` | kit | Survey codebase health or find a better seam after diagnosis |
 | `prototype` | kit | A design question needs something runnable or visible to settle it |
 | `refocus` | kit | The current session has drifted from its requirements |
 | `research` | kit | A library, API, or external fact needs primary-source investigation |
-| `resolving-merge-conflicts` | bring-back | A merge or rebase conflict is actually in progress |
 | `security-review` | kit | Check exposure before deployment or a security-sensitive change |
 | `setup-feedback-loops` | kit | Typecheck, tests, smoke checks, logs, or browser feedback need wiring |
 | `setup-matt-pocock-skills` | kit | A tracker-dependent flow needs repo-specific issue and doc conventions |
@@ -46,6 +48,6 @@ Every promoted skill has a place here. Read this alongside `WORKFLOW.md` when ch
 
 ## Optional work is not missing work
 
-`in-progress`, `misc`, and `deprecated` are not part of the promoted kit. The handbook names beta `retro`, `pr`, and `setup-ts-deep-modules` for specific situations. Confirm a beta's files are actually installed before recommending it, say it is beta, and keep its original invocation policy. A file in this checkout is not proof it is installed in the user's harness. Do not silently promote the other experimental or misc skills into the everyday flow.
+`in-progress`, `misc`, and `deprecated` are not part of the promoted kit. The handbook names beta `setup-ts-deep-modules` for a specific situation. Confirm a beta's files are actually installed before recommending it, say it is beta, and keep its original invocation policy. `implement-spec`, `pr`, and `retro` are promoted skills. A file in this checkout is not proof it is installed in the user's harness. Do not silently promote the other experimental or misc skills into the everyday flow.
 
 When a user names another available skill directly, explain that it sits outside the curated kit and read its own instructions before advising them. When it is unavailable, say what you could and could not verify; absence from the model's implicit skill list is not evidence that a user-invoked command is missing.

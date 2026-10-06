@@ -230,7 +230,7 @@ edge_label(1050, 1112, "L · several evenings", LANES["build"]["dark"])
 s_box = node(250, 1260, 330, 150, "build", label="Just say it", note="“add --json to export,\ntest first”\nthe agent uses tdd itself")
 arrow([(250, s_box[3]), (250, 1920)])
 # M column
-m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="asks in rounds; writes\nCONTEXT.md and ADRs")
+m1_box = node(660, 1240, 360, 150, "build", cmd="/grill-with-docs", cmd_size=32, note="asks in rounds; writes\nGLOSSARY.md and ADRs")
 m2_cy = place_below(m1_box, 350, 130, cmd="/implement", note="same window,\ndon't clear in between")
 m2_box = node(660, m2_cy, 350, 130, "build", cmd="/implement", note="same window,\ndon't clear in between")
 arrow([(660, m1_box[3]), (660, m2_box[1])])
@@ -310,7 +310,7 @@ SX = [520, 1000, 1480]
 node(SX[0], 2800, 420, 120, "focus", cmd="/refocus", label="still open, drifting, staying here")
 node(SX[1], 2800, 420, 120, "focus", cmd="/handoff", label="still open, the work is moving")
 node(SX[2], 2800, 420, 120, "focus", cmd="/takeover", label="session gone / too long to trust")
-text(SX[0], 2895, "Re-reads spec, ticket, CONTEXT.md and your spoken decisions from disk, diffs them against the work (dropped / drifted / contradicted), asks one round, saves the answers to the ticket. Then compact.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
+text(SX[0], 2895, "Re-reads spec, ticket, domain glossary and your spoken decisions from disk, diffs them against the work (dropped / drifted / contradicted), asks one round, saves the answers to the ticket. Then compact.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 text(SX[1], 2895, "The outgoing session writes a small portable file to the temp dir: new directory, new tool, a forked side task, a prototype detour. Nothing travelling? You don't need it.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 text(SX[2], 2895, "Quota gone, crashed, closed, or another tool. The new session reads the record itself (ID / export / URL / handoff), retells the project in 10 sentences at most, asks once. Read-only until you confirm.", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 
@@ -342,7 +342,7 @@ text(1090, 3405, "Can't write it → not a bug, misaligned requirements → /ref
 # =================== FOOTER ===================
 d.line([(80, 3720), (1920, 3720)], fill=(210, 200, 185), width=3)
 text(80, 3745, "First time? Type /vibe in an empty repo: a First run card walks 9 steps through the whole loop and checks each step with you.", F(27), fill=INK, maxw=1840)
-text(80, 3788, "Handbook: skills/engineering/vibe/WORKFLOW.md   ·   26 curated skills: 15 you type, 11 automatic   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3788, "Handbook: skills/engineering/vibe/WORKFLOW.md   ·   28 curated skills: 16 you type, 12 automatic   ·   github.com/awangs1986/catskills", F(24, False), fill=GRAY, maxw=1840)
 text(80, 3828, "Mantra: align, then spec; red, then green; run it; read the Claims; review before merge; sweep weekly; drifting → refocus, dead → takeover.", F(26), fill=LANES["build"]["dark"], maxw=1840)
 
 # =================== PRODUCT STORY ON-RAMP ===================
@@ -397,6 +397,29 @@ text(1040, y + 142, 'The code changed, but the spec did not?', F(28), maxw=820)
 text(120, y + 198, 'Prune stale guidance. Merge duplicates. Organize the rules.\nKeep effective constraints and explicit approvals.', F(25, False), maxw=820, spacing=1.5)
 text(1040, y + 198, 'Refresh stale descriptions from current code evidence.\nKeep unmet requirements and unresolved gaps visible.', F(25, False), maxw=820, spacing=1.5)
 text(120, y + 300, 'Both commands can be typed or used automatically for matching tasks. Part of the full collection, outside the daily kit.', F(23, False), fill=GRAY, maxw=1760)
+
+# =================== CURRENT UPSTREAM ROUTES ===================
+UPSTREAM_TOP, UPSTREAM_HEIGHT = MAINTENANCE_TOP + MAINTENANCE_HEIGHT, 350
+flow = img
+img = Image.new("RGB", (W, flow.height + UPSTREAM_HEIGHT), BG)
+img.paste(flow.crop((0, 0, W, UPSTREAM_TOP)), (0, 0))
+img.paste(flow.crop((0, UPSTREAM_TOP, W, flow.height)), (0, UPSTREAM_TOP + UPSTREAM_HEIGHT))
+d = ImageDraw.Draw(img)
+y = UPSTREAM_TOP
+panel(80, y + 25, 1920, y + 290, "setup", 'Upstream v1.3.1 · Three promoted routes')
+for x, command, description in [(120, "/implement-spec", 'Whole spec as a task graph.\nWorktrees, one integration branch.'), (745, "pr", 'PR body: visual and evidence,\nreversibility and merge impact.'), (1370, "/retro", 'Reflect on the session.\nPropose environment improvements.')]:
+    text(x, y + 85, command, MONO(34), fill=LANES["build"]["dark"])
+    text(x, y + 155, description, F(25, False), maxw=520, spacing=1.45)
+
+# =================== UPSTREAM ATTRIBUTION ===================
+ATTRIBUTION_HEIGHT = 120
+flow = img
+img = Image.new("RGB", (W, flow.height + ATTRIBUTION_HEIGHT), BG)
+img.paste(flow, (0, ATTRIBUTION_HEIGHT))
+d = ImageDraw.Draw(img)
+d.rectangle((0, 0, W, 115), fill=LANES["focus"]["fill"])
+text(W / 2, 10, "BASED ON MATT POCOCK'S SKILLS", F(42), align="center", fill=LANES["build"]["dark"])
+text(W / 2, 70, 'mattpocock/skills · v1.3.1 · 4588b32', F(27, False), align="center", fill=GRAY)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.png"), optimize=True)
 print("saved")

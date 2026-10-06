@@ -117,7 +117,7 @@ export function validateGuide(data, inventory) {
   }
   visit(data.picker?.start);
   for (const id of questions.keys()) need(visited.has(id), `Unreachable picker question: ${id}`);
-  for (const name of ["tell-a-story", "cattytest", "verify", "test-audit", "research"]) {
+  for (const name of ["tell-a-story", "cattytest", "verify", "test-audit", "research", "implement-spec", "pr", "retro"]) {
     if (expected.has(name)) need(reachableSkills.has(name), `Picker omits an important installed route: ${name}`);
   }
   need(data.firstRun === undefined || Array.isArray(data.firstRun), "First run must be an array");
