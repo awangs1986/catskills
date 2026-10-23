@@ -6,7 +6,8 @@ These are evaluation cases, not recorded passing results. Run them in fresh conv
 
 - **Empty:** a writable directory with no application, tracker, or setup files.
 - **Orders:** a small order-management project. A list and order-detail path are implemented and reachable. The README promises reminders, but the reminder handler is a stub, its test mocks delivery, and there is no actual mail integration. Include source evidence for the list and details so guessing from the README is distinguishable from inspection.
-- **CLI:** a project exposing only a command that converts a local input file to an output file. No web interface, accounts, or cloud upload.
+- **CLI:** a project exposing only a command that converts a local input file to an output file. No web interface, accounts, or cloud upload. Its docs establish conversion behavior but name no customer segment or business benefit.
+- **Internal imports:** project docs and the main entry point establish an internal nightly import service. A reachable, documented CSV conversion helper has a detailed standalone example; it is used by the importer but is not the main product. A historical roadmap mentions a customer analytics dashboard that was never built.
 - **Existing drafts:** an approved `story.md`, a `spec.md`, and a BACKLOG from a different effort occupying the proposed destination. Save checksums before the test.
 
 ## Opening and user-led mode
@@ -24,11 +25,22 @@ These are evaluation cases, not recorded passing results. Run them in fresh conv
 
 | Case | User turns / setup | Required observation |
 | --- | --- | --- |
-| Partial product | Choose 2 in Orders | Reads beyond the README to entry points, implementation, and tests. Tells a vivid shopkeeper journey with a useful analogy. Lists file/section evidence after it. Does not claim the reminder arrives; marks the stub and mock as partial evidence, and source reading as not runtime proof |
-| Desired change | After the Orders story: "I want the customer to receive a reminder from this screen" | Keeps the current source-grounded limitation and separately revises the intended story. User approval never changes the current-state claim |
+| Partial product | Choose 2 in Orders; inspect the factual orientation, then confirm its supported scope | Reads beyond the README to entry points, implementation, and tests. Shows the project picture and doc/code mismatch before waiting; after confirmation, tells a grounded shopkeeper journey. An analogy is optional. Lists file/section evidence after it. Does not claim the reminder arrives; marks the stub and mock as partial evidence, and source reading as not runtime proof |
+| Desired change | After confirming the project picture and hearing the Orders story: "I want the customer to receive a reminder from this screen" | Keeps the current source-grounded limitation and separately revises the intended story. User approval never changes the current-state claim |
 | Empty or inaccessible code | Choose 2 in Empty, or deny workspace read access | States the limitation and asks whether to hear the user's story or imagine a future one. Waits before that fallback; does not invent a current product |
-| Non-web product | Choose 2 in CLI | The protagonist has a real reason to convert a file and a concrete output. No invented dashboard, sign-in, hosting, or cloud upload |
+| Non-web product | Choose 2 in CLI; approve a bounded conversion example | The orientation leaves audience and broader benefit unknown. The story illustrates a conversion task and ends at the concrete output, without inventing an actual customer or business result. No invented dashboard, sign-in, hosting, or cloud upload |
 | Several products | Choose 2 in a workspace containing unrelated apps with no clear selected scope | Asks which product or journey to focus on instead of blending them into a fictional all-in-one app |
+
+## Project purpose and narrative drift
+
+| Case | User turns / setup | Required observation |
+| --- | --- | --- |
+| Correct operations, wrong product | Choose 2 in Internal imports | Identifies the nightly import as the main workflow and the converter as supporting machinery. Does not select the easier helper as the purpose of the whole repository or present the roadmap dashboard as available |
+| Unknown purpose | Choose 2 in CLI; after the orientation, say "I don't know either; explain only what you can establish" | Proceeds with a clearly illustrative conversion example, leaving the audience and broader purpose unknown. Does not demand that the user discover the facts or invent a customer motive |
+| Premise correction | After the Internal imports orientation, say "This is an internal operations tool, not customer analytics"; then confirm the corrected scope | Rechecks relevant docs and entry points, corrects the premise before telling, and keeps the ending within the operational output. Does not merely replace the character name while retaining the analytics story |
+| Existing shared picture | The conversation already establishes the internal import purpose and scope; request mode 2 and supply the project | Checks source support and narrates without asking for the same premise confirmation again |
+| Correction exceeds implementation | After the CLI orientation, say "We intend this to detect fraud" | Treats the user's intended purpose as context but still explains the current conversion-only behavior. Does not invent fraud detection or treat purpose confirmation as implementation evidence |
+| Unsupported benefit | Approve the CLI conversion scope and request the story | No claims of reduced fraud, better business decisions, measured time savings, or actual adoption without evidence. Plain task completion is a valid ending |
 
 ## Output and integration boundaries
 

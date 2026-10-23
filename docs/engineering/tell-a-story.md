@@ -2,7 +2,7 @@
 
 `tell-a-story` helps you and the agent understand what a project is for through a human story. This can be a repository you have just encountered, a product whose purpose people have lost track of, or a new experience you want to build. You can tell the story of someone using the product you want, or ask the agent to read the workspace and tell a story of the product that exists. Shared understanding can be the whole result. If you want to turn it into work, you correct and confirm the story before it becomes a product [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or a proposed BACKLOG.
 
-The story must be confirmed before it becomes requirements. In the agent-led direction, an appealing story is not permission to invent features: the agent separates what the source supports, what is uncertain, and what you want to change. It is aligning the product, not picking a stack or starting a build.
+In agent-led mode, the agent first shows its factual understanding of the project for correction, then tells a story within that scope. A project picture already established in the conversation is reused. The finished story must be confirmed before it becomes requirements. In the agent-led direction, an appealing story is not permission to invent features: the agent separates what the source supports, what is uncertain, and what you want to change. It is aligning the product, not picking a stack or starting a build.
 
 <!-- cat-skills:conversation-doc:start -->
 Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
@@ -30,7 +30,7 @@ When you ask for saved output, it uses the project's product-draft location, or 
 
 ## The story is the agreement
 
-The story starts before the software appears: someone has a problem and a reason their usual approach is not enough. The project enters when it helps, and the ending shows what the person can now know, decide, or do. The telling uses connected paragraphs; scene IDs stay in the evidence notes and saved documents. For example: a shopkeeper is closing for the evening, notices one unpaid order, opens it, and gets the information needed to decide what to do next. The next question is what that person should see or be able to do, not which database they want. An everyday analogy is useful only if it clarifies the experience without adding unsupported features.
+The story starts with a concrete task grounded in the established project picture. An ordinary task is enough; the agent does not need to invent a crisis or a failed previous workflow. The project enters when it helps, and the ending shows what the person can now know, decide, or do. The telling uses connected paragraphs; scene IDs stay in the evidence notes and saved documents. For example: a shopkeeper is closing for the evening, notices one unpaid order, opens it, and gets the information needed to decide what to do next. The next question is what that person should see or be able to do, not which database they want. An everyday analogy is useful only if it clarifies the experience without adding unsupported features.
 
 The agent asks one focused question at a time, retells what changed, and keeps the accepted parts. If you say the product should send a reminder but the source only displays the unpaid order, the reminder becomes an intended change. It does not quietly become something the current product already does.
 
@@ -53,9 +53,13 @@ Saved conversions include `story.md` alongside the requested documents. The BACK
 
 A list of capabilities with a name attached has missed the purpose. The person needs a concrete problem, each event must explain why the next happens, and the ending must change what they can do. If the paragraphs can be shuffled without affecting the story, the agent should rewrite it. Numbered scene references belong in the saved traceability map, not the telling.
 
+**The features exist, but the story describes the wrong project.**
+
+Source-backed actions can still be assembled around an invented purpose. The agent must check the audience, main job, and scope before narrating, distinguish supporting tools from the central workflow, and support claims about benefits as well as features. A CSV conversion helper should not become a business analytics platform merely because that makes a more appealing story. When documentation and implementation disagree, that difference stays visible. Your correction guides the explanation without turning a missing capability into an implemented one.
+
 **Can I use it just to understand an old or unfamiliar repository?**
 
-Yes. Ask for the agent-led mode. It reads the source, chooses a journey that explains the project's central purpose, and asks whether that understanding is right. You do not need to request a redesign, SPEC, or BACKLOG. Code can support an account of today's behavior without establishing why the original authors built it.
+Yes. Ask for the agent-led mode. It reads the source and first shows what the project takes in, does, and returns, together with the evidence or uncertainty about its audience and purpose. After that picture is aligned, it illustrates a representative journey. If you are also unfamiliar with the project, it can offer a bounded explanation of the supported workflow while leaving broader purpose unknown. You do not need to request a redesign, SPEC, or BACKLOG. Code can support an account of today's behavior without establishing why the original authors built it.
 
 **Do I need to know how to write a SPEC before using this?**
 
@@ -77,6 +81,7 @@ No. Approval confirms the product picture. You choose whether to get a local pro
 
 ## It's working if
 
+- Before hearing an agent-led story, you can correct its project picture; unknown purpose or audience stays explicit.
 - You can explain who needs the project, what problem brings them to it, and what changes for them without knowing software terminology.
 - The story reads as connected events in a person's life, and the conversation checks your understanding before proposing new work.
 - Corrections change the relevant scenes instead of restarting the interview or disappearing into a generic feature list.

@@ -39,7 +39,7 @@ When present in the inventory, explain these boundaries in the picker instead of
 
 | User's need | Route |
 | --- | --- |
-| Understand an unfamiliar project through a human story, or describe an intended experience | `tell-a-story`: 1 user tells, 2 agent tells; revise, confirm, then optional product SPEC / BACKLOG drafts |
+| Understand an unfamiliar project through a human story, or describe an intended experience | `tell-a-story`: 1 user tells, 2 agent checks the factual project picture before telling a supported story; revise, confirm, then optional product SPEC / BACKLOG drafts |
 | Design cases that prove the agreed outcome | `cattytest` |
 | Run already-agreed cases and collect evidence | `verify` |
 | Understand what existing tests claim and whether they can detect faults | `test-audit` |

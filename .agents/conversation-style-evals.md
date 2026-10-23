@@ -71,6 +71,7 @@ These scenarios need a live conversational run; static checks alone cannot estab
 | User chooses mode 2 in an unfamiliar repository | Read the source, infer its central supported purpose, and tell continuous prose about a person whose concrete problem changes through using the project; no numbered feature tour or visible scene IDs |
 | A long-running project has many unrelated-looking capabilities | Choose a representative journey explaining why someone needs the project, rather than including every module or following the code-reading order |
 | Agent adds a character's name to five interchangeable feature descriptions | Rewrite before sending: events must be causally connected, and the ending must change what the person can know, decide, or do |
+| Features are real but the story implies a different product | Check the factual project picture before narration; support the audience, central purpose, and outcome separately from individual operations |
 | Project is a library or background service | Ground the story in a developer's or operator's real problem without inventing a dashboard or unsupported end-user actions |
 | Documentation promises a result but the reachable implementation stops short | Let the limit affect the ending, and put source evidence and uncertainty after the story; no invented successful save, payment, or notification |
 | User confirms that the story captures what the existing project is for | Treat understanding as a complete result; no mandatory redesign, requirements interview, or artifact selection |

@@ -50,27 +50,32 @@ Read existing project instructions, vocabulary, and relevant code when they can 
 
 ### Mode 2: tell a story grounded in the workspace
 
-Read before narrating. Start with project instructions, README, `CONTEXT.md` or its map, relevant product docs and manifests; then follow a real user entry point through its implementation and relevant tests or fixtures to its observable result. For a CLI, library, service, or skill collection, the person may be an operator or developer. Don't invent a web interface for a product that has none.
+Read before narrating. Start with project instructions, README, the configured glossary or its map (including legacy `CONTEXT.md`), relevant product docs and manifests; then follow a real user entry point through its implementation and relevant tests or fixtures to its observable result. For a CLI, library, service, or skill collection, the person may be an operator or developer. Don't invent a web interface for a product that has none.
 
-Discover the project's purpose before choosing the journey: who encounters a problem, how they would handle it without this project, what they bring to it, and what useful outcome they take away. Read enough of the workspace to choose a journey that explains its central job, rather than the first endpoint or easiest screen you find. Keep the reading order out of the narration. Distinguish the supported present purpose from historical intent you cannot establish.
+Establish the project's scope before choosing the journey. Compare the stated purpose and intended audience in project docs or the user's account with the reachable entry points, callers, and outputs. Identify the main workflow and distinguish it from supporting utilities, demos, optional integrations, and abandoned paths. A working helper does not establish the purpose of the whole project. Code establishes behavior; claims about who actually uses it, their motives, historical intent, or business results need their own evidence.
 
-Choose one representative journey that makes that purpose understandable to someone who knows none of the project's terminology. If several products are equally plausible, ask which one first. Facts the workspace can answer are your job, not homework for the user.
+Before narrating, give a short factual orientation in ordinary language: what this project takes in, what it does with it, what comes out, and who it appears to serve. Identify the basis for the audience and purpose, and name any important mismatch between docs and implementation. Keep unsupported interpretations visibly tentative. Ask whether this is the right project picture and wait for corrections before building a story around it. If the user has already established that picture in this conversation and the source supports the chosen path, reuse it without another confirmation. This checks the premise; it does not replace confirmation of the finished story before conversion.
+
+If the user is also unfamiliar with the project, they need not supply its purpose. Offer the narrowest source-supported explanation, keep the audience or broader purpose unknown where necessary, and ask whether to illustrate that bounded workflow. If several products are equally plausible, ask which one first. Resolve facts available in the workspace yourself. A user correction about purpose changes the framing; it does not prove an unimplemented capability exists.
+
+Choose a representative journey within that established scope. Keep the reading order out of the narration.
 
 Keep a small evidence ledger for the journey:
 
 | Status | What earns it |
 | --- | --- |
+| **Stated purpose or audience** | Explicit user context or maintained product docs. Attribute the claim; it does not establish implemented behavior, actual adoption, or measured benefit |
 | **Supported by source** | A reachable implementation or workflow, with a concrete file and symbol or section. Reading it is not proof it was run successfully |
 | **Uncertain or partial** | A promise in a doc, a stub, a mock-only path, an unwired entry point, or behavior dependent on unavailable configuration. Say where the evidence stops |
 | **Desired change** | An experience requested by the user that differs from the supported baseline. It stays future-facing even after they approve it |
 
-A button, test, or README claim alone does not prove an end-to-end capability. Trace the consequential steps, including where information is saved, sent, or returned. Never imply a payment, notification, durable save, or similar result when only its shell exists. Keep source support distinct from runtime verification; say when you have only read the code.
+The ledger must cover the story's premise and claimed benefit as well as its actions: cite the basis for the audience, central job, and outcome, or mark them as unknown or illustrative. A plausible persona is not evidence of an actual customer. A button, test, or README claim alone does not prove an end-to-end capability. Trace the consequential steps, including where information is saved, sent, or returned. Never imply a payment, notification, durable save, or similar result when only its shell exists. Keep source support distinct from runtime verification; say when you have only read the code.
 
 If there is no usable implementation, no workspace access, or not enough evidence for a current-state journey, say so. Ask whether to switch to mode 1 or co-create an explicitly **imagined future** story. Wait; don't present an invented current product as the fallback.
 
 ### Narrate a human situation
 
-Tell one connected, illustrative story in natural paragraphs. Start in the person's world before the software appears: a concrete moment, something they need to accomplish, and why their usual way leaves them stuck. Let the project enter when it becomes useful. Each next action follows from what just happened, and the ending shows what the person can now know, decide, or do. Use ordinary vocabulary first; introduce a project term only when the person needs it, explaining it through the situation.
+Tell one connected, illustrative story in natural paragraphs. Start with a concrete task within the established project picture. Use a documented user situation where available; otherwise label a minimal example as illustrative and keep it within the observed input and output. A mundane task is enough: it needs no invented crisis, customer biography, or failing previous workflow. Let the project enter when it becomes useful. Each next action follows from what just happened, and the ending stops at the supported result. Show a further human decision only when its basis is established; producing a file or displaying a record does not by itself establish a business benefit. Use ordinary vocabulary first; introduce a project term only when the person needs it, explaining it through the situation.
 
 Keep the person and their problem as the thread. Choose the few supported behaviors that change their situation; the story does not need to tour every capability. A library's person may be a developer whose program cannot use an incoming file, and an infrastructure project's person may be an operator trying to understand an interruption. Follow the real human consequence without inventing a graphical interface.
 
@@ -84,7 +89,7 @@ For example, if source evidence supports reconciling delivery records and showin
 
 This is a writing example, not a domain or capability to import into the current repository. The story's turning point is the narrowing of Maya's problem, and its ending is her ability to take a useful next action. Adapt that causal shape to the actual project.
 
-Before sending, check whether the paragraphs could be reordered without changing the meaning, or the character removed while leaving a feature catalog intact. If so, rewrite around the person's unresolved problem and its changing state. A reader should be able to explain who needs the project and why after hearing the story, without memorizing its modules or commands.
+Before sending, compare the story with the established project picture: does it preserve the audience, central job, scope, and actual endpoint? Remove any inferred motive or benefit that has become a fact, and any supporting feature promoted into the main purpose. Accuracy takes priority over a satisfying ending. Then check whether the paragraphs could be reordered without changing the meaning, or the character removed while leaving a feature catalog intact. If so, rewrite around the person's unresolved problem and its changing state. A reader should be able to explain the supported job and its limits, and the intended audience where established, without memorizing modules or commands.
 
 Frame it briefly as an illustrative **current experience**, with a revision number kept for subsequent corrections. Let the journey determine the length, usually a few short paragraphs rather than a fixed scene quota. If a consequential step is partial, let that limitation shape the ending instead of conjuring success. After the narrative, add a short plain-language statement of what the project appears to help people accomplish. Put compact source pointers and material uncertainties after that, using narrative anchors such as "the unmatched delivery". Keep source inspection distinct from runtime proof.
 
