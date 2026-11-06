@@ -28,6 +28,17 @@ Inside the [vibe](../engineering/vibe.md) workflow these three are the whole sto
 
 ## Common questions
 
+**Can I take over another user's conversation?**
+Yes, when the current host's owner policy permits it and you explicitly authorize
+read-only access to the named source account and conversation ID. For example:
+`/takeover Read account alice's conversation <id>; I authorize read-only context reconstruction.`
+The skill reads that transcript and only the metadata required to locate it. It
+keeps your current account and project and does not access source credentials,
+attachments or repository files. It still asks you to confirm its understanding
+before continuing. Without host authorization, provide an authorized export.
+Large records are read incrementally with bounded excerpts and explicit coverage.
+
+
 **Why does it ask so few questions? Won't it miss things?**
 Ten questions is a ceiling across the entire takeover, not a target, and one overall "is this right?" is the common case. The skill treats a long list of questions as a symptom of not having read the record properly, and sends the agent back to the index before it asks you. You are there to catch a wrong picture, not to rebuild the project from memory for it.
 

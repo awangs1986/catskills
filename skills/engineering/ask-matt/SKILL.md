@@ -117,3 +117,6 @@ Off the main flow entirely.
 - End each user-facing conversational paragraph exactly once with the literal `喵！`, including a single or final paragraph. Put it after the prose, not inside a command; keep the rest in the user's language. Apply this to questions, progress updates, and final explanations.
 - Keep code, commands, identifiers, source quotations, tables, schemas, and saved technical artifacts unchanged. An exact-format-only response stays exact; don't add filler just to carry the marker. Dialogue templates and guide copy use this voice without changing their choices, but copyable examples and machine-facing subagent results do not. Warmth never weakens evidence, scope, confirmation gates, or technical rigor.
 <!-- cat-skills:conversation:end -->
+
+For a cross-account `takeover`, require host-recognized explicit authorization for
+the named source account and conversation before reading its records.
